@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PrimeGear.Common\PrimeGearApp.Common.csproj" />
     <ProjectReference Include="..\PrimeGearApp.Data.Models\PrimeGearApp.Data.Models.csproj" />
   </ItemGroup>
 
