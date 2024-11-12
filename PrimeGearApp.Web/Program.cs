@@ -1,18 +1,39 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+using PrimeGearApp.Data.Models;
 using PrimeGearApp.Web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("ConnectionString")!;
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddDbContext<PrimeGearDbContext>(options =>
+{
+    options.UseSqlServer(connectionString);
+});
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services
+    .AddIdentity<ApplicationUser, IdentityRole<Guid>>(cfg =>
+    {
+        IdentityConfiguration(builder, cfg);
+    })
+    .AddDefaultTokenProviders()
+    .AddDefaultUI()
+    .AddRoles<IdentityRole<Guid>>()
+    .AddSignInManager<SignInManager<ApplicationUser>>()
+    .AddUserManager<UserManager<ApplicationUser>>()
+    .AddEntityFrameworkStores<PrimeGearDbContext>();
+
+builder.Services.ConfigureApplicationCookie(cfg =>
+{
+    cfg.LoginPath = "/Identity/Account/Login";
+});
+
+builder.Services.AddDatabaseDeveloperPageExceptionFilter(); //?
+
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -33,6 +54,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
@@ -41,3 +63,28 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+
+static void IdentityConfiguration(WebApplicationBuilder builder, IdentityOptions cfg)
+{
+    cfg.Password.RequireDigit = builder.Configuration.GetValue<bool>("Idenity:Password:RequireDigits");
+
+    cfg.Password.RequireLowercase = builder.Configuration.GetValue<bool>("Idenity:Password:RequireLowerCase");
+
+    cfg.Password.RequireUppercase = builder.Configuration.GetValue<bool>("Idenity:Password:RequireUpperCase");
+
+    cfg.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Idenity:Password:RequireNonAlphanumerical");
+
+    cfg.Password.RequiredLength = builder.Configuration.GetValue<int>("Idenity:Password:RequiredLength");
+
+    cfg.Password.RequiredUniqueChars = builder.Configuration.GetValue<int>("Idenity:Password:RequiredUniqueCharacters");
+
+
+    cfg.SignIn.RequireConfirmedAccount = builder.Configuration.GetValue<bool>("Idenity:SignIn:RequireConfirmedAccound");
+
+    cfg.SignIn.RequireConfirmedEmail = builder.Configuration.GetValue<bool>("Idenity:SignIn:RequireConfirmedEmail");
+
+    cfg.SignIn.RequireConfirmedPhoneNumber = builder.Configuration.GetValue<bool>("Idenity:SignIn:RequireConfirmedPhoneNumber");
+
+
+    cfg.User.RequireUniqueEmail = builder.Configuration.GetValue<bool>("Idenity:User:RequireUniqueEmail");
+}
