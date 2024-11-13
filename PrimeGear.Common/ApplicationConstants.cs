@@ -31,5 +31,10 @@ namespace PrimeGearApp.Common
             public const int ProductMinAvaibleQuantity = 0;
             public const int ProductMaxAvaibleQuantity = 999999;
         }
+        public static class ProductTypeConstants
+        {
+            public const int ProductTypeNameMinLength = 3;
+            public const int ProductTypeNameMaxLength = 100;
+        }
     }
 }
