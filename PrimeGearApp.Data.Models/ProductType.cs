@@ -9,7 +9,7 @@
         public ICollection<Product> Products { get; set; }
             = new List<Product>();  
 
-        public ICollection<ProductTypeProperty> Properties { get; set; }
+        public ICollection<ProductTypeProperty> ProductProperties { get; set; }
             = new List<ProductTypeProperty>();
     }
 }

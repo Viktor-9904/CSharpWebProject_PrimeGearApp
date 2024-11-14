@@ -219,6 +219,120 @@ namespace PrimeGearApp.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("PrimeGearApp.Data.Models.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AvaibleQuantity")
+                        .HasColumnType("int")
+                        .HasComment("Avaible Quantity");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasComment("Product Description");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasComment("Product Name");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float")
+                        .HasComment("Product Price");
+
+                    b.Property<Guid>("ProductTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("RelaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("WarrantyDurationInMonths")
+                        .HasColumnType("int")
+                        .HasComment("Warranty Duration in Months");
+
+                    b.Property<double>("Weigth")
+                        .HasColumnType("float")
+                        .HasComment("Product Weight");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductTypeId");
+
+                    b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("PrimeGearApp.Data.Models.ProductDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductTypePropertyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductTypePropertyValue")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasComment("ProductDetailValue");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductDetail");
+                });
+
+            modelBuilder.Entity("PrimeGearApp.Data.Models.ProductType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasComment("ProductType Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductType");
+                });
+
+            modelBuilder.Entity("PrimeGearApp.Data.Models.ProductTypeProperty", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductDetailId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductPropertyKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProductTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductDetailId");
+
+                    b.HasIndex("ProductTypeId");
+
+                    b.ToTable("ProductTypeProperty");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -268,6 +382,64 @@ namespace PrimeGearApp.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PrimeGearApp.Data.Models.Product", b =>
+                {
+                    b.HasOne("PrimeGearApp.Data.Models.ProductType", "ProductType")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ProductType");
+                });
+
+            modelBuilder.Entity("PrimeGearApp.Data.Models.ProductDetail", b =>
+                {
+                    b.HasOne("PrimeGearApp.Data.Models.Product", "Product")
+                        .WithMany("ProductDetails")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("PrimeGearApp.Data.Models.ProductTypeProperty", b =>
+                {
+                    b.HasOne("PrimeGearApp.Data.Models.ProductDetail", "ProductDetail")
+                        .WithMany("ProductTypeProperties")
+                        .HasForeignKey("ProductDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PrimeGearApp.Data.Models.ProductType", "ProductType")
+                        .WithMany("ProductProperties")
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ProductDetail");
+
+                    b.Navigation("ProductType");
+                });
+
+            modelBuilder.Entity("PrimeGearApp.Data.Models.Product", b =>
+                {
+                    b.Navigation("ProductDetails");
+                });
+
+            modelBuilder.Entity("PrimeGearApp.Data.Models.ProductDetail", b =>
+                {
+                    b.Navigation("ProductTypeProperties");
+                });
+
+            modelBuilder.Entity("PrimeGearApp.Data.Models.ProductType", b =>
+                {
+                    b.Navigation("ProductProperties");
+
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

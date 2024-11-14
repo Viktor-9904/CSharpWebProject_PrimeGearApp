@@ -29,7 +29,8 @@ namespace PrimeGearApp.Data.Configuration
                 .HasOne(p => p.ProductType)
                 .WithMany(pt => pt.Products)
                 .HasForeignKey(p => p.ProductTypeId)
-                .IsRequired();
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Property(p => p.Price)
