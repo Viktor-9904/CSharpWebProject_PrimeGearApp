@@ -14,7 +14,7 @@ namespace PrimeGearApp.Data.Configuration
             builder
                 .HasOne(ptp => ptp.ProductDetail)
                 .WithMany(pd => pd.ProductTypeProperties)
-                .HasForeignKey(ptp => ptp.ProductDetailId)
+                .HasForeignKey(ptp => ptp.ProductTypeId)
                 .IsRequired();
 
             builder

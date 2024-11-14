@@ -14,10 +14,10 @@ namespace PrimeGearApp.Data.Configuration
                 .HasKey(pd => pd.Id);
 
             builder
-             .Property(pd => pd.ProductTypePropertyValue)
-            .IsRequired()
-             .HasComment("ProductDetailValue")
-            .HasMaxLength(ProductTypePropertyValueMaxLength);
+                .Property(pd => pd.ProductTypePropertyValue)
+                .IsRequired()
+                .HasComment("ProductDetailValue")
+                .HasMaxLength(ProductTypePropertyValueMaxLength);
         }
     }
 }

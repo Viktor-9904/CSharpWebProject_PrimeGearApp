@@ -32,5 +32,8 @@ namespace PrimeGearApp.Data.Models
 
         [Range(ProductMinAvaibleQuantity,ProductMaxAvaibleQuantity)]
         public int AvaibleQuantity { get; set; }
+
+        public ICollection<ProductDetail> ProductDetails { get; set; }
+            = new List<ProductDetail>();
     }
 }
