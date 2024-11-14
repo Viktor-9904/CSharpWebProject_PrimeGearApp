@@ -36,5 +36,11 @@ namespace PrimeGearApp.Common
             public const int ProductTypeNameMinLength = 3;
             public const int ProductTypeNameMaxLength = 100;
         }
+
+        public class ProductDetailsConstants
+        {
+            public const int ProductTypePropertyValueMinLength = 1;
+            public const int ProductTypePropertyValueMaxLength = 200;
+        }
     }
 }

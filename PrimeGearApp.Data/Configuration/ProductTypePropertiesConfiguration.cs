@@ -12,10 +12,16 @@ namespace PrimeGearApp.Data.Configuration
                 .HasKey(ptp => ptp.Id);
 
             builder
+                .HasOne(ptp => ptp.ProductDetail)
+                .WithMany(pd => pd.ProductTypeProperties)
+                .HasForeignKey(ptp => ptp.ProductDetailId)
+                .IsRequired();
+
+            builder
                 .HasOne(ptp => ptp.ProductType)
                 .WithMany(pt => pt.Properties)
                 .HasForeignKey(ptp => ptp.ProductTypeId)
-                .IsRequired();               
+                .IsRequired();
         }
     }
 }
