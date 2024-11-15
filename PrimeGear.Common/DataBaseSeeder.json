@@ -1,0 +1,20 @@
+{
+  "ProductTypes": [
+    { "Name": "CPU" },
+    { "Name": "GPU" },
+    { "Name": "Motherboard" },
+    { "Name": "RAM" },
+    { "Name": "Power Supply" },
+    { "Name": "HDD" },
+    { "Name": "SSD" },
+    { "Name": "Cooling Fan" },
+    { "Name": "CPU Fan Cooler" },
+    { "Name": "CPU AIO Cooler" },
+    { "Name": "PC Case" },
+    { "Name": "Monitor" },
+    { "Name": "Keyboard" },
+    { "Name": "Mouse" },
+    { "Name": "Headset" },
+    { "Name": "Mouse Pad" }
+  ]
+}
