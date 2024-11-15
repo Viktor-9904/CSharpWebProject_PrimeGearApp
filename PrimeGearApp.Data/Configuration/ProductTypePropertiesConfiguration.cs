@@ -17,10 +17,6 @@ namespace PrimeGearApp.Data.Configuration
                 .HasForeignKey(ptp => ptp.ProductTypeId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasOne(ptp => ptp.ProductDetail)
-           .WithMany(pd => pd.ProductTypeProperties)
-           .HasForeignKey(ptp => ptp.ProductDetailId);
         }
     }
 }

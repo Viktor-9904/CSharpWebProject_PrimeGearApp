@@ -10,22 +10,22 @@ namespace PrimeGearApp.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<ProductDetail> builder)
         {
-
-            //builder
-            //    .HasOne(pd => pd.Product)
-            //    .WithMany(ptp => ptp.ProductDetails)
-            //    .HasForeignKey(pd => pd.ProductId)
-            //    .IsRequired()
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-
             builder
                 .HasKey(pd => pd.Id);
 
             builder
-                .HasMany(pd => pd.ProductTypeProperties)
-                .WithOne(ptp => ptp.ProductDetail)
-                .HasForeignKey(ptp => ptp.ProductDetailId);
+                .HasOne(pd => pd.Product)
+                .WithMany(ptp => ptp.ProductDetails)
+                .HasForeignKey(pd => pd.ProductId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .HasOne(pd => pd.ProductTypeProperty)
+                .WithMany(ptp => ptp.ProductDetails)
+                .HasForeignKey(pd => pd.ProductTypePropertyId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Property(pd => pd.ProductTypePropertyValue)

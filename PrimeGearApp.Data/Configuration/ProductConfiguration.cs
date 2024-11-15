@@ -55,7 +55,6 @@ namespace PrimeGearApp.Data.Configuration
                 .IsRequired()
                 .HasComment("Avaible Quantity");
             // Availability Range as data annotation
-
         }
     }
 }

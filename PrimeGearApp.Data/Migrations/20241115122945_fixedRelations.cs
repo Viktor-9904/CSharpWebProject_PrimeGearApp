@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PrimeGearApp.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class FixRelations : Migration
+    public partial class fixedRelations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -194,6 +194,24 @@ namespace PrimeGearApp.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductTypeProperty",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductTypeProperty", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductTypeProperty_ProductType_ProductTypeId",
+                        column: x => x.ProductTypeId,
+                        principalTable: "ProductType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductDetail",
                 columns: table => new
                 {
@@ -206,35 +224,15 @@ namespace PrimeGearApp.Data.Migrations
                 {
                     table.PrimaryKey("PK_ProductDetail", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_ProductDetail_ProductTypeProperty_ProductTypePropertyId",
+                        column: x => x.ProductTypePropertyId,
+                        principalTable: "ProductTypeProperty",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_ProductDetail_Product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductTypeProperty",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductDetailId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductPropertyKey = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductTypeProperty", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductTypeProperty_ProductDetail_ProductDetailId",
-                        column: x => x.ProductDetailId,
-                        principalTable: "ProductDetail",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductTypeProperty_ProductType_ProductTypeId",
-                        column: x => x.ProductTypeId,
-                        principalTable: "ProductType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -289,9 +287,9 @@ namespace PrimeGearApp.Data.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductTypeProperty_ProductDetailId",
-                table: "ProductTypeProperty",
-                column: "ProductDetailId");
+                name: "IX_ProductDetail_ProductTypePropertyId",
+                table: "ProductDetail",
+                column: "ProductTypePropertyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductTypeProperty_ProductTypeId",
@@ -318,7 +316,7 @@ namespace PrimeGearApp.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ProductTypeProperty");
+                name: "ProductDetail");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -327,7 +325,7 @@ namespace PrimeGearApp.Data.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "ProductDetail");
+                name: "ProductTypeProperty");
 
             migrationBuilder.DropTable(
                 name: "Product");

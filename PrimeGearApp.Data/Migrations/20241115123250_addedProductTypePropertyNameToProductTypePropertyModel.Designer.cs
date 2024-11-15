@@ -12,8 +12,8 @@ using PrimeGearApp.Web.Data;
 namespace PrimeGearApp.Data.Migrations
 {
     [DbContext(typeof(PrimeGearDbContext))]
-    [Migration("20241114183719_FixRelations")]
-    partial class FixRelations
+    [Migration("20241115123250_addedProductTypePropertyNameToProductTypePropertyModel")]
+    partial class addedProductTypePropertyNameToProductTypePropertyModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -291,6 +291,8 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasIndex("ProductId");
 
+                    b.HasIndex("ProductTypePropertyId");
+
                     b.ToTable("ProductDetail");
                 });
 
@@ -317,19 +319,14 @@ namespace PrimeGearApp.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ProductDetailId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ProductPropertyKey")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid>("ProductTypeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ProductTypePropertyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("ProductDetailId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductTypeId");
 
@@ -403,27 +400,27 @@ namespace PrimeGearApp.Data.Migrations
                     b.HasOne("PrimeGearApp.Data.Models.Product", "Product")
                         .WithMany("ProductDetails")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PrimeGearApp.Data.Models.ProductTypeProperty", "ProductTypeProperty")
+                        .WithMany("ProductDetails")
+                        .HasForeignKey("ProductTypePropertyId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Product");
+
+                    b.Navigation("ProductTypeProperty");
                 });
 
             modelBuilder.Entity("PrimeGearApp.Data.Models.ProductTypeProperty", b =>
                 {
-                    b.HasOne("PrimeGearApp.Data.Models.ProductDetail", "ProductDetail")
-                        .WithMany("ProductTypeProperties")
-                        .HasForeignKey("ProductDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PrimeGearApp.Data.Models.ProductType", "ProductType")
                         .WithMany("ProductProperties")
                         .HasForeignKey("ProductTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("ProductDetail");
 
                     b.Navigation("ProductType");
                 });
@@ -433,16 +430,16 @@ namespace PrimeGearApp.Data.Migrations
                     b.Navigation("ProductDetails");
                 });
 
-            modelBuilder.Entity("PrimeGearApp.Data.Models.ProductDetail", b =>
-                {
-                    b.Navigation("ProductTypeProperties");
-                });
-
             modelBuilder.Entity("PrimeGearApp.Data.Models.ProductType", b =>
                 {
                     b.Navigation("ProductProperties");
 
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("PrimeGearApp.Data.Models.ProductTypeProperty", b =>
+                {
+                    b.Navigation("ProductDetails");
                 });
 #pragma warning restore 612, 618
         }
