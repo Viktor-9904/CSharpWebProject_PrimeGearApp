@@ -8,13 +8,22 @@ using System.Reflection;
 namespace PrimeGearApp.Web.Data
 {
     public class PrimeGearDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
-    // public class PrimeGearDbContext : IdentityDbContext
     {
+        public PrimeGearDbContext()
+        {
+            
+        }
+
         public PrimeGearDbContext(DbContextOptions<PrimeGearDbContext> options)
             : base(options)
         {
 
         }
+
+        public virtual DbSet<Product> Products { get; set; } = null!;
+        public virtual DbSet<ProductType> ProductTypes { get; set; } = null!;
+        public virtual DbSet<ProductTypeProperty> ProductTypeProperties { get; set; } = null!;
+        public virtual DbSet<ProductDetail> ProductDetails { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
