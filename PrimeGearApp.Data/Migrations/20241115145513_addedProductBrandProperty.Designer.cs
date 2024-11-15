@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrimeGearApp.Web.Data;
 
@@ -11,9 +12,11 @@ using PrimeGearApp.Web.Data;
 namespace PrimeGearApp.Data.Migrations
 {
     [DbContext(typeof(PrimeGearDbContext))]
-    partial class PrimeGearDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241115145513_addedProductBrandProperty")]
+    partial class addedProductBrandProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -270,34 +273,6 @@ namespace PrimeGearApp.Data.Migrations
                     b.HasIndex("ProductTypeId");
 
                     b.ToTable("Product");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("ac11e8e3-c4d6-4a04-9fab-b5551e29c621"),
-                            AvaibleQuantity = 12,
-                            Brand = "Nvidia",
-                            Description = "This is the newest and fastest GPU on the market!",
-                            Name = "Graphics card - RTX 5090",
-                            Price = 9999.9899999999998,
-                            ProductTypeId = new Guid("5fd048ea-ea0d-4d23-b505-4f2321485398"),
-                            RelaseDate = new DateTime(2025, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            WarrantyDurationInMonths = 24,
-                            Weigth = 1.1000000000000001
-                        },
-                        new
-                        {
-                            Id = new Guid("03826e9d-f48e-412e-a3cf-57abc5be8e5e"),
-                            AvaibleQuantity = 3,
-                            Brand = "Nvidia",
-                            Description = "An older card, still very capable of running modern games on medium setting at 1080p.",
-                            Name = "Graphics card - GTX 1050",
-                            Price = 84.450000000000003,
-                            ProductTypeId = new Guid("5fd048ea-ea0d-4d23-b505-4f2321485398"),
-                            RelaseDate = new DateTime(2015, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            WarrantyDurationInMonths = 6,
-                            Weigth = 0.5
-                        });
                 });
 
             modelBuilder.Entity("PrimeGearApp.Data.Models.ProductDetail", b =>
@@ -346,87 +321,87 @@ namespace PrimeGearApp.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d72a7a75-38c6-4b6d-ad4c-98ffe0641319"),
+                            Id = new Guid("e5fe5a16-c615-4738-bc08-15102bba2c7f"),
                             Name = "CPU"
                         },
                         new
                         {
-                            Id = new Guid("32d2c505-47d3-4fef-b0cc-850f1a002c96"),
+                            Id = new Guid("5fd048ea-ea0d-4d23-b505-4f2321485398"),
                             Name = "GPU"
                         },
                         new
                         {
-                            Id = new Guid("f4a814cc-8b22-4627-82f4-424f1ec4d3e0"),
+                            Id = new Guid("8d6e8323-d16d-44cd-9ab1-ef64eb5ab366"),
                             Name = "Motherboard"
                         },
                         new
                         {
-                            Id = new Guid("3a7d1b37-c7cb-403f-8b4b-c4d422803fa4"),
+                            Id = new Guid("615d6b00-ecbd-4136-ae48-c9addf27beab"),
                             Name = "RAM"
                         },
                         new
                         {
-                            Id = new Guid("1af93b96-534e-47b5-918c-2ff532471699"),
+                            Id = new Guid("085d9380-a7fe-436c-ae92-e90d740c7174"),
                             Name = "Power Supply"
                         },
                         new
                         {
-                            Id = new Guid("c5106725-af47-4292-8a5a-df70e4faa349"),
+                            Id = new Guid("6b8d9cd4-6b64-4435-aba9-bb165a763fd7"),
                             Name = "HDD"
                         },
                         new
                         {
-                            Id = new Guid("8ab557cb-d3c0-4cc0-8119-e14c74cbd777"),
+                            Id = new Guid("bb3e6ff8-7ba6-48ca-82a1-8ad0c80bb3b2"),
                             Name = "SSD"
                         },
                         new
                         {
-                            Id = new Guid("1e63e063-1e39-4125-b2e7-5318e9042f09"),
+                            Id = new Guid("f70a0a64-12d3-4590-91f4-f736c5b5f4a9"),
                             Name = "Cooling Fan"
                         },
                         new
                         {
-                            Id = new Guid("ebbc24fc-e1cb-464b-8767-547830b2a5a2"),
+                            Id = new Guid("0e300b87-9656-4c30-b3c5-eaa5c9905360"),
                             Name = "CPU Fan Cooler"
                         },
                         new
                         {
-                            Id = new Guid("4a1f17cb-a857-4f4f-a764-c632748ac749"),
+                            Id = new Guid("0772a540-0c2f-4b70-8ddb-2e869037f8f2"),
                             Name = "CPU AIO Cooler"
                         },
                         new
                         {
-                            Id = new Guid("614b1588-2cc6-4ac6-9fdb-083894402372"),
+                            Id = new Guid("235ea290-8423-41cd-957a-b8085e9dfd60"),
                             Name = "PC Case"
                         },
                         new
                         {
-                            Id = new Guid("4132a51f-5573-4deb-9543-2176df7f5d09"),
+                            Id = new Guid("2f0b5740-d6d3-4301-8285-409b81768153"),
                             Name = "Monitor"
                         },
                         new
                         {
-                            Id = new Guid("56704da8-07f6-4713-84ec-9f2733379264"),
+                            Id = new Guid("e288a732-6804-401c-a0cf-aacb4c6f2298"),
                             Name = "Monitor Stand"
                         },
                         new
                         {
-                            Id = new Guid("1842cab3-e899-4c42-86cc-9c8eec987e44"),
+                            Id = new Guid("c3465b98-cf93-4619-b1f4-ce359f3e4710"),
                             Name = "Keyboard"
                         },
                         new
                         {
-                            Id = new Guid("20e23719-2111-408d-86d9-53b90becf919"),
+                            Id = new Guid("dc66b28c-5967-47c3-8e8f-b47ed02ca687"),
                             Name = "Mouse"
                         },
                         new
                         {
-                            Id = new Guid("d82299df-adab-4cda-a4de-84d036082424"),
+                            Id = new Guid("6aa4abfe-1de3-4748-a00f-3c6fcf6376cb"),
                             Name = "Headset"
                         },
                         new
                         {
-                            Id = new Guid("1e394849-354a-4102-ae75-cbdf0621bdab"),
+                            Id = new Guid("32aacff9-66e4-482a-9a05-758e9c78adf7"),
                             Name = "Mouse Pad"
                         });
                 });

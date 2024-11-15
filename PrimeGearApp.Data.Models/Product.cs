@@ -13,6 +13,8 @@ namespace PrimeGearApp.Data.Models
 
         public string Name { get; set; } = null!;
 
+        public string Brand { get; set; } = null!;
+
         public string Description { get; set; } = null!;
 
         public DateTime RelaseDate { get; set; }

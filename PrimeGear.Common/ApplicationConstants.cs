@@ -12,7 +12,10 @@ namespace PrimeGearApp.Common
         public static class ProductConstants
         {
             public const int ProductNameMinLength = 3;
-            public const int ProductNameMaxLength = 100;
+            public const int ProductNameMaxLength = 200;
+
+            public const int ProductBrandMinLength = 3;
+            public const int ProductBrandMaxLength = 200;
 
             public const int ProductDescriptionMinLength = 10;
             public const int ProductDescriptionMaxLength = 500;
