@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace PrimeGearApp.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class fixedRelations : Migration
+    public partial class initialdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,15 +53,16 @@ namespace PrimeGearApp.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductType",
+                name: "ProductTypes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, comment: "ProductType Name")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductType", x => x.Id);
+                    table.PrimaryKey("PK_ProductTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -169,14 +172,15 @@ namespace PrimeGearApp.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Product",
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, comment: "Product Name"),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "Product Name"),
+                    Brand = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "Product Brand"),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, comment: "Product Description"),
                     RelaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProductTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductTypeId = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false, comment: "Product Price"),
                     Weigth = table.Column<double>(type: "float", nullable: false, comment: "Product Weight"),
                     WarrantyDurationInMonths = table.Column<int>(type: "int", nullable: false, comment: "Warranty Duration in Months"),
@@ -184,57 +188,93 @@ namespace PrimeGearApp.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Product", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Product_ProductType_ProductTypeId",
+                        name: "FK_Products_ProductTypes_ProductTypeId",
                         column: x => x.ProductTypeId,
-                        principalTable: "ProductType",
+                        principalTable: "ProductTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductTypeProperty",
+                name: "ProductTypeProperties",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductTypeId = table.Column<int>(type: "int", nullable: false),
+                    ProductTypePropertyName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductTypeProperty", x => x.Id);
+                    table.PrimaryKey("PK_ProductTypeProperties", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductTypeProperty_ProductType_ProductTypeId",
+                        name: "FK_ProductTypeProperties_ProductTypes_ProductTypeId",
                         column: x => x.ProductTypeId,
-                        principalTable: "ProductType",
+                        principalTable: "ProductTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductDetail",
+                name: "ProductDetails",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductTypePropertyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductTypePropertyId = table.Column<int>(type: "int", nullable: false),
                     ProductTypePropertyValue = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "ProductDetailValue")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductDetail", x => x.Id);
+                    table.PrimaryKey("PK_ProductDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductDetail_ProductTypeProperty_ProductTypePropertyId",
+                        name: "FK_ProductDetails_ProductTypeProperties_ProductTypePropertyId",
                         column: x => x.ProductTypePropertyId,
-                        principalTable: "ProductTypeProperty",
+                        principalTable: "ProductTypeProperties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ProductDetail_Product_ProductId",
+                        name: "FK_ProductDetails_Products_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "Product",
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "CPU" },
+                    { 2, "GPU" },
+                    { 3, "CPU AIO Cooler" },
+                    { 4, "Headset" },
+                    { 5, "Monitor" },
+                    { 6, "Mouse Pad" },
+                    { 7, "SSD" },
+                    { 8, "Monitor Stand" },
+                    { 9, "Mouse" },
+                    { 10, "PC Case" },
+                    { 11, "HDD" },
+                    { 12, "RAM" },
+                    { 13, "Keyboard" },
+                    { 14, "Power Supply" },
+                    { 15, "CPU Fan Cooler" },
+                    { 16, "Motherboard" },
+                    { 17, "Cooling Fan" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "AvaibleQuantity", "Brand", "Description", "Name", "Price", "ProductTypeId", "RelaseDate", "WarrantyDurationInMonths", "Weigth" },
+                values: new object[,]
+                {
+                    { new Guid("1a5f8173-10dc-492c-8b6a-d8a7d3aa82b2"), 3, "Nvidia", "An older card, still very capable of running modern games on medium setting at 1080p.", "Graphics card - GTX 1050", 84.450000000000003, 2, new DateTime(2015, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 6, 0.5 },
+                    { new Guid("69847f0f-b13c-4127-9f64-46afaa808bc7"), 12, "Nvidia", "This is the newest and fastest GPU on the market!", "Graphics card - RTX 5090", 9999.9899999999998, 2, new DateTime(2025, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 24, 1.1000000000000001 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -277,23 +317,23 @@ namespace PrimeGearApp.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_ProductTypeId",
-                table: "Product",
-                column: "ProductTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductDetail_ProductId",
-                table: "ProductDetail",
+                name: "IX_ProductDetails_ProductId",
+                table: "ProductDetails",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductDetail_ProductTypePropertyId",
-                table: "ProductDetail",
+                name: "IX_ProductDetails_ProductTypePropertyId",
+                table: "ProductDetails",
                 column: "ProductTypePropertyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductTypeProperty_ProductTypeId",
-                table: "ProductTypeProperty",
+                name: "IX_Products_ProductTypeId",
+                table: "Products",
+                column: "ProductTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductTypeProperties_ProductTypeId",
+                table: "ProductTypeProperties",
                 column: "ProductTypeId");
         }
 
@@ -316,7 +356,7 @@ namespace PrimeGearApp.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ProductDetail");
+                name: "ProductDetails");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -325,13 +365,13 @@ namespace PrimeGearApp.Data.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "ProductTypeProperty");
+                name: "ProductTypeProperties");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "Products");
 
             migrationBuilder.DropTable(
-                name: "ProductType");
+                name: "ProductTypes");
         }
     }
 }

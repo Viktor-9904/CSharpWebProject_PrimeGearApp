@@ -2,13 +2,12 @@
 {
     public class ProductDetail
     {
-        public Guid Id { get; set; }
-           = Guid.NewGuid();
+        public int Id { get; set; }
 
         public Guid ProductId { get; set; }
         public Product Product { get; set; } = null!;
 
-        public Guid ProductTypePropertyId { get; set; }
+        public int ProductTypePropertyId { get; set; }
         public ProductTypeProperty ProductTypeProperty { get; set; } = null!;
         public string ProductTypePropertyValue { get; set; } = null!;
     }

@@ -12,8 +12,8 @@ using PrimeGearApp.Web.Data;
 namespace PrimeGearApp.Data.Migrations
 {
     [DbContext(typeof(PrimeGearDbContext))]
-    [Migration("20241115122945_fixedRelations")]
-    partial class fixedRelations
+    [Migration("20241118142420_initialdb")]
+    partial class initialdb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -232,6 +232,12 @@ namespace PrimeGearApp.Data.Migrations
                         .HasColumnType("int")
                         .HasComment("Avaible Quantity");
 
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasComment("Product Brand");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -240,16 +246,16 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
                         .HasComment("Product Name");
 
                     b.Property<double>("Price")
                         .HasColumnType("float")
                         .HasComment("Product Price");
 
-                    b.Property<Guid>("ProductTypeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ProductTypeId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("RelaseDate")
                         .HasColumnType("datetime2");
@@ -266,20 +272,50 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasIndex("ProductTypeId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("69847f0f-b13c-4127-9f64-46afaa808bc7"),
+                            AvaibleQuantity = 12,
+                            Brand = "Nvidia",
+                            Description = "This is the newest and fastest GPU on the market!",
+                            Name = "Graphics card - RTX 5090",
+                            Price = 9999.9899999999998,
+                            ProductTypeId = 2,
+                            RelaseDate = new DateTime(2025, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            WarrantyDurationInMonths = 24,
+                            Weigth = 1.1000000000000001
+                        },
+                        new
+                        {
+                            Id = new Guid("1a5f8173-10dc-492c-8b6a-d8a7d3aa82b2"),
+                            AvaibleQuantity = 3,
+                            Brand = "Nvidia",
+                            Description = "An older card, still very capable of running modern games on medium setting at 1080p.",
+                            Name = "Graphics card - GTX 1050",
+                            Price = 84.450000000000003,
+                            ProductTypeId = 2,
+                            RelaseDate = new DateTime(2015, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            WarrantyDurationInMonths = 6,
+                            Weigth = 0.5
+                        });
                 });
 
             modelBuilder.Entity("PrimeGearApp.Data.Models.ProductDetail", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ProductTypePropertyId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ProductTypePropertyId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ProductTypePropertyValue")
                         .IsRequired()
@@ -293,14 +329,16 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasIndex("ProductTypePropertyId");
 
-                    b.ToTable("ProductDetail");
+                    b.ToTable("ProductDetails");
                 });
 
             modelBuilder.Entity("PrimeGearApp.Data.Models.ProductType", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -310,23 +348,116 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductType");
+                    b.ToTable("ProductTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "CPU"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "GPU"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "Motherboard"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "RAM"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Power Supply"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "HDD"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "SSD"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "Cooling Fan"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "CPU Fan Cooler"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "CPU AIO Cooler"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "PC Case"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Monitor"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Monitor Stand"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Keyboard"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Mouse"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Headset"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Mouse Pad"
+                        });
                 });
 
             modelBuilder.Entity("PrimeGearApp.Data.Models.ProductTypeProperty", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("ProductTypeId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProductTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductTypePropertyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductTypeId");
 
-                    b.ToTable("ProductTypeProperty");
+                    b.ToTable("ProductTypeProperties");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

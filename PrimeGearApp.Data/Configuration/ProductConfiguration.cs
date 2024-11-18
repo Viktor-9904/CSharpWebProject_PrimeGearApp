@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using PrimeGearApp.Data.Models;
 using static PrimeGearApp.Common.ApplicationConstants.ProductConstants;
+using static PrimeGearApp.Common.SeeingConstants.ProductTypeSeeding;
 
 namespace PrimeGearApp.Data.Configuration
 {
@@ -62,40 +63,8 @@ namespace PrimeGearApp.Data.Configuration
                 .HasComment("Avaible Quantity");
             // Availability Range as data annotation
 
-            builder
-                .HasData(this.SeedProducts());
-        }
-        private IEnumerable<Product> SeedProducts()
-        {
-
-            List<Product> products = new List<Product>()
-             {
-                 new()
-                 {
-                     Name = "Graphics card - RTX 5090",
-                     Brand = "Nvidia",
-                     Description = "This is the newest and fastest GPU on the market!",
-                     RelaseDate = new DateTime(2025,03,23),
-                     ProductTypeId = Guid.Parse("5FD048EA-EA0D-4D23-B505-4F2321485398"),
-                     Price = 9999.99,
-                     Weigth = 1.1,
-                     WarrantyDurationInMonths = 24,
-                     AvaibleQuantity = 12
-                 },
-                 new()
-                 {
-                     Name = "Graphics card - GTX 1050",
-                     Brand = "Nvidia",
-                     Description = "An older card, still very capable of running modern games on medium setting at 1080p.",
-                     RelaseDate = new DateTime(2015,03,23),
-                     ProductTypeId = Guid.Parse("5FD048EA-EA0D-4D23-B505-4F2321485398"),
-                     Price = 84.45,
-                     Weigth = 0.5,
-                     WarrantyDurationInMonths = 6,
-                     AvaibleQuantity = 3
-                 }
-             };
-            return products;
+            //builder
+            //    .HasData(this.SeedProducts());
         }
     }
 }

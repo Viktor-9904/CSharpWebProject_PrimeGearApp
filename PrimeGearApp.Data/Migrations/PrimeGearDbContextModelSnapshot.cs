@@ -251,8 +251,8 @@ namespace PrimeGearApp.Data.Migrations
                         .HasColumnType("float")
                         .HasComment("Product Price");
 
-                    b.Property<Guid>("ProductTypeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ProductTypeId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("RelaseDate")
                         .HasColumnType("datetime2");
@@ -269,31 +269,31 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasIndex("ProductTypeId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2af51b77-3b66-408f-a81f-99ef12fd3405"),
+                            Id = new Guid("0152fed0-4aa7-44f8-9ba1-2a6922958600"),
                             AvaibleQuantity = 12,
                             Brand = "Nvidia",
                             Description = "This is the newest and fastest GPU on the market!",
                             Name = "Graphics card - RTX 5090",
                             Price = 9999.9899999999998,
-                            ProductTypeId = new Guid("5fd048ea-ea0d-4d23-b505-4f2321485398"),
+                            ProductTypeId = 2,
                             RelaseDate = new DateTime(2025, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             WarrantyDurationInMonths = 24,
                             Weigth = 1.1000000000000001
                         },
                         new
                         {
-                            Id = new Guid("65dcd090-198f-4d5b-be4c-cb5e865eb859"),
+                            Id = new Guid("4ebb9438-74b6-4dbd-91c6-0cbefb07b63f"),
                             AvaibleQuantity = 3,
                             Brand = "Nvidia",
                             Description = "An older card, still very capable of running modern games on medium setting at 1080p.",
                             Name = "Graphics card - GTX 1050",
                             Price = 84.450000000000003,
-                            ProductTypeId = new Guid("5fd048ea-ea0d-4d23-b505-4f2321485398"),
+                            ProductTypeId = 2,
                             RelaseDate = new DateTime(2015, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             WarrantyDurationInMonths = 6,
                             Weigth = 0.5
@@ -302,15 +302,17 @@ namespace PrimeGearApp.Data.Migrations
 
             modelBuilder.Entity("PrimeGearApp.Data.Models.ProductDetail", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ProductTypePropertyId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ProductTypePropertyId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ProductTypePropertyValue")
                         .IsRequired()
@@ -324,14 +326,16 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasIndex("ProductTypePropertyId");
 
-                    b.ToTable("ProductDetail");
+                    b.ToTable("ProductDetails");
                 });
 
             modelBuilder.Entity("PrimeGearApp.Data.Models.ProductType", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -341,104 +345,106 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductType");
+                    b.ToTable("ProductTypes");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d79d18e0-2e52-4c02-b887-b62ced88d6a2"),
+                            Id = 1,
                             Name = "CPU"
                         },
                         new
                         {
-                            Id = new Guid("744d2812-3c43-49e3-95e2-b7ffb34a735a"),
+                            Id = 2,
                             Name = "GPU"
                         },
                         new
                         {
-                            Id = new Guid("50a68f35-7885-4429-bd3d-83e6d1bc68d0"),
+                            Id = 16,
                             Name = "Motherboard"
                         },
                         new
                         {
-                            Id = new Guid("5e836a37-6940-4e27-a0c0-2084785674a7"),
+                            Id = 12,
                             Name = "RAM"
                         },
                         new
                         {
-                            Id = new Guid("aa76c8fc-b5d0-4c97-b0be-582e947928fb"),
+                            Id = 14,
                             Name = "Power Supply"
                         },
                         new
                         {
-                            Id = new Guid("35aca782-2525-474f-87a6-dd19bdf7884e"),
+                            Id = 11,
                             Name = "HDD"
                         },
                         new
                         {
-                            Id = new Guid("e0959c24-5718-43b8-9bf7-9d3e11937616"),
+                            Id = 7,
                             Name = "SSD"
                         },
                         new
                         {
-                            Id = new Guid("92c32c3f-feef-49e5-a0c1-66bf99df9da7"),
+                            Id = 17,
                             Name = "Cooling Fan"
                         },
                         new
                         {
-                            Id = new Guid("5a0d4c10-0910-4fdb-8cb8-5f40d6293521"),
+                            Id = 15,
                             Name = "CPU Fan Cooler"
                         },
                         new
                         {
-                            Id = new Guid("9c8a7236-ba9a-4079-98fc-05705b6feb27"),
+                            Id = 3,
                             Name = "CPU AIO Cooler"
                         },
                         new
                         {
-                            Id = new Guid("38856859-ba71-4ee2-bb95-0ad949f0c33c"),
+                            Id = 10,
                             Name = "PC Case"
                         },
                         new
                         {
-                            Id = new Guid("0af1fb63-6dcc-494f-b478-7a4e369c292e"),
+                            Id = 5,
                             Name = "Monitor"
                         },
                         new
                         {
-                            Id = new Guid("b5c7eea1-f0a6-4bec-a44f-c6bc7dacdac3"),
+                            Id = 8,
                             Name = "Monitor Stand"
                         },
                         new
                         {
-                            Id = new Guid("fcf0a7bb-77c7-4277-8d40-b317c6e25597"),
+                            Id = 13,
                             Name = "Keyboard"
                         },
                         new
                         {
-                            Id = new Guid("a159195b-c595-46d0-8450-b448804a187b"),
+                            Id = 9,
                             Name = "Mouse"
                         },
                         new
                         {
-                            Id = new Guid("942fe9ec-1d7e-4d56-87ed-f7c92df0e77c"),
+                            Id = 4,
                             Name = "Headset"
                         },
                         new
                         {
-                            Id = new Guid("2d9780b6-2e74-43a7-bbda-36033bd3c94c"),
+                            Id = 6,
                             Name = "Mouse Pad"
                         });
                 });
 
             modelBuilder.Entity("PrimeGearApp.Data.Models.ProductTypeProperty", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("ProductTypeId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProductTypeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ProductTypePropertyName")
                         .IsRequired()
@@ -448,7 +454,105 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasIndex("ProductTypeId");
 
-                    b.ToTable("ProductTypeProperty");
+                    b.ToTable("ProductTypeProperties");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "BoostClockSpeed"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "CudaCores"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "MemorySize"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "MemoryType"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "TDP"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "RecommendedPSUWattage"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "FanCount"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "HasRGB"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "CoolerType"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "Length"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "SlotWidth"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "Weight"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "HDMIOutputPortsCount"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "DisplayPortOutputPortsCount"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "DVIOutputPortsCount"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "VGAOutputPortsCount"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
