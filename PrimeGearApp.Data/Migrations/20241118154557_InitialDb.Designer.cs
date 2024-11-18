@@ -12,8 +12,8 @@ using PrimeGearApp.Web.Data;
 namespace PrimeGearApp.Data.Migrations
 {
     [DbContext(typeof(PrimeGearDbContext))]
-    [Migration("20241118142420_initialdb")]
-    partial class initialdb
+    [Migration("20241118154557_InitialDb")]
+    partial class InitialDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -224,9 +224,11 @@ namespace PrimeGearApp.Data.Migrations
 
             modelBuilder.Entity("PrimeGearApp.Data.Models.Product", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AvaibleQuantity")
                         .HasColumnType("int")
@@ -277,7 +279,7 @@ namespace PrimeGearApp.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("69847f0f-b13c-4127-9f64-46afaa808bc7"),
+                            Id = 1,
                             AvaibleQuantity = 12,
                             Brand = "Nvidia",
                             Description = "This is the newest and fastest GPU on the market!",
@@ -290,7 +292,7 @@ namespace PrimeGearApp.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1a5f8173-10dc-492c-8b6a-d8a7d3aa82b2"),
+                            Id = 2,
                             AvaibleQuantity = 3,
                             Brand = "Nvidia",
                             Description = "An older card, still very capable of running modern games on medium setting at 1080p.",
@@ -311,8 +313,8 @@ namespace PrimeGearApp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProductTypePropertyId")
                         .HasColumnType("int");
@@ -458,6 +460,104 @@ namespace PrimeGearApp.Data.Migrations
                     b.HasIndex("ProductTypeId");
 
                     b.ToTable("ProductTypeProperties");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "BoostClockSpeed"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "CudaCores"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "MemorySize"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "MemoryType"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "TDP"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "RecommendedPSUWattage"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "FanCount"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "HasRGB"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "CoolerType"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "Length"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "SlotWidth"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "Weight"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "HDMIOutputPortsCount"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "DisplayPortOutputPortsCount"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "DVIOutputPortsCount"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            ProductTypeId = 2,
+                            ProductTypePropertyName = "VGAOutputPortsCount"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

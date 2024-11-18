@@ -8,8 +8,7 @@ namespace PrimeGearApp.Data.Models
 {
     public class Product
     {
-        public Guid Id { get; set; }
-            = Guid.NewGuid();
+        public int Id { get; set; }
 
         public string Name { get; set; } = null!;
 

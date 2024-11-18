@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrimeGearApp.Web.Data;
 
@@ -11,9 +12,11 @@ using PrimeGearApp.Web.Data;
 namespace PrimeGearApp.Data.Migrations
 {
     [DbContext(typeof(PrimeGearDbContext))]
-    partial class PrimeGearDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241118175004_fixedProductTypePropertiesIndexSeed")]
+    partial class fixedProductTypePropertiesIndexSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -329,246 +332,6 @@ namespace PrimeGearApp.Data.Migrations
                     b.HasIndex("ProductTypePropertyId");
 
                     b.ToTable("ProductDetails");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ProductId = 1,
-                            ProductTypePropertyId = 1,
-                            ProductTypePropertyValue = "1440"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ProductId = 1,
-                            ProductTypePropertyId = 2,
-                            ProductTypePropertyValue = "1860"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ProductId = 1,
-                            ProductTypePropertyId = 3,
-                            ProductTypePropertyValue = "3584"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ProductId = 1,
-                            ProductTypePropertyId = 4,
-                            ProductTypePropertyValue = "8"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ProductId = 1,
-                            ProductTypePropertyId = 5,
-                            ProductTypePropertyValue = "GDDR6"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            ProductId = 1,
-                            ProductTypePropertyId = 6,
-                            ProductTypePropertyValue = "220"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            ProductId = 1,
-                            ProductTypePropertyId = 7,
-                            ProductTypePropertyValue = "650"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            ProductId = 1,
-                            ProductTypePropertyId = 8,
-                            ProductTypePropertyValue = "3"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            ProductId = 1,
-                            ProductTypePropertyId = 9,
-                            ProductTypePropertyValue = "true"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            ProductId = 1,
-                            ProductTypePropertyId = 10,
-                            ProductTypePropertyValue = "Air"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            ProductId = 1,
-                            ProductTypePropertyId = 11,
-                            ProductTypePropertyValue = "320"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            ProductId = 1,
-                            ProductTypePropertyId = 12,
-                            ProductTypePropertyValue = "2.5"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            ProductId = 1,
-                            ProductTypePropertyId = 13,
-                            ProductTypePropertyValue = "1.5"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            ProductId = 1,
-                            ProductTypePropertyId = 14,
-                            ProductTypePropertyValue = "2"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            ProductId = 1,
-                            ProductTypePropertyId = 15,
-                            ProductTypePropertyValue = "3"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            ProductId = 1,
-                            ProductTypePropertyId = 16,
-                            ProductTypePropertyValue = "1"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            ProductId = 1,
-                            ProductTypePropertyId = 17,
-                            ProductTypePropertyValue = "0"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            ProductId = 2,
-                            ProductTypePropertyId = 1,
-                            ProductTypePropertyValue = "1455"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            ProductId = 2,
-                            ProductTypePropertyId = 2,
-                            ProductTypePropertyValue = "1620"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            ProductId = 2,
-                            ProductTypePropertyId = 3,
-                            ProductTypePropertyValue = "640"
-                        },
-                        new
-                        {
-                            Id = 21,
-                            ProductId = 2,
-                            ProductTypePropertyId = 4,
-                            ProductTypePropertyValue = "4"
-                        },
-                        new
-                        {
-                            Id = 22,
-                            ProductId = 2,
-                            ProductTypePropertyId = 5,
-                            ProductTypePropertyValue = "GDDR5"
-                        },
-                        new
-                        {
-                            Id = 23,
-                            ProductId = 2,
-                            ProductTypePropertyId = 6,
-                            ProductTypePropertyValue = "75"
-                        },
-                        new
-                        {
-                            Id = 24,
-                            ProductId = 2,
-                            ProductTypePropertyId = 7,
-                            ProductTypePropertyValue = "300"
-                        },
-                        new
-                        {
-                            Id = 25,
-                            ProductId = 2,
-                            ProductTypePropertyId = 8,
-                            ProductTypePropertyValue = "1"
-                        },
-                        new
-                        {
-                            Id = 26,
-                            ProductId = 2,
-                            ProductTypePropertyId = 9,
-                            ProductTypePropertyValue = "false"
-                        },
-                        new
-                        {
-                            Id = 27,
-                            ProductId = 2,
-                            ProductTypePropertyId = 10,
-                            ProductTypePropertyValue = "Air"
-                        },
-                        new
-                        {
-                            Id = 28,
-                            ProductId = 2,
-                            ProductTypePropertyId = 11,
-                            ProductTypePropertyValue = "145"
-                        },
-                        new
-                        {
-                            Id = 29,
-                            ProductId = 2,
-                            ProductTypePropertyId = 12,
-                            ProductTypePropertyValue = "2"
-                        },
-                        new
-                        {
-                            Id = 30,
-                            ProductId = 2,
-                            ProductTypePropertyId = 13,
-                            ProductTypePropertyValue = "0.4"
-                        },
-                        new
-                        {
-                            Id = 31,
-                            ProductId = 2,
-                            ProductTypePropertyId = 14,
-                            ProductTypePropertyValue = "1"
-                        },
-                        new
-                        {
-                            Id = 32,
-                            ProductId = 2,
-                            ProductTypePropertyId = 15,
-                            ProductTypePropertyValue = "1"
-                        },
-                        new
-                        {
-                            Id = 33,
-                            ProductId = 2,
-                            ProductTypePropertyId = 16,
-                            ProductTypePropertyValue = "0"
-                        },
-                        new
-                        {
-                            Id = 34,
-                            ProductId = 2,
-                            ProductTypePropertyId = 17,
-                            ProductTypePropertyValue = "0"
-                        });
                 });
 
             modelBuilder.Entity("PrimeGearApp.Data.Models.ProductType", b =>

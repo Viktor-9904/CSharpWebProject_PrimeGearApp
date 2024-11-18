@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PrimeGearApp.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class initialdb : Migration
+    public partial class InitialDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -175,7 +175,8 @@ namespace PrimeGearApp.Data.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "Product Name"),
                     Brand = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "Product Brand"),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, comment: "Product Description"),
@@ -223,7 +224,7 @@ namespace PrimeGearApp.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     ProductTypePropertyId = table.Column<int>(type: "int", nullable: false),
                     ProductTypePropertyValue = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false, comment: "ProductDetailValue")
                 },
@@ -269,12 +270,35 @@ namespace PrimeGearApp.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "ProductTypeProperties",
+                columns: new[] { "Id", "ProductTypeId", "ProductTypePropertyName" },
+                values: new object[,]
+                {
+                    { 1, 2, "BoostClockSpeed" },
+                    { 2, 2, "CudaCores" },
+                    { 3, 2, "MemorySize" },
+                    { 4, 2, "MemoryType" },
+                    { 5, 2, "TDP" },
+                    { 6, 2, "RecommendedPSUWattage" },
+                    { 7, 2, "FanCount" },
+                    { 8, 2, "HasRGB" },
+                    { 9, 2, "CoolerType" },
+                    { 10, 2, "Length" },
+                    { 11, 2, "SlotWidth" },
+                    { 12, 2, "Weight" },
+                    { 13, 2, "HDMIOutputPortsCount" },
+                    { 14, 2, "DisplayPortOutputPortsCount" },
+                    { 15, 2, "DVIOutputPortsCount" },
+                    { 16, 2, "VGAOutputPortsCount" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "AvaibleQuantity", "Brand", "Description", "Name", "Price", "ProductTypeId", "RelaseDate", "WarrantyDurationInMonths", "Weigth" },
                 values: new object[,]
                 {
-                    { new Guid("1a5f8173-10dc-492c-8b6a-d8a7d3aa82b2"), 3, "Nvidia", "An older card, still very capable of running modern games on medium setting at 1080p.", "Graphics card - GTX 1050", 84.450000000000003, 2, new DateTime(2015, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 6, 0.5 },
-                    { new Guid("69847f0f-b13c-4127-9f64-46afaa808bc7"), 12, "Nvidia", "This is the newest and fastest GPU on the market!", "Graphics card - RTX 5090", 9999.9899999999998, 2, new DateTime(2025, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 24, 1.1000000000000001 }
+                    { 1, 12, "Nvidia", "This is the newest and fastest GPU on the market!", "Graphics card - RTX 5090", 9999.9899999999998, 2, new DateTime(2025, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 24, 1.1000000000000001 },
+                    { 2, 3, "Nvidia", "An older card, still very capable of running modern games on medium setting at 1080p.", "Graphics card - GTX 1050", 84.450000000000003, 2, new DateTime(2015, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 6, 0.5 }
                 });
 
             migrationBuilder.CreateIndex(
