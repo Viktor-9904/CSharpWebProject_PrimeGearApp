@@ -146,16 +146,18 @@ namespace PrimeGearApp.Web.Data
              {
                  new()
                  {
-                     Id = 1,
-                     Name = "Graphics card - RTX 5090",
-                     Brand = "Nvidia",
-                     Description = "This is the newest and fastest GPU on the market!",
-                     RelaseDate = new DateTime(2025,03,23),
-                     ProductTypeId = GPUId,
-                     Price = 9999.99,
-                     Weigth = 1.1,
-                     WarrantyDurationInMonths = 24,
-                     AvaibleQuantity = 12
+                    Id = 1,
+                    Name = "Graphics card - RTX 5090",
+                    Brand = "Nvidia",
+                    Description = "This is the newest and fastest GPU on the market!",
+                    RelaseDate = new DateTime(2025,03,23),
+                    ProductTypeId = GPUId,
+                    Price = 9999.99,
+                    Weigth = 1.1,
+                    WarrantyDurationInMonths = 24,
+                    AvaibleQuantity = 12,
+                    ProductImagePath = "/images/GPU/GPU1.jpg"
+
                  },
                  new()
                  {
@@ -168,7 +170,8 @@ namespace PrimeGearApp.Web.Data
                     Price = 84.45,
                     Weigth = 0.5,
                     WarrantyDurationInMonths = 6,
-                    AvaibleQuantity = 3
+                    AvaibleQuantity = 3,
+                    ProductImagePath = "/images/GPU/GPU2.jpg"
                  }
              };
             return products;

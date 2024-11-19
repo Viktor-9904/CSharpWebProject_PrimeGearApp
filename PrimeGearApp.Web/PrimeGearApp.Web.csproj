@@ -27,4 +27,8 @@
     <ProjectReference Include="..\PrimeGearApp.Services.Data\PrimeGearApp.Services.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\GPU\" />
+  </ItemGroup>
+
 </Project>

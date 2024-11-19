@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata;
 using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.ViewModels;
 using PrimeGearApp.Web.ViewModels.EquipmentViewModels;
@@ -21,6 +22,20 @@ namespace PrimeGearApp.Web.Controllers
                 await this.productService.GetAllProductsAsync();
 
             return View(allProducts);
+        }
+        [HttpGet]
+        public async Task<IActionResult> ProductDetail(string? productId)
+        {
+            if (string.IsNullOrEmpty(productId))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            bool isIdValid = int.TryParse(productId, out int id);
+            if (!isIdValid)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
         }
     }
 }
