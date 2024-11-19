@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PrimeGear.Web.ViewModels\PrimeGearApp.Web.ViewModels.csproj" />
+    <ProjectReference Include="..\PrimeGearApp.Data\PrimeGearApp.Data.csproj" />
+  </ItemGroup>
+
 </Project>

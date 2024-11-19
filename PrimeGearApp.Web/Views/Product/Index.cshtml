@@ -1,0 +1,24 @@
+﻿@using PrimeGearApp.Web.ViewModels.EquipmentViewModels;
+@model IEnumerable<ProductIndexViewModel>
+
+@{
+    ViewData["Title"] = "All Products";
+}
+
+<h2>All Products</h2>
+
+<div class="row">
+    @foreach (ProductIndexViewModel product in Model)
+    {
+        <div class="col-md-3"> <!-- add a details button-->
+            <div class="card mb-3 shadow-sm">
+                <img src="@product.ProductImagePath" class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">@product.Brand - @product.Name</h5>
+                    <p class="card-text">Price - @product.ProductPrice</p>
+                    <p class="card-text">Available - @product.AvaibleQuantity</p>
+                </div>
+            </div>
+        </div>
+    }
+</div> 

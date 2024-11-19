@@ -24,6 +24,7 @@
     <ProjectReference Include="..\PrimeGear.Common\PrimeGearApp.Common.csproj" />
     <ProjectReference Include="..\PrimeGear.Web.ViewModels\PrimeGearApp.Web.ViewModels.csproj" />
     <ProjectReference Include="..\PrimeGearApp.Data\PrimeGearApp.Data.csproj" />
+    <ProjectReference Include="..\PrimeGearApp.Services.Data\PrimeGearApp.Services.Data.csproj" />
   </ItemGroup>
 
 </Project>

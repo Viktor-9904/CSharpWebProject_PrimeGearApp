@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using PrimeGearApp.Data.Models;
+using PrimeGearApp.Data.Repository;
+using PrimeGearApp.Data.Repository.Interfaces;
+using PrimeGearApp.Services.Data;
+using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +33,10 @@ builder.Services.ConfigureApplicationCookie(cfg =>
 {
     cfg.LoginPath = "/Identity/Account/Login";
 });
+
+builder.Services.AddScoped<IRepository<Product, int>, BaseRepositery<Product, int>>();
+
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter(); //?
 

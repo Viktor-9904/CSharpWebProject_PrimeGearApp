@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using Microsoft.EntityFrameworkCore;
-
 using static PrimeGearApp.Common.ApplicationConstants.ProductConstants;
 
 namespace PrimeGearApp.Data.Models
@@ -21,6 +19,8 @@ namespace PrimeGearApp.Data.Models
         public int ProductTypeId { get; set; }
 
         public ProductType ProductType { get; set; } = null!;
+
+        public string? ProductImagePath { get; set; }
 
         [Range(ProductMinPrice, ProductMaxPrice)]
         public double Price { get; set; }

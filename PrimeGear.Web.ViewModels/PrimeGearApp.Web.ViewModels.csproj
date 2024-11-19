@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PrimeGear.Common\PrimeGearApp.Common.csproj" />
+  </ItemGroup>
+
 </Project>
