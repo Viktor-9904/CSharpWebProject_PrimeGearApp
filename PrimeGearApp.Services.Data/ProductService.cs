@@ -2,7 +2,7 @@
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Data.Repository.Interfaces;
 using PrimeGearApp.Services.Data.Interfaces;
-using PrimeGearApp.Web.ViewModels.EquipmentViewModels;
+using PrimeGearApp.Web.ViewModels.ProductViewModels;
 using static PrimeGearApp.Common.ApplicationConstants.ProductConstants;
 
 namespace PrimeGearApp.Services.Data
@@ -34,6 +34,27 @@ namespace PrimeGearApp.Services.Data
                 .ToArrayAsync();
 
             return products;
+        }
+
+        public async Task<ProductDetailViewModel> GetProductDetailByIdAsync(int id)
+        {
+            Product? product = await this.productRepository
+                .GetAllAttached()
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            ProductDetailViewModel productDetail = new ProductDetailViewModel()
+            {
+                Id = product!.Id.ToString(),
+                Name = product.Name,
+                Brand = product.Brand,
+                ReleaseDate = product.RelaseDate.ToString(ProductReleaseDateFormat),
+                ProductImagePath = product.ProductImagePath,
+                ProductPrice = product.Price.ToString(),
+                WarrantyInMonths = product.WarrantyDurationInMonths.ToString(),
+                AvaibleQuantity = product.AvaibleQuantity.ToString()
+            };
+
+            return productDetail;
         }
     }
 }

@@ -1,0 +1,19 @@
+﻿@using PrimeGearApp.Web.ViewModels.ProductViewModels;
+@model ProductDetailViewModel;
+
+@{
+    ViewData["Title"] = Model.Name + " Details";
+}
+
+<div class="card mb-5 shadow-sm">
+    <img src=@Model.ProductImagePath class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Brand - @Model.Name</h5>
+        <p class="card-text">Release Date - @Model.ReleaseDate</p>
+        <p class="card-text">Warranty Duration - @Model.WarrantyInMonths Months</p>
+        <p class="card-text">Price - @Model.ProductPrice €</p>
+        <p class="card-text">Available - @Model.AvaibleQuantity</p>
+    </div>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary mt-3">Back to all products</a>

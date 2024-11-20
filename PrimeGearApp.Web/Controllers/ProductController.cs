@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.ViewModels;
-using PrimeGearApp.Web.ViewModels.EquipmentViewModels;
+using PrimeGearApp.Web.ViewModels.ProductViewModels;
 
 namespace PrimeGearApp.Web.Controllers
 {
@@ -24,7 +24,7 @@ namespace PrimeGearApp.Web.Controllers
             return View(allProducts);
         }
         [HttpGet]
-        public async Task<IActionResult> ProductDetail(string? productId)
+        public async Task<IActionResult> Details(string? productId)
         {
             if (string.IsNullOrEmpty(productId))
             {
@@ -36,6 +36,10 @@ namespace PrimeGearApp.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            ProductDetailViewModel viewModel =
+                await this.productService.GetProductDetailByIdAsync(id);
+
+            return View(viewModel);
         }
     }
 }
