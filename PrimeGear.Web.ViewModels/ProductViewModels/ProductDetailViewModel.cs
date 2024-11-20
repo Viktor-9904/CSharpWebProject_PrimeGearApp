@@ -12,5 +12,6 @@
         public string AvaibleQuantity { get; set; } = null!;
 
         public Dictionary<string, string>? ProductProperties { get; set; }
+            = new Dictionary<string, string>();
     }
 }

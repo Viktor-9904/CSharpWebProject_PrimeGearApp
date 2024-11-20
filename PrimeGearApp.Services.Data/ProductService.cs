@@ -10,10 +10,14 @@ namespace PrimeGearApp.Services.Data
     public class ProductService : IProductService
     {
         public IRepository<Product, int> productRepository;
+        public IRepository<ProductDetail, int> productDetailRepository;
 
-        public ProductService(IRepository<Product, int> productRepository)
+        public ProductService(
+            IRepository<Product, int> productRepository,
+            IRepository<ProductDetail, int> productDetailRepository)
         {
             this.productRepository = productRepository;
+            this.productDetailRepository = productDetailRepository;
         }
         public async Task<IEnumerable<ProductIndexViewModel>> GetAllProductsAsync()
         {
@@ -42,7 +46,13 @@ namespace PrimeGearApp.Services.Data
                 .GetAllAttached()
                 .FirstOrDefaultAsync(p => p.Id == id);
 
-            ProductDetailViewModel productDetail = new ProductDetailViewModel()
+            IEnumerable<ProductDetail> productDetails = await this.productDetailRepository
+                .GetAllAttached()
+                .Include(pd => pd.ProductTypeProperty)
+                .Where(p => p.ProductId == id)
+                .ToArrayAsync();
+
+            ProductDetailViewModel DetailsViewModel = new ProductDetailViewModel()
             {
                 Id = product!.Id.ToString(),
                 Name = product.Name,
@@ -53,8 +63,15 @@ namespace PrimeGearApp.Services.Data
                 WarrantyInMonths = product.WarrantyDurationInMonths.ToString(),
                 AvaibleQuantity = product.AvaibleQuantity.ToString()
             };
+            foreach (ProductDetail detail in productDetails)
+            {
+                string detailKey = detail.ProductTypeProperty.ProductTypePropertyName;
+                string detailValue = detail.ProductTypePropertyValue;
 
-            return productDetail;
+                DetailsViewModel.ProductProperties!
+                    .Add(detailKey, detailValue);
+            }
+            return DetailsViewModel;
         }
     }
 }

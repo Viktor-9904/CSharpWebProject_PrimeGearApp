@@ -2,24 +2,46 @@
 @model IEnumerable<ProductIndexViewModel>
 
 @{
-    ViewData["Title"] = "All Products";
+    ViewData["Title"] = "Product List";
 }
 
 <h2>All Products</h2>
 
 <div class="row">
-    @foreach (ProductIndexViewModel product in Model)
+    @foreach (var product in Model)
     {
-        <div class="col-md-3"> <!-- add a details button-->
-            <div class="card mb-3 shadow-sm">
-                <img src= @product.ProductImagePath class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">@product.Brand - @product.Name</h5>
-                    <p class="card-text">Price - @product.ProductPrice €</p>
-                    <p class="card-text">Available - @product.AvaibleQuantity</p>
-                    <a asp-action="Details" asp-route-ProductId="@product.Id" class="btn btn-primary">View Details</a>
+        <div class="col-md-4">
+            <a asp-action="Details" asp-route-productId="@product.Id" class="product-card-link text-decoration-none">
+                <div class="card mb-4 shadow-sm">
+                    @if (!string.IsNullOrEmpty(product.ProductImagePath))
+                    {
+                        <img src="@product.ProductImagePath" class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <img src="/images/noImage.jpg" class="card-img-top" alt="Placeholder Image" style="height: 200px; object-fit: cover;">
+                    }
+
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name (@product.Brand)</h5>
+                        <p class="card-text"><strong>Price:</strong> @product.ProductPrice</p>
+                        <p class="card-text"><strong>Available Quantity:</strong> @product.AvaibleQuantity</p>
+                        <p class="card-text"><strong>Warranty:</strong> @product.WarrantyInMonths months</p>
+                        <p class="card-text"><strong>Release Date:</strong> @product.ReleaseDate</p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     }
-</div> 
+</div>
+
+<style>
+    .product-card-link {
+        color: black;
+    }
+
+    .product-card-link:hover {
+        color: seagreen;
+        text-decoration: none;
+    }
+</style>

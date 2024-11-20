@@ -1,19 +1,64 @@
 ﻿@using PrimeGearApp.Web.ViewModels.ProductViewModels;
-@model ProductDetailViewModel;
+@model ProductDetailViewModel
 
 @{
-    ViewData["Title"] = Model.Name + " Details";
+    ViewData["Title"] = "Product Details";
 }
 
-<div class="card mb-5 shadow-sm">
-    <img src=@Model.ProductImagePath class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;">
+<h2>Product Details</h2>
+
+<div class="card">
+    <div class="card-header">
+        <h3>@Model.Name (@Model.Brand)</h3>
+    </div>
     <div class="card-body">
-        <h5 class="card-title">@Model.Brand - @Model.Name</h5>
-        <p class="card-text">Release Date - @Model.ReleaseDate</p>
-        <p class="card-text">Warranty Duration - @Model.WarrantyInMonths Months</p>
-        <p class="card-text">Price - @Model.ProductPrice €</p>
-        <p class="card-text">Available - @Model.AvaibleQuantity</p>
+        <div class="row">
+            <div class="col-md-4">
+                @if (!string.IsNullOrEmpty(Model.ProductImagePath))
+                {
+                    <img src="@Model.ProductImagePath" class="img-fluid" alt="@Model.Name" style="max-height: 300px; object-fit: cover;">
+                }
+                else
+                {
+                    <p>No image available.</p>
+                }
+            </div>
+            <div class="col-md-8">
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Price:</strong> @Model.ProductPrice €</li>
+                    <li class="list-group-item"><strong>Available Quantity:</strong> @Model.AvaibleQuantity</li>
+                    <li class="list-group-item"><strong>Warranty (Months):</strong> @Model.WarrantyInMonths</li>
+                    <li class="list-group-item"><strong>Release Date:</strong> @Model.ReleaseDate</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <h4>Product Specifications</h4>
+        @if (Model.ProductProperties != null && Model.ProductProperties.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var property in Model.ProductProperties)
+                    {
+                        <tr>
+                            <td>@property.Key</td>
+                            <td>@property.Value</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No specifications available.</p>
+        }
     </div>
 </div>
-
-<a asp-action="Index" class="btn btn-secondary mt-3">Back to all products</a>
