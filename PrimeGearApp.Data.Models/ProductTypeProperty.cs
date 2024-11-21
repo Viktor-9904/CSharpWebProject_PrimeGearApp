@@ -8,6 +8,7 @@
         public ProductType ProductType { get; set; } = null!;
 
         public string ProductTypePropertyName { get; set; } = null!;
+        public string? ProductTypePropertyUnitOfMeasurement { get; set; }
         public  ICollection<ProductDetail> ProductDetails { get; set; } 
             = new List<ProductDetail>();
     }

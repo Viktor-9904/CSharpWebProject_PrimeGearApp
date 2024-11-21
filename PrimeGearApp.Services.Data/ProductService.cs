@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Data.Repository.Interfaces;
 using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.ViewModels.ProductViewModels;
+using System.Runtime.CompilerServices;
 using static PrimeGearApp.Common.ApplicationConstants.ProductConstants;
 
 namespace PrimeGearApp.Services.Data
@@ -65,8 +67,19 @@ namespace PrimeGearApp.Services.Data
             };
             foreach (ProductDetail detail in productDetails)
             {
+
                 string detailKey = detail.ProductTypeProperty.ProductTypePropertyName;
-                string detailValue = detail.ProductTypePropertyValue;
+                string? detailValueUnitOfMeasurement = detail.ProductTypeProperty.ProductTypePropertyUnitOfMeasurement;
+
+                string detailValue = detailValueUnitOfMeasurement.IsNullOrEmpty()
+                    ? detail.ProductTypePropertyValue
+                    : string.Concat(detail.ProductTypePropertyValue, " ", detailValueUnitOfMeasurement);
+
+
+                if (bool.TryParse(detailValue, out bool boolResult))
+                {
+                    detailValue = boolResult ? "Yes" : "No";
+                }
 
                 DetailsViewModel.ProductProperties!
                     .Add(detailKey, detailValue);

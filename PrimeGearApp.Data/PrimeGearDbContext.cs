@@ -153,7 +153,7 @@ namespace PrimeGearApp.Web.Data
                     RelaseDate = new DateTime(2025,03,23),
                     ProductTypeId = GPUId,
                     Price = 9999.99,
-                    Weigth = 1.1,
+                    Weigth = 2186,
                     WarrantyDurationInMonths = 24,
                     AvaibleQuantity = 12,
                     ProductImagePath = "/images/GPU/GPU1.jpg"
@@ -168,7 +168,7 @@ namespace PrimeGearApp.Web.Data
                     RelaseDate = new DateTime(2015,03,23),
                     ProductTypeId = GPUId,
                     Price = 84.45,
-                    Weigth = 0.5,
+                    Weigth = 400,
                     WarrantyDurationInMonths = 6,
                     AvaibleQuantity = 3,
                     ProductImagePath = "/images/GPU/GPU2.jpg"
@@ -186,7 +186,7 @@ namespace PrimeGearApp.Web.Data
                 {
                     Id = i,
                     ProductTypeId = GPUId,
-                    ProductTypePropertyName = GpuProperties[i - 1]
+                    ProductTypePropertyName = GpuProperties[i - 1] //TODO: UpdateSeeder to seed units of measurement.
                 };
                 productTypeProperties.Add(productTypeProperty);
             }
