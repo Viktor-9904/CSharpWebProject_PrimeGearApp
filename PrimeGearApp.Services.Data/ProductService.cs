@@ -5,7 +5,7 @@ using PrimeGearApp.Data.Repository.Interfaces;
 using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.ViewModels.ProductViewModels;
 using System.Runtime.CompilerServices;
-using static PrimeGearApp.Common.ApplicationConstants.ProductConstants;
+using static PrimeGearApp.Common.EntityValidationConstants.ProductConstants;
 
 namespace PrimeGearApp.Services.Data
 {
@@ -59,6 +59,7 @@ namespace PrimeGearApp.Services.Data
                 Id = product!.Id.ToString(),
                 Name = product.Name,
                 Brand = product.Brand,
+                Description = product.Description,
                 ReleaseDate = product.RelaseDate.ToString(ProductReleaseDateFormat),
                 ProductImagePath = product.ProductImagePath,
                 ProductPrice = product.Price.ToString(),

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using PrimeGearApp.Data.Models;
-using static PrimeGearApp.Common.ApplicationConstants.ProductTypeConstants;
+using static PrimeGearApp.Common.EntityValidationConstants.ProductTypeConstants;
 using static PrimeGearApp.Common.SeeingConstants.ProductTypeSeeding;
 
 namespace PrimeGearApp.Data.Configuration

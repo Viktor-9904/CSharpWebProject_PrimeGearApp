@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using PrimeGearApp.Data.Models;
-using static PrimeGearApp.Common.ApplicationConstants.ProductConstants;
+using static PrimeGearApp.Common.EntityValidationConstants.ProductConstants;
 using static PrimeGearApp.Common.SeeingConstants.ProductTypeSeeding;
 
 namespace PrimeGearApp.Data.Configuration
@@ -42,6 +42,7 @@ namespace PrimeGearApp.Data.Configuration
             builder
                 .Property(p => p.Price)
                 .IsRequired()
+                .HasColumnType("decimal(18,2)")
                 .HasComment("Product Price");
             // Price Range as data annotation
 

@@ -41,5 +41,10 @@ namespace PrimeGearApp.Web.Controllers
 
             return View(viewModel);
         }
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            return View();
+        }
     }
 }

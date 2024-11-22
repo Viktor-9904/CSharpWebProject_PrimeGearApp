@@ -6,6 +6,7 @@
 }
 
 <h2>All Products</h2>
+<a asp-action="Create" class="btn btn-success mb-4">Add a new Product</a>
 
 <div class="row">
     @foreach (var product in Model)
@@ -24,10 +25,10 @@
 
                     <div class="card-body">
                         <h5 class="card-title">@product.Name (@product.Brand)</h5>
-                        <p class="card-text"><strong>Price:</strong> @product.ProductPrice</p>
-                        <p class="card-text"><strong>Available Quantity:</strong> @product.AvaibleQuantity</p>
-                        <p class="card-text"><strong>Warranty:</strong> @product.WarrantyInMonths months</p>
+                        <p class="card-text"><strong>Price:</strong> @product.ProductPrice €</p>
                         <p class="card-text"><strong>Release Date:</strong> @product.ReleaseDate</p>
+                        <p class="card-text"><strong>Warranty:</strong> @product.WarrantyInMonths months</p>
+                        <p class="card-text"><strong>Available Quantity:</strong> @product.AvaibleQuantity</p>
                     </div>
                 </div>
             </a>

@@ -152,8 +152,8 @@ namespace PrimeGearApp.Web.Data
                     Description = "This is the newest and fastest GPU on the market!",
                     RelaseDate = new DateTime(2025,03,23),
                     ProductTypeId = GPUId,
-                    Price = 9999.99,
-                    Weigth = 2186,
+                    Price = 9999.99m,
+                    Weigth = 2186d,
                     WarrantyDurationInMonths = 24,
                     AvaibleQuantity = 12,
                     ProductImagePath = "/images/GPU/GPU1.jpg"
@@ -167,8 +167,8 @@ namespace PrimeGearApp.Web.Data
                     Description = "An older card, still very capable of running modern games on medium setting at 1080p.",
                     RelaseDate = new DateTime(2015,03,23),
                     ProductTypeId = GPUId,
-                    Price = 84.45,
-                    Weigth = 400,
+                    Price = 84.45m,
+                    Weigth = 400d,
                     WarrantyDurationInMonths = 6,
                     AvaibleQuantity = 3,
                     ProductImagePath = "/images/GPU/GPU2.jpg"

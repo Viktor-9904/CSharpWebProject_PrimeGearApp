@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using PrimeGearApp.Data.Models;
-using static PrimeGearApp.Common.ApplicationConstants.ProductDetailsConstants;
+using static PrimeGearApp.Common.EntityValidationConstants.ProductDetailsConstants;
 
 namespace PrimeGearApp.Data.Configuration
 {

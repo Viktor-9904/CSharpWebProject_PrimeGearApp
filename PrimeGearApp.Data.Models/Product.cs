@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using static PrimeGearApp.Common.ApplicationConstants.ProductConstants;
+using static PrimeGearApp.Common.EntityValidationConstants.ProductConstants;
 
 namespace PrimeGearApp.Data.Models
 {
@@ -22,8 +22,8 @@ namespace PrimeGearApp.Data.Models
 
         public string? ProductImagePath { get; set; }
 
-        [Range(ProductMinPrice, ProductMaxPrice)]
-        public double Price { get; set; }
+        [Range((double)ProductMinPrice, (double)ProductMaxPrice)]
+        public decimal Price { get; set; }
 
         [Range(ProductMinWeigth,ProductMaxWeigth)]
         public double Weigth { get; set; }

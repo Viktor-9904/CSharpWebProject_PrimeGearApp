@@ -1,0 +1,60 @@
+﻿@using PrimeGearApp.Web.ViewModels.ProductViewModels;
+@model CreateProductViewModel;
+@{
+    ViewData["Title"] = "Create Product";
+}
+
+<h2>Create Product</h2>
+
+<div class="container">
+    <form asp-action="Create" enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            <label asp-for="Name" class="control-label">Name</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Brand" class="control-label">Brand</label>
+            <input asp-for="Brand" class="form-control" />
+            <span asp-validation-for="Brand" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ReleaseDate" class="control-label">Release Date</label>
+            <input asp-for="ReleaseDate" class="form-control" type="date" />
+            <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Price" class="control-label">Price</label>
+            <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="WarrantyDurationInMonths" class="control-label">Warranty (Months)</label>
+            <input asp-for="WarrantyDurationInMonths" class="form-control" />
+            <span asp-validation-for="WarrantyDurationInMonths" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="AvaibleQuantity" class="control-label">Available Quantity</label>
+            <input asp-for="AvaibleQuantity" class="form-control" />
+            <span asp-validation-for="AvaibleQuantity" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ProductImagePath" class="control-label">Product Image</label>
+            <input asp-for="ProductImagePath" class="form-control-file" type="file" />
+            <span asp-validation-for="ProductImagePath" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
