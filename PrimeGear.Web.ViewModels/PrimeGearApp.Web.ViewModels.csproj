@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PrimeGear.Common\PrimeGearApp.Common.csproj" />
+    <ProjectReference Include="..\PrimeGearApp.Data.Models\PrimeGearApp.Data.Models.csproj" />
   </ItemGroup>
 
 </Project>

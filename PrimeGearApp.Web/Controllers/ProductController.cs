@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.ViewModels;
@@ -42,9 +44,35 @@ namespace PrimeGearApp.Web.Controllers
             return View(viewModel);
         }
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create() //TODO: Add option to add a Custom(non-existing) productType 
         {
-            return View();
+            IEnumerable<ProductTypeViewModel> productTypes = await
+                this.productService.GetAllProductTypesAsync();
+
+            CreateProductViewModel viewModel = new CreateProductViewModel()
+            {
+                ProductTypes = productTypes
+            };
+
+            return View(viewModel);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetProductTypeFields(int productTypeId)
+        {
+            IEnumerable<ProductTypePropertyViewModel> productTypeProperties = await productService
+                .GetAllProductTypePropertiesByProductTypeIdAsync(productTypeId);
+
+            var model = new CreateProductViewModel
+            {
+                ProductTypeProperties = productTypeProperties,
+                ProductProperties = productTypeProperties.ToDictionary(
+            prop => prop.Id,
+            prop => string.Empty
+            )};
+
+            // Return the partial view with the dynamic fields
+            return PartialView("_ProductTypeFields", model);
+        }
+
     }
 }

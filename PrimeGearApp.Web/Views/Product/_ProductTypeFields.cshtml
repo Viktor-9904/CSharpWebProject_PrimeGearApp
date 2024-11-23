@@ -1,0 +1,12 @@
+﻿@using PrimeGearApp.Web.ViewModels.ProductViewModels;
+@using PrimeGearApp.Data.Models;
+@model CreateProductViewModel;
+
+@foreach (var property in Model.ProductTypeProperties)
+{
+    <div class="form-group">
+        <label for="ProductProperty_@property.Id">@property.ProductTypePropertyName</label>
+        <input asp-for="ProductProperties[@property.Id]" class="form-control" required />
+        <span asp-validation-for="ProductProperties[@property.Id]" class="text-danger"></span>
+    </div>
+}

@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
+
+using Microsoft.AspNetCore.Http;
+
 using static PrimeGearApp.Common.EntityValidationConstants.ProductConstants;
 using static PrimeGearApp.Common.EntityValidationErrorMessages.ProductErrorMessages;
 
@@ -30,6 +33,16 @@ namespace PrimeGearApp.Web.ViewModels.ProductViewModels
         public int AvaibleQuantity { get; set; }
 
         public IFormFile? ProductImagePath { get; set; }
+        public int SelectedProductTypeId { get; set; } // For dropdown selection
+        public IEnumerable<ProductTypeViewModel> ProductTypes { get; set; } 
+            = new List<ProductTypeViewModel>();
+        public IEnumerable<ProductTypePropertyViewModel> ProductTypeProperties { get; set; } 
+            = new List<ProductTypePropertyViewModel>();
+
+        [Required]
+        public Dictionary<int, string> ProductProperties { get; set; } = new Dictionary<int, string>();
+
+         
 
     }
 }

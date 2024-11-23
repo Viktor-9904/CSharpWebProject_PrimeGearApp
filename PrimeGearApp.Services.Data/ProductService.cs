@@ -1,10 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Data.Repository.Interfaces;
 using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.ViewModels.ProductViewModels;
+using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using System.Web.Mvc;
 using static PrimeGearApp.Common.EntityValidationConstants.ProductConstants;
 
 namespace PrimeGearApp.Services.Data
@@ -13,13 +16,19 @@ namespace PrimeGearApp.Services.Data
     {
         public IRepository<Product, int> productRepository;
         public IRepository<ProductDetail, int> productDetailRepository;
+        public IRepository<ProductType, int> productTypeRepository;
+        public IRepository<ProductTypeProperty, int> productTypePropertyRepository;
 
         public ProductService(
             IRepository<Product, int> productRepository,
-            IRepository<ProductDetail, int> productDetailRepository)
+            IRepository<ProductDetail, int> productDetailRepository,
+            IRepository<ProductType, int> productTypeRepository,
+            IRepository<ProductTypeProperty, int> productTypePropertyRepository)
         {
             this.productRepository = productRepository;
             this.productDetailRepository = productDetailRepository;
+            this.productTypeRepository = productTypeRepository;
+            this.productTypePropertyRepository = productTypePropertyRepository;
         }
         public async Task<IEnumerable<ProductIndexViewModel>> GetAllProductsAsync()
         {
@@ -40,6 +49,46 @@ namespace PrimeGearApp.Services.Data
                 .ToArrayAsync();
 
             return products;
+        }
+
+        public async Task<IEnumerable<ProductTypePropertyViewModel>> GetAllProductTypePropertiesByProductTypeIdAsync(int id)
+        {
+            var productTypeProperties = await this.productTypePropertyRepository
+                .GetAllAttached()
+                .Where(ptp => ptp.ProductTypeId == id)
+                .ToArrayAsync();
+
+            List<ProductTypePropertyViewModel> viewModels = new List<ProductTypePropertyViewModel>();
+
+            for (int i = 0; i < productTypeProperties.Length; i++)
+            {
+                ProductTypePropertyViewModel model = new ProductTypePropertyViewModel()
+                {
+                    Id = productTypeProperties[i].Id,
+                    ProductTypePropertyName = productTypeProperties[i].ProductTypePropertyName,
+                    ProductTypeId = productTypeProperties[i].ProductTypeId,
+                    ProductTypePropertyUnitOfMeasurementName = productTypeProperties[i].ProductTypePropertyUnitOfMeasurement
+                };
+                viewModels.Add(model);
+            }
+
+            return viewModels;
+        }
+
+
+        public async Task<IEnumerable<ProductTypeViewModel>> GetAllProductTypesAsync()
+        {
+            IEnumerable<ProductTypeViewModel> productTypes = await this.productTypeRepository
+                .GetAllAttached()
+                .Select(p => new ProductTypeViewModel()
+                {
+                    Id = p.Id.ToString(),
+                    Name = p.Name
+                })
+                .OrderBy(p => p.Name)
+                .ToArrayAsync();
+
+            return productTypes;
         }
 
         public async Task<ProductDetailViewModel> GetProductDetailByIdAsync(int id)
@@ -87,5 +136,7 @@ namespace PrimeGearApp.Services.Data
             }
             return DetailsViewModel;
         }
+
+
     }
 }

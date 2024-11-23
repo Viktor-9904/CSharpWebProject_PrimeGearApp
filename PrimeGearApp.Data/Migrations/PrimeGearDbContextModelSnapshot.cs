@@ -274,7 +274,7 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasIndex("ProductTypeId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.HasData(
                         new
@@ -333,7 +333,7 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasIndex("ProductTypePropertyId");
 
-                    b.ToTable("ProductDetails");
+                    b.ToTable("ProductDetails", (string)null);
 
                     b.HasData(
                         new
@@ -592,7 +592,7 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductTypes");
+                    b.ToTable("ProductTypes", (string)null);
 
                     b.HasData(
                         new
@@ -704,7 +704,7 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasIndex("ProductTypeId");
 
-                    b.ToTable("ProductTypeProperties");
+                    b.ToTable("ProductTypeProperties", (string)null);
 
                     b.HasData(
                         new

@@ -35,6 +35,7 @@ builder.Services.ConfigureApplicationCookie(cfg =>
 });
 
 builder.Services.AddScoped<IRepository<Product, int>, BaseRepositery<Product, int>>();
+builder.Services.AddScoped<IRepository<ProductType, int>, BaseRepositery<ProductType, int>>();
 builder.Services.AddScoped<IRepository<ProductDetail, int>, BaseRepositery<ProductDetail, int>>();
 builder.Services.AddScoped<IRepository<ProductTypeProperty, int>, BaseRepositery<ProductTypeProperty, int>>();
 

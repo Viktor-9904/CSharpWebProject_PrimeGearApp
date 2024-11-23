@@ -11,5 +11,6 @@
         public string? ProductTypePropertyUnitOfMeasurement { get; set; }
         public  ICollection<ProductDetail> ProductDetails { get; set; } 
             = new List<ProductDetail>();
+        public PropertyType PropertyType { get; set; }
     }
 }
