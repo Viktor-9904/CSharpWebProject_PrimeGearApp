@@ -8,6 +8,5 @@ namespace PrimeGearApp.Web.ViewModels.ProductViewModels
         public int ProductTypeId { get; set; }
         public string ProductTypePropertyName { get; set; } = null!;
         public string? ProductTypePropertyUnitOfMeasurementName { get; set; }
-        public PropertyType PropertyType { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using PrimeGearApp.Data.Models;
 using static PrimeGearApp.Common.SeeingConstants.ProductTypeSeeding;
 using static PrimeGearApp.Common.SeeingConstants.ProductTypeProperties.GPUProperties;
+using System.Net.NetworkInformation;
 
 namespace PrimeGearApp.Web.Data
 {
@@ -44,6 +45,9 @@ namespace PrimeGearApp.Web.Data
 
             modelBuilder.Entity<ProductDetail>()
                 .HasData(SeedProductDetails());
+
+            modelBuilder.Entity<PropertyValueType>()
+                .HasData(SeedPropertyValueTypes());
         }
         private IEnumerable<ProductType> SeedProductTypes()
         {
@@ -186,7 +190,8 @@ namespace PrimeGearApp.Web.Data
                 {
                     Id = i,
                     ProductTypeId = GPUId,
-                    ProductTypePropertyName = GpuProperties[i - 1] //TODO: UpdateSeeder to seed units of measurement.
+                    ProductTypePropertyName = GpuProperties[i - 1], //TODO: UpdateSeeder to seed units of measurement.
+                    ValueTypeId = 1
                 };
                 productTypeProperties.Add(productTypeProperty);
             }
@@ -437,6 +442,33 @@ namespace PrimeGearApp.Web.Data
             };
 
             return productDetails;
+        }
+        private IEnumerable<PropertyValueType> SeedPropertyValueTypes()
+        {
+            IEnumerable<PropertyValueType> types = new List<PropertyValueType>()
+            {
+                new()
+                {
+                    Id = 1,
+                    Name = "TextValue"
+                },
+                new()
+                {
+                    Id = 2,
+                    Name = "IntegerValue"
+                },
+                new()
+                {
+                    Id=3,
+                    Name = "DecimalValue"
+                },
+                new()
+                {
+                    Id = 4,
+                    Name="BooleanValue"
+                }
+            };
+            return types;
         }
     }
 }

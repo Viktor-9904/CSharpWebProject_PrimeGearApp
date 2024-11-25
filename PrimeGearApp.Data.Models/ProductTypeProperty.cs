@@ -9,8 +9,10 @@
 
         public string ProductTypePropertyName { get; set; } = null!;
         public string? ProductTypePropertyUnitOfMeasurement { get; set; }
-        public  ICollection<ProductDetail> ProductDetails { get; set; } 
+        public  ICollection<ProductDetail> ProductDetails { get; set; }
             = new List<ProductDetail>();
-        public PropertyType PropertyType { get; set; }
+        
+        public int ValueTypeId { get; set; }
+        public PropertyValueType ValueType { get; set; } = null!;
     }
 }

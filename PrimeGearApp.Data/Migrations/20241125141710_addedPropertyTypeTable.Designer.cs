@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrimeGearApp.Web.Data;
 
@@ -11,9 +12,11 @@ using PrimeGearApp.Web.Data;
 namespace PrimeGearApp.Data.Migrations
 {
     [DbContext(typeof(PrimeGearDbContext))]
-    partial class PrimeGearDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241125141710_addedPropertyTypeTable")]
+    partial class addedPropertyTypeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -704,14 +707,14 @@ namespace PrimeGearApp.Data.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasComment("Property's unit of measurement");
 
-                    b.Property<int>("ValueTypeId")
+                    b.Property<int>("PropertyValueTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductTypeId");
 
-                    b.HasIndex("ValueTypeId");
+                    b.HasIndex("PropertyValueTypeId");
 
                     b.ToTable("ProductTypeProperties");
 
@@ -721,160 +724,148 @@ namespace PrimeGearApp.Data.Migrations
                             Id = 1,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "CoreClockSpeed",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 2,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "BoostClockSpeed",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 3,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "CudaCores",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 4,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "MemorySize",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 5,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "MemoryType",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 6,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "TDP",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 7,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "RecommendedPSUWattage",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 8,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "FanCount",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 9,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "HasRGB",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 10,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "CoolerType",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 11,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "Length",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 12,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "SlotWidth",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 13,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "Weight",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 14,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "HDMIOutputPortsCount",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 15,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "DisplayPortOutputPortsCount",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 16,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "DVIOutputPortsCount",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         },
                         new
                         {
                             Id = 17,
                             ProductTypeId = 2,
                             ProductTypePropertyName = "VGAOutputPortsCount",
-                            ValueTypeId = 1
+                            PropertyValueTypeId = 0
                         });
                 });
 
-            modelBuilder.Entity("PrimeGearApp.Data.Models.PropertyValueType", b =>
+            modelBuilder.Entity("PrimeGearApp.Data.Models.PropertyType", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<int>("ValueType")
+                        .HasColumnType("int")
+                        .HasComment("Enum with property value type");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.HasKey("ValueType");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasComment("Value name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PropertyValueType");
+                    b.ToTable("PropertyType");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Name = "TextValue"
+                            ValueType = 0
                         },
                         new
                         {
-                            Id = 2,
-                            Name = "IntegerValue"
+                            ValueType = 1
                         },
                         new
                         {
-                            Id = 3,
-                            Name = "DecimalValue"
+                            ValueType = 2
                         },
                         new
                         {
-                            Id = 4,
-                            Name = "BooleanValue"
+                            ValueType = 3
                         });
                 });
 
@@ -967,15 +958,15 @@ namespace PrimeGearApp.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("PrimeGearApp.Data.Models.PropertyValueType", "ValueType")
-                        .WithMany("ProductTypes")
-                        .HasForeignKey("ValueTypeId")
+                    b.HasOne("PrimeGearApp.Data.Models.PropertyType", "PropertyValueType")
+                        .WithMany("ProductTypePropertyTypes")
+                        .HasForeignKey("PropertyValueTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ProductType");
 
-                    b.Navigation("ValueType");
+                    b.Navigation("PropertyValueType");
                 });
 
             modelBuilder.Entity("PrimeGearApp.Data.Models.Product", b =>
@@ -995,9 +986,9 @@ namespace PrimeGearApp.Data.Migrations
                     b.Navigation("ProductDetails");
                 });
 
-            modelBuilder.Entity("PrimeGearApp.Data.Models.PropertyValueType", b =>
+            modelBuilder.Entity("PrimeGearApp.Data.Models.PropertyType", b =>
                 {
-                    b.Navigation("ProductTypes");
+                    b.Navigation("ProductTypePropertyTypes");
                 });
 #pragma warning restore 612, 618
         }

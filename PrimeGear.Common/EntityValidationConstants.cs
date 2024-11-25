@@ -39,10 +39,23 @@ namespace PrimeGearApp.Common
             public const int ProductTypeNameMaxLength = 100;
         }
 
-        public class ProductDetailsConstants
+        public static class ProductDetailsConstants
         {
             public const int ProductTypePropertyValueMinLength = 1;
             public const int ProductTypePropertyValueMaxLength = 200;
+        }
+        public static class ProductTypePropertyConstants
+        {
+            public const int ProductTypePropertyUnitMinLength = 1;
+            public const int ProductTypePropertyUnitMaxLength = 100;
+
+            public const int ProductTypePropertyNameMinLength = 3;
+            public const int ProductTypePropertyNameMaxLength = 200;
+        }
+        public static class PropertyValueTypeConstants
+        {
+            public const int PropertyValueTypeNameMinLength = 3;
+            public const int PropertyValueTypeNameMaxLength = 100;
         }
     }
 }
