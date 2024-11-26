@@ -20,6 +20,11 @@ namespace PrimeGearApp.Web.ViewModels.ProductViewModels
         [MaxLength(ProductBrandMaxLength, ErrorMessage = BrandIsTooLong)]
         public string Brand { get; set; } = null!;
 
+        [Required(ErrorMessage = DescriptionIsRequired)]
+        [MinLength(ProductDescriptionMinLength, ErrorMessage = DescriptionIsTooShort)]
+        [MaxLength(ProductDescriptionMaxLength, ErrorMessage = DescriptionIsTooLong)]
+        public string Description { get; set; } = null!;
+
         [Required(ErrorMessage = ReleaseDateIsRequired)]
         public DateTime ReleaseDate { get; set; }
 
@@ -34,6 +39,10 @@ namespace PrimeGearApp.Web.ViewModels.ProductViewModels
         [Required(ErrorMessage = QuantityIsRequired)]
         [Range(ProductMinAvaibleQuantity, ProductMaxAvaibleQuantity, ErrorMessage = QuantityNotInRange)]
         public int AvaibleQuantity { get; set; }
+
+        [Required(ErrorMessage = WeigthIsRequired)]
+        [Range(ProductMinWeigth, ProductMaxWeigth, ErrorMessage = WeigthNotInRange)]
+        public double Weigth { get; set; }
 
         public IFormFile? ProductImagePath { get; set; }
 

@@ -22,6 +22,12 @@
         </div>
 
         <div class="form-group">
+            <label asp-for="Description" class="control-label">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="4" cols="50"></textarea>
+            <span asp-validation-for="Brand" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
             <label asp-for="ReleaseDate" class="control-label">Release Date</label>
             <input asp-for="ReleaseDate" class="form-control" type="date" value="" />
             <span asp-validation-for="ReleaseDate" class="text-danger"></span>
@@ -35,14 +41,20 @@
 
         <div class="form-group">
             <label asp-for="WarrantyDurationInMonths" class="control-label">Warranty (Months)</label>
-            <input asp-for="WarrantyDurationInMonths" class="form-control" value="@null"/>
+            <input asp-for="WarrantyDurationInMonths" class="form-control" value="@null" min="0" />
             <span asp-validation-for="WarrantyDurationInMonths" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label asp-for="AvaibleQuantity" class="control-label">Available Quantity</label>
-            <input asp-for="AvaibleQuantity" class="form-control" value="@null" />
+            <input asp-for="AvaibleQuantity" class="form-control" value="@null" min="0"/>
             <span asp-validation-for="AvaibleQuantity" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Weigth" class="control-label">Weigth</label>
+            <input asp-for="Weigth" class="form-control" value="@null" type ="number"/>
+            <span asp-validation-for="Weigth" class="text-danger"></span>
         </div>
 
         <br />

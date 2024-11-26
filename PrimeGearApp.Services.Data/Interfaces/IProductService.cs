@@ -9,5 +9,6 @@ namespace PrimeGearApp.Services.Data.Interfaces
         Task<ProductDetailViewModel> GetProductDetailByIdAsync(int id);
         Task<IEnumerable<ProductTypeViewModel>> GetAllProductTypesAsync();
         Task<IEnumerable<ProductTypePropertyViewModel>> GetAllProductTypePropertiesByProductTypeIdAsync(int id);
+        Task<bool> AddProductAsync(CreateProductViewModel viewModel);
     }
 }

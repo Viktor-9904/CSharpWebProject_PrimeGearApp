@@ -17,7 +17,7 @@ namespace PrimeGearApp.Common
             public const int ProductBrandMaxLength = 200;
 
             public const int ProductDescriptionMinLength = 10;
-            public const int ProductDescriptionMaxLength = 500;
+            public const int ProductDescriptionMaxLength = 1000;
 
             public const string ProductReleaseDateFormat = "dd-MM-yyyy";
 

@@ -12,6 +12,10 @@
             public const string BrandIsTooShort = "Brand is too short!";
             public const string BrandIsTooLong = "Brand is too long!";
 
+            public const string DescriptionIsRequired = "Description is required!";
+            public const string DescriptionIsTooShort = "Description is too short!";
+            public const string DescriptionIsTooLong = "Description is too long!";
+
             public const string ReleaseDateIsRequired = "Release date is required!";
 
             public const string PriceIsRequired = "Price is required!";
@@ -28,6 +32,11 @@
             public const string QuantityMin = "Avaible quantity can't be below 0!";
             public const string QuantityMax = "Avaible quantity is too high!";
             public const string QuantityNotInRange = "Quantity not in range!";
+
+            public const string WeigthIsRequired = "Weigth is required!";
+            public const string WeigthMin = "Weigth is too low!";
+            public const string WeigthMax = "Weigth is too high!";
+            public const string WeigthNotInRange = "Weigth not in range!";
 
             public const string ProductTypeSelectionRequired = "Product Type is required!";
         }

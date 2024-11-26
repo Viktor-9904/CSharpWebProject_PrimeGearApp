@@ -56,6 +56,20 @@ namespace PrimeGearApp.Web.Controllers
 
             return View(viewModel);
         }
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateProductViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+            if (!await this.productService.AddProductAsync(viewModel))
+            {
+                return View(viewModel);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
         [HttpGet]
         public async Task<IActionResult> GetProductTypeFields(int productTypeId)
         {
@@ -68,7 +82,8 @@ namespace PrimeGearApp.Web.Controllers
                 ProductProperties = productTypeProperties.ToDictionary(
             prop => prop.Id,
             prop => string.Empty
-            )};
+            )
+            };
 
             // Return the partial view with the dynamic fields
             return PartialView("_ProductTypeFields", model);

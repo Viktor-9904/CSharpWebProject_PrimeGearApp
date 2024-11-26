@@ -18,18 +18,23 @@ namespace PrimeGearApp.Services.Data
         public IRepository<ProductDetail, int> productDetailRepository;
         public IRepository<ProductType, int> productTypeRepository;
         public IRepository<ProductTypeProperty, int> productTypePropertyRepository;
+        public IRepository<PropertyValueType, int> propertyValueTypeRepository;
 
         public ProductService(
             IRepository<Product, int> productRepository,
             IRepository<ProductDetail, int> productDetailRepository,
             IRepository<ProductType, int> productTypeRepository,
-            IRepository<ProductTypeProperty, int> productTypePropertyRepository)
+            IRepository<ProductTypeProperty, int> productTypePropertyRepository,
+            IRepository<PropertyValueType, int> propertyValueTypeRepository)
         {
             this.productRepository = productRepository;
             this.productDetailRepository = productDetailRepository;
             this.productTypeRepository = productTypeRepository;
             this.productTypePropertyRepository = productTypePropertyRepository;
+            this.propertyValueTypeRepository = propertyValueTypeRepository;
         }
+
+
         public async Task<IEnumerable<ProductIndexViewModel>> GetAllProductsAsync()
         {
             IEnumerable<ProductIndexViewModel> products = await this.productRepository
@@ -67,14 +72,14 @@ namespace PrimeGearApp.Services.Data
                     Id = productTypeProperties[i].Id,
                     ProductTypePropertyName = productTypeProperties[i].ProductTypePropertyName,
                     ProductTypeId = productTypeProperties[i].ProductTypeId,
-                    ProductTypePropertyUnitOfMeasurementName = productTypeProperties[i].ProductTypePropertyUnitOfMeasurement
+                    ProductTypePropertyUnitOfMeasurementName = productTypeProperties[i].ProductTypePropertyUnitOfMeasurement,
+                    ValueTypeId = productTypeProperties[i].ValueTypeId,
                 };
                 viewModels.Add(model);
             }
 
             return viewModels;
         }
-
 
         public async Task<IEnumerable<ProductTypeViewModel>> GetAllProductTypesAsync()
         {
@@ -130,6 +135,10 @@ namespace PrimeGearApp.Services.Data
                 {
                     detailValue = boolResult ? "Yes" : "No";
                 }
+                if (int.TryParse(detailValue, out int intResult))
+                {
+                    detailValue = intResult  == 0 ? "None" : intResult.ToString();
+                }
 
                 DetailsViewModel.ProductProperties!
                     .Add(detailKey, detailValue);
@@ -137,6 +146,93 @@ namespace PrimeGearApp.Services.Data
             return DetailsViewModel;
         }
 
+        public async Task<bool> AddProductAsync(CreateProductViewModel viewModel)
+        {
+            //Get all ProductTypeProperties with the same ProductTypeId
+            IEnumerable<ProductTypeProperty> currentProductTypeProperties = await this.productTypePropertyRepository
+                .GetAllAttached()
+                .Where(ptp => ptp.ProductTypeId == viewModel.SelectedProductTypeId)
+                .ToArrayAsync();
 
+            Product productToAdd = new Product()
+            {
+                Name = viewModel.Name,
+                Brand = viewModel.Brand,
+                Description = viewModel.Description,
+                RelaseDate = viewModel.ReleaseDate,
+                ProductTypeId = viewModel.SelectedProductTypeId,
+                Price = viewModel.Price,
+                Weigth = viewModel.Weigth,
+                WarrantyDurationInMonths = viewModel.WarrantyDurationInMonths,
+                AvaibleQuantity = viewModel.AvaibleQuantity,
+                //  ProductImagePath = viewModel.ProductImagePath             //TODO: implement adding an image
+            };
+
+            IEnumerable<PropertyValueType> allPropertyValueTypes = this.propertyValueTypeRepository
+                .GetAll();
+
+            int viewModelProductTypeId = viewModel.SelectedProductTypeId;
+            // Check if each Property has the right value type
+            foreach (ProductTypeProperty property in currentProductTypeProperties)
+            {
+                string propertyValueName = allPropertyValueTypes
+                    .FirstOrDefault(p => p.Id == property.ValueTypeId)!.Name;
+
+                //Get key-value pair with given id by ProductTypeProperties
+                var viewModelProperty = viewModel.ProductProperties
+                    .Where(k => k.Key == property.Id)
+                    .FirstOrDefault();
+
+                if (viewModelProperty.Value.IsNullOrEmpty())
+                {
+                    return false;
+                }
+
+                bool isCurrentPropertyValid = false;
+                //Check if entered values are valid, by trying to parse them
+                switch (propertyValueName)
+                {
+                    case "IntegerValue":
+                        isCurrentPropertyValid = int.TryParse(viewModelProperty.Value, out int intValue);
+                        break;
+                    case "DecimalValue":
+                        isCurrentPropertyValid = decimal.TryParse(viewModelProperty.Value, out decimal decimalValue);
+                        break;
+                    case "BooleanValue":
+                        isCurrentPropertyValid = bool.TryParse(viewModelProperty.Value, out bool boolValue);
+                        break;
+                    case "TextValue":
+                        continue;
+                    default:
+                        return false;
+                }
+                if (!isCurrentPropertyValid)
+                {
+                    return false;
+                }
+            }
+
+            await this.productRepository.AddAsync(productToAdd);
+            await this.productRepository.SaveChangesAsync();
+
+            //Add each ProductTypeProperty as ProductDetail after confirming that each value is valid
+            foreach (ProductTypeProperty property in currentProductTypeProperties)
+            {
+                var viewModelProperty = viewModel.ProductProperties
+                    .Where(k => k.Key == property.Id)
+                    .FirstOrDefault();
+
+                ProductDetail productDetail = new ProductDetail()
+                {
+                    ProductId = productToAdd.Id,
+                    ProductTypePropertyId = viewModelProperty.Key,
+                    ProductTypePropertyValue = viewModelProperty.Value,
+                };
+                await this.productDetailRepository.AddAsync(productDetail);
+            }
+            await this.productDetailRepository.SaveChangesAsync();
+
+            return true;
+        }
     }
 }
