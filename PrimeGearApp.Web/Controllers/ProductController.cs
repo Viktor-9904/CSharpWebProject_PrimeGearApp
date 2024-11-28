@@ -59,7 +59,7 @@ namespace PrimeGearApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateProductViewModel viewModel)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) //TODO: fix displaying the viewmodel after invalid input
             {
                 return View(viewModel);
             }
@@ -71,7 +71,7 @@ namespace PrimeGearApp.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
-        public async Task<IActionResult> GetProductTypeFields(int productTypeId)
+        public async Task<IActionResult> GetProductTypeFields(int productTypeId) // TODO: Change Id to string, and then check if its valid
         {
             IEnumerable<ProductTypePropertyViewModel> productTypeProperties = await productService
                 .GetAllProductTypePropertiesByProductTypeIdAsync(productTypeId);
@@ -87,6 +87,18 @@ namespace PrimeGearApp.Web.Controllers
 
             // Return the partial view with the dynamic fields
             return PartialView("_ProductTypeFields", model);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            Task<EditProductViewModel> viewModel = this.productService.GetEditProductByIdAsync(id);
+
+            if (!ModelState.IsValid) 
+            {
+                return RedirectToAction(nameof(Index));
+            }            
+
+            return View();
         }
 
     }

@@ -172,6 +172,8 @@ namespace PrimeGearApp.Services.Data
                 .GetAll();
 
             int viewModelProductTypeId = viewModel.SelectedProductTypeId;
+            bool viewModelValidResult = true;
+
             // Check if each Property has the right value type
             foreach (ProductTypeProperty property in currentProductTypeProperties)
             {
@@ -182,11 +184,6 @@ namespace PrimeGearApp.Services.Data
                 var viewModelProperty = viewModel.ProductProperties
                     .Where(k => k.Key == property.Id)
                     .FirstOrDefault();
-
-                if (viewModelProperty.Value.IsNullOrEmpty())
-                {
-                    return false;
-                }
 
                 bool isCurrentPropertyValid = false;
                 //Check if entered values are valid, by trying to parse them
@@ -202,14 +199,19 @@ namespace PrimeGearApp.Services.Data
                         isCurrentPropertyValid = bool.TryParse(viewModelProperty.Value, out bool boolValue);
                         break;
                     case "TextValue":
-                        continue;
+                        isCurrentPropertyValid = !viewModelProperty.Value.IsNullOrEmpty();
+                        break;
                     default:
                         return false;
                 }
                 if (!isCurrentPropertyValid)
-                {
-                    return false;
+                {   
+                    viewModelValidResult = false;
                 }
+            }
+            if (!viewModelValidResult)
+            {
+                return false;
             }
 
             await this.productRepository.AddAsync(productToAdd);
@@ -233,6 +235,15 @@ namespace PrimeGearApp.Services.Data
             await this.productDetailRepository.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<EditProductViewModel> GetEditProductByIdAsync(int id)
+        {
+            EditProductViewModel editedViewModel = new EditProductViewModel()
+            {
+
+            };
+            return editedViewModel;
         }
     }
 }

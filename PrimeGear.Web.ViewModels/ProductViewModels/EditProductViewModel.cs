@@ -1,14 +1,11 @@
-﻿using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
-
-using Microsoft.AspNetCore.Http;
-
 using static PrimeGearApp.Common.EntityValidationConstants.ProductConstants;
 using static PrimeGearApp.Common.EntityValidationErrorMessages.ProductErrorMessages;
 
 namespace PrimeGearApp.Web.ViewModels.ProductViewModels
 {
-    public class CreateProductViewModel
+    public class EditProductViewModel
     {
         [Required(ErrorMessage = NameIsRequired)]
         [MinLength(ProductNameMinLength, ErrorMessage = NameIsTooShort)]
@@ -49,14 +46,14 @@ namespace PrimeGearApp.Web.ViewModels.ProductViewModels
         [Required(ErrorMessage = ProductTypeSelectionRequired)]
         public int SelectedProductTypeId { get; set; } // For dropdown selection
 
-        public IEnumerable<ProductTypeViewModel> ProductTypes { get; set; } 
+        public IEnumerable<ProductTypeViewModel> ProductTypes { get; set; }
             = new List<ProductTypeViewModel>();
 
-        public IEnumerable<ProductTypePropertyViewModel> ProductTypeProperties { get; set; } 
+        public IEnumerable<ProductTypePropertyViewModel> ProductTypeProperties { get; set; }
             = new List<ProductTypePropertyViewModel>();
 
         [Required]
         public Dictionary<int, string> ProductProperties { get; set; }
-            = new Dictionary<int, string>();      
+            = new Dictionary<int, string>();
     }
 }
