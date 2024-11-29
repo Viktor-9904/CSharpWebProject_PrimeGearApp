@@ -6,6 +6,7 @@ using PrimeGearApp.Data.Repository.Interfaces;
 using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.ViewModels.ProductViewModels;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Web.Mvc;
 using static PrimeGearApp.Common.EntityValidationConstants.ProductConstants;
@@ -137,7 +138,7 @@ namespace PrimeGearApp.Services.Data
                 }
                 if (int.TryParse(detailValue, out int intResult))
                 {
-                    detailValue = intResult  == 0 ? "None" : intResult.ToString();
+                    detailValue = intResult == 0 ? "None" : intResult.ToString();
                 }
 
                 DetailsViewModel.ProductProperties!
@@ -168,10 +169,9 @@ namespace PrimeGearApp.Services.Data
                 //  ProductImagePath = viewModel.ProductImagePath             //TODO: implement adding an image
             };
 
-            IEnumerable<PropertyValueType> allPropertyValueTypes = this.propertyValueTypeRepository
-                .GetAll();
+            IEnumerable<PropertyValueType> allPropertyValueTypes = await this.propertyValueTypeRepository
+                .GetAllAsync();
 
-            int viewModelProductTypeId = viewModel.SelectedProductTypeId;
             bool viewModelValidResult = true;
 
             // Check if each Property has the right value type
@@ -205,7 +205,7 @@ namespace PrimeGearApp.Services.Data
                         return false;
                 }
                 if (!isCurrentPropertyValid)
-                {   
+                {
                     viewModelValidResult = false;
                 }
             }
@@ -239,11 +239,37 @@ namespace PrimeGearApp.Services.Data
 
         public async Task<EditProductViewModel> GetEditProductByIdAsync(int id)
         {
-            EditProductViewModel editedViewModel = new EditProductViewModel()
-            {
+            Product? product = await this.productRepository
+            .GetAllAttached()
+            .FirstOrDefaultAsync(p => p.Id == id);
 
+            //Get all ProductTypeProperties with the same ProductTypeId
+            IEnumerable<ProductTypeProperty> currentProductTypeProperties = await this.productTypePropertyRepository
+                .GetAllAttached()
+                .Where(ptp => ptp.ProductTypeId == product.ProductTypeId)
+                .ToArrayAsync();
+
+            EditProductViewModel? editViewModel = new EditProductViewModel()
+            {
+                Name = product!.Name,
+                Brand = product.Brand,
+                Description = product.Description,
+                ReleaseDate = product.RelaseDate,
+                Price = product.Price,
+                WarrantyDurationInMonths = product.WarrantyDurationInMonths,
+                AvaibleQuantity = product.AvaibleQuantity,
+                Weigth = product.Weigth,
+                //ProductImagePath = product.ProductImagePath,
+                SelectedProductTypeId = product.ProductTypeId,
             };
-            return editedViewModel;
+
+            foreach (ProductTypeProperty property in currentProductTypeProperties)
+            {
+                editViewModel.ProductProperties.Add(property.Id, property.ProductTypePropertyName); //Load each property field
+
+            }
+
+            return editViewModel;
         }
     }
 }

@@ -29,31 +29,31 @@
 
         <div class="form-group">
             <label asp-for="ReleaseDate" class="control-label">Release Date</label>
-            <input asp-for="ReleaseDate" class="form-control" type="date" value="" />
+            <input asp-for="ReleaseDate" class="form-control" type="date" />
             <span asp-validation-for="ReleaseDate" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label asp-for="Price" class="control-label">Price</label>
-            <input asp-for="Price" class="form-control" value="@null" />
+            <input asp-for="Price" class="form-control" />
             <span asp-validation-for="Price" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label asp-for="WarrantyDurationInMonths" class="control-label">Warranty (Months)</label>
-            <input asp-for="WarrantyDurationInMonths" class="form-control" value="@null" min="0" />
+            <input asp-for="WarrantyDurationInMonths" class="form-control" min="0" />
             <span asp-validation-for="WarrantyDurationInMonths" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label asp-for="AvaibleQuantity" class="control-label">Available Quantity</label>
-            <input asp-for="AvaibleQuantity" class="form-control" value="@null" min="0" />
+            <input asp-for="AvaibleQuantity" class="form-control" min="0" />
             <span asp-validation-for="AvaibleQuantity" class="text-danger"></span>
         </div>
 
         <div class="form-group">
             <label asp-for="Weigth" class="control-label">Weigth</label>
-            <input asp-for="Weigth" class="form-control" value="@null" type="number" />
+            <input asp-for="Weigth" class="form-control" type="number" />
             <span asp-validation-for="Weigth" class="text-danger"></span>
         </div>
 
@@ -93,21 +93,36 @@
             const productTypeDropdown = document.getElementById("ProductTypeDropdown");
             const dynamicFieldsContainer = document.getElementById("dynamicFieldsContainer");
 
+            // Function to fetch and update dynamic fields
+            function updateDynamicFields(selectedProductTypeId) {
+                if (selectedProductTypeId) { // Ensure a valid selection
+                    fetch(`/Product/GetEditProductTypeFields?productTypeId=${selectedProductTypeId}`)
+                        .then(response => response.text())
+                        .then(data => {
+                            dynamicFieldsContainer.innerHTML = data; // Update the container
+                        })
+                        .catch(error => {
+                            console.error('Error fetching dynamic fields:', error);
+                        });
+                } else {
+                    dynamicFieldsContainer.innerHTML = ''; // Clear fields if no valid type is selected
+                }
+            }
+
+            // Load fields on page load or reload if a product type is already selected
+            const initialProductTypeId = productTypeDropdown.value;
+            console.log("Initial Product Type ID: ", initialProductTypeId); // Debug log
+            if (initialProductTypeId) {
+                updateDynamicFields(initialProductTypeId);
+            }
+
             // Trigger an AJAX request to load fields when the product type is selected
             productTypeDropdown.addEventListener("change", function () {
                 const selectedProductTypeId = productTypeDropdown.value;
-
-                // Make AJAX request to fetch the dynamic fields for the selected product type
-                fetch(`/Product/GetProductTypeFields?productTypeId=${selectedProductTypeId}`)
-                    .then(response => response.text())
-                    .then(data => {
-                        // Update the dynamic fields container with the new fields
-                        dynamicFieldsContainer.innerHTML = data;
-                    })
-                    .catch(error => {
-                        console.error('Error fetching dynamic fields:', error);
-                    });
+                console.log("Dropdown Changed: ", selectedProductTypeId); // Debug log
+                updateDynamicFields(selectedProductTypeId);
             });
         });
+
     </script>
 }

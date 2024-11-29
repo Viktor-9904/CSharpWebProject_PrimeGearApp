@@ -55,5 +55,6 @@ namespace PrimeGearApp.Web.ViewModels.ProductViewModels
         [Required]
         public Dictionary<int, string> ProductProperties { get; set; }
             = new Dictionary<int, string>();
+
     }
 }

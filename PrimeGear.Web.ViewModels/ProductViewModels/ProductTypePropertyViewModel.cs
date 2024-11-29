@@ -13,5 +13,6 @@ namespace PrimeGearApp.Web.ViewModels.ProductViewModels
         public string? ProductTypePropertyUnitOfMeasurementName { get; set; }
 
         public int ValueTypeId { get; set; }
+        public string? Value { get; set; } // temp patch
     }
 }

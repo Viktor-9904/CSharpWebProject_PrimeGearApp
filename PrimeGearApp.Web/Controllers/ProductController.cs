@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using PrimeGearApp.Data.Models;
 using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.ViewModels;
 using PrimeGearApp.Web.ViewModels.ProductViewModels;
@@ -59,19 +60,25 @@ namespace PrimeGearApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateProductViewModel viewModel)
         {
+            IEnumerable<ProductTypeViewModel> productTypes = await
+                this.productService.GetAllProductTypesAsync();
+
+
             if (!ModelState.IsValid) //TODO: fix displaying the viewmodel after invalid input
             {
+                viewModel.ProductTypes = productTypes;
                 return View(viewModel);
             }
             if (!await this.productService.AddProductAsync(viewModel))
             {
+                viewModel.ProductTypes = productTypes;
                 return View(viewModel);
             }
 
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
-        public async Task<IActionResult> GetProductTypeFields(int productTypeId) // TODO: Change Id to string, and then check if its valid
+        public async Task<IActionResult> GetCreateProductTypeFields(int productTypeId) // TODO: Change Id to string, and then check if its valid
         {
             IEnumerable<ProductTypePropertyViewModel> productTypeProperties = await productService
                 .GetAllProductTypePropertiesByProductTypeIdAsync(productTypeId);
@@ -86,19 +93,44 @@ namespace PrimeGearApp.Web.Controllers
             };
 
             // Return the partial view with the dynamic fields
-            return PartialView("_ProductTypeFields", model);
+            return PartialView("_CreateProductTypePropertyFields", model);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetEditProductTypeFields(int productTypeId, int productId) // TODO: Change Id to string, and then check if its valid
+        {
+            IEnumerable<ProductTypePropertyViewModel> productTypeProperties = await productService
+                .GetAllProductTypePropertiesByProductTypeIdAsync(productTypeId);
+
+
+
+            var model = new EditProductViewModel
+            {
+                ProductTypeProperties = productTypeProperties,
+                ProductProperties = productTypeProperties.ToDictionary(
+            prop => prop.Id,
+            prop => "my value kys"
+            )
+            };
+
+            // Return the partial view with the dynamic fields
+            return PartialView("_EditProductTypePropertyFields", model);
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            Task<EditProductViewModel> viewModel = this.productService.GetEditProductByIdAsync(id);
+            IEnumerable<ProductTypeViewModel> productTypes = await
+                this.productService.GetAllProductTypesAsync();
 
-            if (!ModelState.IsValid) 
+            EditProductViewModel viewModel = await this.productService.GetEditProductByIdAsync(id);
+
+            viewModel.ProductTypes = productTypes;
+
+            if (!ModelState.IsValid)
             {
                 return RedirectToAction(nameof(Index));
-            }            
+            }
 
-            return View();
+            return View(viewModel);
         }
 
     }

@@ -26,7 +26,7 @@ namespace PrimeGearApp.Web.ViewModels.ProductViewModels
         public string Description { get; set; } = null!;
 
         [Required(ErrorMessage = ReleaseDateIsRequired)]
-        public DateTime ReleaseDate { get; set; }
+        public DateTime ReleaseDate { get; set; } 
 
         [Required(ErrorMessage = PriceIsRequired)]
         [Range((double)ProductMinPrice, (double)ProductMaxPrice, ErrorMessage = PriceNotInRange)] // TODO: Implement custom attribute for too low or too high
