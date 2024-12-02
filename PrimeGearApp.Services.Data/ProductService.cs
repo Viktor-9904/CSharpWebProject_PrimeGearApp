@@ -237,7 +237,7 @@ namespace PrimeGearApp.Services.Data
             return true;
         }
 
-        public async Task<EditProductViewModel> GetEditProductByIdAsync(int id)
+        public async Task<EditProductViewModel> GetEditProductByIdAsync(int id) // TODO: check for null product
         {
             Product? product = await this.productRepository
             .GetAllAttached()
@@ -249,8 +249,22 @@ namespace PrimeGearApp.Services.Data
                 .Where(ptp => ptp.ProductTypeId == product.ProductTypeId)
                 .ToArrayAsync();
 
+            IEnumerable<ProductDetail> productDetails = await this.productDetailRepository
+                .GetAllAttached()
+                .Where(pd => pd.ProductId == id)
+                .ToArrayAsync();
+
+            ProductType? productType = await this.productTypeRepository
+                .GetAllAttached()
+                .FirstOrDefaultAsync(pt => pt.Id == product.ProductTypeId);
+
+
+
             EditProductViewModel? editViewModel = new EditProductViewModel()
             {
+                ProductId = id,
+                ProductTypeId = productType.Id,
+                ProductTypeName = productType.Name,
                 Name = product!.Name,
                 Brand = product.Brand,
                 Description = product.Description,
@@ -261,15 +275,48 @@ namespace PrimeGearApp.Services.Data
                 Weigth = product.Weigth,
                 //ProductImagePath = product.ProductImagePath,
                 SelectedProductTypeId = product.ProductTypeId,
+                DropDownList = await LoadAllProductTypesDropDownList(),
             };
 
-            foreach (ProductTypeProperty property in currentProductTypeProperties)
-            {
-                editViewModel.ProductProperties.Add(property.Id, property.ProductTypePropertyName); //Load each property field
+            List<EditPropertyField> PropertyFields = new List<EditPropertyField>();
 
+            foreach (ProductTypeProperty property in currentProductTypeProperties) //Load each property field
+            {
+                //editViewModel.ProductTypeProperties.Add(property.Id, property.ProductTypePropertyName);
+                EditPropertyField currentField = new EditPropertyField()
+                {
+                    PropertyId = property.Id,
+                    ProductTypePropertyName = property.ProductTypePropertyName,
+                    ProductTypePropertyUnitOfMeasurementName = property.ProductTypePropertyUnitOfMeasurement,
+                    ValueTypeId = property.ValueTypeId,
+                    Value = productDetails
+                        .FirstOrDefault(pd => pd.ProductTypePropertyId == property.Id)
+                        .ProductTypePropertyValue
+                };
+                PropertyFields.Add(currentField);
+            }
+            editViewModel.ProductTypeProperties = PropertyFields;
+            return editViewModel;
+        }
+
+        public async Task<IEnumerable<ProductTypeDropDownListViewModel>> LoadAllProductTypesDropDownList()
+        {
+            IEnumerable<ProductType> productTypes = await this.productTypeRepository
+                 .GetAllAsync();
+
+            HashSet<ProductTypeDropDownListViewModel> dropDownList = new HashSet<ProductTypeDropDownListViewModel>();
+
+            foreach (ProductType type in productTypes)
+            {
+                ProductTypeDropDownListViewModel model = new ProductTypeDropDownListViewModel()
+                {
+                    ProductTypeId = type.Id,
+                    ProductTypeName = type.Name
+                };
+                dropDownList.Add(model);
             }
 
-            return editViewModel;
+            return dropDownList;
         }
     }
 }

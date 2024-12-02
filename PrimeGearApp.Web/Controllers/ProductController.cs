@@ -98,22 +98,10 @@ namespace PrimeGearApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetEditProductTypeFields(int productTypeId, int productId) // TODO: Change Id to string, and then check if its valid
         {
-            IEnumerable<ProductTypePropertyViewModel> productTypeProperties = await productService
-                .GetAllProductTypePropertiesByProductTypeIdAsync(productTypeId);
-
-
-
-            var model = new EditProductViewModel
-            {
-                ProductTypeProperties = productTypeProperties,
-                ProductProperties = productTypeProperties.ToDictionary(
-            prop => prop.Id,
-            prop => "my value kys"
-            )
-            };
+            EditProductViewModel editViewModel = await this.productService.GetEditProductByIdAsync(productId);
 
             // Return the partial view with the dynamic fields
-            return PartialView("_EditProductTypePropertyFields", model);
+            return PartialView("_EditProductTypePropertyFields", editViewModel);
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -123,7 +111,7 @@ namespace PrimeGearApp.Web.Controllers
 
             EditProductViewModel viewModel = await this.productService.GetEditProductByIdAsync(id);
 
-            viewModel.ProductTypes = productTypes;
+            //viewModel.ProductTypes = productTypes;
 
             if (!ModelState.IsValid)
             {

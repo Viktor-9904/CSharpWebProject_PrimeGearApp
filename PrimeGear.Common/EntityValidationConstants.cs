@@ -25,7 +25,7 @@ namespace PrimeGearApp.Common
             public const decimal ProductMaxPrice = 999999999999999999m;
 
             public const double ProductMinWeigth = 0.01d; 
-            public const double ProductMaxWeigth = 999d;
+            public const double ProductMaxWeigth = 999999999d;
 
             public const int ProductMinWarrantyDurationInMonths = 0;
             public const int ProductMaxWarrantyDurationInMonths = 2400;

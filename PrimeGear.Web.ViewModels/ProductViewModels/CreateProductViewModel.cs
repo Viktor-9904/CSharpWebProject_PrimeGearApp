@@ -49,7 +49,7 @@ namespace PrimeGearApp.Web.ViewModels.ProductViewModels
         [Required(ErrorMessage = ProductTypeSelectionRequired)]
         public int SelectedProductTypeId { get; set; } // For dropdown selection
 
-        public IEnumerable<ProductTypeViewModel> ProductTypes { get; set; } 
+        public IEnumerable<ProductTypeViewModel> ProductTypes { get; set; } // items in dropdown list
             = new List<ProductTypeViewModel>();
 
         public IEnumerable<ProductTypePropertyViewModel> ProductTypeProperties { get; set; } 

@@ -8,6 +8,9 @@
 <h2>Edit @Model.Name</h2>
 
 <div class="container">
+
+    <input type="text" id="ProductId" value="@Model.ProductId" />
+
     <form asp-action="Edit" enctype="multipart/form-data" method="post">
         <div class="form-group">
             <label asp-for="Name" class="control-label">Name</label>
@@ -69,7 +72,7 @@
             <label asp-for="SelectedProductTypeId">Product Type</label>
             @Html.DropDownListFor(
                      model => model.SelectedProductTypeId,
-                     new SelectList(Model.ProductTypes, "Id", "Name"),
+                     new SelectList(Model.DropDownList, "ProductTypeId", "ProductTypeName"),
                      "Select a Product Type",
                      new { @class = "form-control", id = "ProductTypeDropdown" })
             <span asp-validation-for="SelectedProductTypeId" class="text-danger"></span>
@@ -93,10 +96,13 @@
             const productTypeDropdown = document.getElementById("ProductTypeDropdown");
             const dynamicFieldsContainer = document.getElementById("dynamicFieldsContainer");
 
+            const productIdField = document.getElementById("ProductId"); 
+            const productId = productIdField ? productIdField.value : null;
+
             // Function to fetch and update dynamic fields
             function updateDynamicFields(selectedProductTypeId) {
                 if (selectedProductTypeId) { // Ensure a valid selection
-                    fetch(`/Product/GetEditProductTypeFields?productTypeId=${selectedProductTypeId}`)
+                    fetch(`/Product/GetEditProductTypeFields?productTypeId=${selectedProductTypeId}&productId=${productId}`)
                         .then(response => response.text())
                         .then(data => {
                             dynamicFieldsContainer.innerHTML = data; // Update the container

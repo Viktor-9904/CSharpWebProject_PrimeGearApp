@@ -5,26 +5,39 @@
 @foreach (var property in Model.ProductTypeProperties)
 {
     <div class="form-group">
-        <label ="ProductProperty_@property.Id">@property.ProductTypePropertyName</label>
+        <label for="ProductProperty_@property.PropertyId">@property.ProductTypePropertyName</label>
+
         @if (property.ValueTypeId == 4)
         {
-            <select name="ProductProperties[@property.Id]" class="form-control" required>
-                <option value="" selected disabled>-</option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
+            <select name="ProductProperties[@property.PropertyId]" class="form-control" required>
+                @if (bool.TryParse(property.Value, out bool boolValue))
+                {
+                    @if (boolValue)
+                    {
+                        <option value="" disabled>-</option>
+                        <option selected value="true">Yes</option>
+                        <option value="false">No</option>
+                    }
+                    else
+                    {
+                        <option value="" disabled>-</option>
+                        <option value="true">Yes</option>
+                        <option selected value="false">No</option>
+                    }
+                }
             </select>
         }
         else if (property.ValueTypeId == 2 || property.ValueTypeId == 3)
         {
-            <input name="ProductProperties[@property.Id]" class="form-control" required min="0"
+            <input name="ProductProperties[@property.PropertyId]" class="form-control" required min="0" value="@property.Value"
                    type="number" />
         }
         else
         {
-            <input name="ProductProperties[@property.Id]" class="form-control" required
+            <input name="ProductProperties[@property.PropertyId]" class="form-control" required value="@property.Value"
                    type="text" />
         }
 
-        <span asp-validation-for="ProductProperties[@property.Id]" class="text-danger"></span>
+        <span asp-validation-for="ProductProperties[@property.PropertyId]" class="text-danger"></span>
     </div>
 }

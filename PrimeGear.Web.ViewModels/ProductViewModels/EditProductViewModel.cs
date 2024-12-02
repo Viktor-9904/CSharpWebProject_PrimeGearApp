@@ -7,6 +7,9 @@ namespace PrimeGearApp.Web.ViewModels.ProductViewModels
 {
     public class EditProductViewModel
     {
+        [Required]
+        public int ProductId { get; set; } 
+
         [Required(ErrorMessage = NameIsRequired)]
         [MinLength(ProductNameMinLength, ErrorMessage = NameIsTooShort)]
         [MaxLength(ProductNameMaxLength, ErrorMessage = NameIsTooLong)]
@@ -46,14 +49,22 @@ namespace PrimeGearApp.Web.ViewModels.ProductViewModels
         [Required(ErrorMessage = ProductTypeSelectionRequired)]
         public int SelectedProductTypeId { get; set; } // For dropdown selection
 
-        public IEnumerable<ProductTypeViewModel> ProductTypes { get; set; }
-            = new List<ProductTypeViewModel>();
-
-        public IEnumerable<ProductTypePropertyViewModel> ProductTypeProperties { get; set; }
-            = new List<ProductTypePropertyViewModel>();
+        [Required]
+        public IEnumerable<ProductTypeDropDownListViewModel> DropDownList { get; set; } 
+            = new List<ProductTypeDropDownListViewModel>();
 
         [Required]
-        public Dictionary<int, string> ProductProperties { get; set; }
+        public IEnumerable<EditPropertyField> ProductTypeProperties { get; set; }
+            = new List<EditPropertyField>();
+
+        [Required]
+        public int ProductTypeId { get; set; }
+
+        [Required]
+        public string ProductTypeName { get; set; } = null!;
+
+        [Required]
+        public Dictionary<int, string> ProductProperties { get; set; } // error messeges on view page dont display without this. temp patch 
             = new Dictionary<int, string>();
 
     }
