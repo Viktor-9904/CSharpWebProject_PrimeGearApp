@@ -40,6 +40,7 @@ namespace PrimeGearApp.Services.Data
         {
             IEnumerable<ProductIndexViewModel> products = await this.productRepository
                 .GetAllAttached()
+                .Where(p => !p.IsDeleted)
                 .Select(p => new ProductIndexViewModel()
                 {
                     Id = p.Id.ToString(),
@@ -346,6 +347,31 @@ namespace PrimeGearApp.Services.Data
             }
 
             return wasProductEdited;
+        }
+
+        public async Task<bool> SoftDeleteProductByIdAsync(int id)
+        {
+            Product productToDelete = await this.productRepository
+                .FirstOrDefaultAsync(p => p.Id.ToString().ToLower() == id.ToString().ToLower());
+
+            if (productToDelete == null)
+            {
+                return false;
+            }
+            productToDelete.IsDeleted = true;
+
+            bool wasProductDeleted = await this.productRepository
+                .UpdateAsync(productToDelete);
+
+            if (wasProductDeleted)
+            {
+                await productRepository.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

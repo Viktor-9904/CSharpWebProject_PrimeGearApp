@@ -1,18 +1,22 @@
-﻿namespace PrimeGearApp.Data.Repository.Interfaces
+﻿using System.Linq.Expressions;
+
+namespace PrimeGearApp.Data.Repository.Interfaces
 {
-    public interface IRepository<TTtype, TId>
+    public interface IRepository<TType, TId>
     {
-        TTtype GetById(TId id);
-        Task<TTtype> GetByIdAsync(TId id);
-        IEnumerable<TTtype> GetAll();
-        Task<IEnumerable<TTtype>> GetAllAsync();
-        IQueryable<TTtype> GetAllAttached();
-        void Add(TTtype item);
-        Task AddAsync(TTtype item);
-        void AddRange(TTtype[] items);
-        Task AddRangeAsync(TTtype[] items);
-        bool Update(TTtype type);
-        Task<bool> UpdateAsync(TTtype type);
+        TType GetById(TId id);
+        Task<TType> GetByIdAsync(TId id);
+        TType FirstOrDefault(Func<TType, bool> predicate);
+        Task<TType> FirstOrDefaultAsync(Expression<Func<TType, bool>> predicate);
+        IEnumerable<TType> GetAll();
+        Task<IEnumerable<TType>> GetAllAsync();
+        IQueryable<TType> GetAllAttached();
+        void Add(TType item);
+        Task AddAsync(TType item);
+        void AddRange(TType[] items);
+        Task AddRangeAsync(TType[] items);
+        bool Update(TType type);
+        Task<bool> UpdateAsync(TType type);
         bool Delete(TId id);
         Task<bool> DeleteAsync(TId id);
         void SaveChanges();

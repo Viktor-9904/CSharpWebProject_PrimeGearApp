@@ -138,6 +138,18 @@ namespace PrimeGearApp.Web.Controllers
 
             return RedirectToAction(nameof(Details), new { productId = viewModel.ProductId });
         }
+        [HttpPost]
+        public async Task<IActionResult> SoftDeleteConfirmed(int productId)
+        {
+            bool result = await this.productService
+                .SoftDeleteProductByIdAsync(productId);
+
+            if (!result)
+            {
+                return RedirectToAction(nameof(Details), new { productId });
+            }
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 }
