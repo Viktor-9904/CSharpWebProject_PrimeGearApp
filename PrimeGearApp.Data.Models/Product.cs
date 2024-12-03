@@ -25,14 +25,16 @@ namespace PrimeGearApp.Data.Models
         [Range((double)ProductMinPrice, (double)ProductMaxPrice)]
         public decimal Price { get; set; }
 
-        [Range(ProductMinWeigth,ProductMaxWeigth)]
+        [Range(ProductMinWeigth, ProductMaxWeigth)]
         public double Weigth { get; set; }
 
-        [Range(ProductMinWarrantyDurationInMonths,ProductMaxWarrantyDurationInMonths)]
+        [Range(ProductMinWarrantyDurationInMonths, ProductMaxWarrantyDurationInMonths)]
         public int WarrantyDurationInMonths { get; set; }
 
-        [Range(ProductMinAvaibleQuantity,ProductMaxAvaibleQuantity)]
+        [Range(ProductMinAvaibleQuantity, ProductMaxAvaibleQuantity)]
         public int AvaibleQuantity { get; set; }
+
+        public bool IsDeleted { get; set; }
 
         public ICollection<ProductDetail> ProductDetails { get; set; }
             = new List<ProductDetail>();

@@ -64,6 +64,11 @@ namespace PrimeGearApp.Data.Configuration
                 .HasComment("Avaible Quantity");
             // Availability Range as data annotation
 
+            builder
+                .Property(p => p.IsDeleted)
+                .IsRequired()
+                .HasDefaultValue(false);
+
             //builder
             //    .HasData(this.SeedProducts());
         }

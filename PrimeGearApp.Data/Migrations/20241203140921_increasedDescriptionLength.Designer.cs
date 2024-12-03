@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrimeGearApp.Web.Data;
 
@@ -11,9 +12,11 @@ using PrimeGearApp.Web.Data;
 namespace PrimeGearApp.Data.Migrations
 {
     [DbContext(typeof(PrimeGearDbContext))]
-    partial class PrimeGearDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241203140921_increasedDescriptionLength")]
+    partial class increasedDescriptionLength
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -243,11 +246,6 @@ namespace PrimeGearApp.Data.Migrations
                         .HasColumnType("nvarchar(1000)")
                         .HasComment("Product Description");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -288,7 +286,6 @@ namespace PrimeGearApp.Data.Migrations
                             AvaibleQuantity = 12,
                             Brand = "Nvidia",
                             Description = "This is the newest and fastest GPU on the market!",
-                            IsDeleted = false,
                             Name = "Graphics card - RTX 5090",
                             Price = 9999.99m,
                             ProductImagePath = "/images/GPU/GPU1.jpg",
@@ -303,7 +300,6 @@ namespace PrimeGearApp.Data.Migrations
                             AvaibleQuantity = 3,
                             Brand = "Nvidia",
                             Description = "An older card, still very capable of running modern games on medium setting at 1080p.",
-                            IsDeleted = false,
                             Name = "Graphics card - GTX 1050",
                             Price = 84.45m,
                             ProductImagePath = "/images/GPU/GPU2.jpg",
