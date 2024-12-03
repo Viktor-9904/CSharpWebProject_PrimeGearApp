@@ -263,8 +263,6 @@ namespace PrimeGearApp.Services.Data
             EditProductViewModel? editViewModel = new EditProductViewModel()
             {
                 ProductId = id,
-                ProductTypeId = productType.Id,
-                ProductTypeName = productType.Name,
                 Name = product!.Name,
                 Brand = product.Brand,
                 Description = product.Description,
@@ -273,7 +271,7 @@ namespace PrimeGearApp.Services.Data
                 WarrantyDurationInMonths = product.WarrantyDurationInMonths,
                 AvaibleQuantity = product.AvaibleQuantity,
                 Weigth = product.Weigth,
-                //ProductImagePath = product.ProductImagePath,
+                ProductImagePath = product.ProductImagePath,
                 SelectedProductTypeId = product.ProductTypeId,
                 DropDownList = await LoadAllProductTypesDropDownList(),
             };
@@ -282,7 +280,6 @@ namespace PrimeGearApp.Services.Data
 
             foreach (ProductTypeProperty property in currentProductTypeProperties) //Load each property field
             {
-                //editViewModel.ProductTypeProperties.Add(property.Id, property.ProductTypePropertyName);
                 EditPropertyField currentField = new EditPropertyField()
                 {
                     PropertyId = property.Id,
@@ -317,6 +314,38 @@ namespace PrimeGearApp.Services.Data
             }
 
             return dropDownList;
+        }
+
+        public async Task<bool> UpdateEditedProductAsync(EditProductViewModel viewModel)
+        {
+            if (viewModel == null)
+            {
+                return false;
+            }
+
+            Product productToEdit = new Product()
+            {
+                Id = viewModel.ProductId,
+                Name = viewModel.Name,
+                Brand = viewModel.Brand,
+                Description = viewModel.Description,
+                RelaseDate = viewModel.ReleaseDate,
+                ProductTypeId = viewModel.SelectedProductTypeId,
+                ProductImagePath = viewModel.ProductImagePath,
+                Price = viewModel.Price,
+                Weigth = viewModel.Weigth,
+                WarrantyDurationInMonths = viewModel.WarrantyDurationInMonths,
+                AvaibleQuantity = viewModel.AvaibleQuantity
+            };
+
+            bool wasProductEdited = await this.productRepository
+                .UpdateAsync(productToEdit);
+            if (wasProductEdited)
+            {
+                await productRepository.SaveChangesAsync();
+            }
+
+            return wasProductEdited;
         }
     }
 }

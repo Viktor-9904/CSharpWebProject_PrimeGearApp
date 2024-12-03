@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using PrimeGearApp.Data.Models;
@@ -78,7 +79,7 @@ namespace PrimeGearApp.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
-        public async Task<IActionResult> GetCreateProductTypeFields(int productTypeId) // TODO: Change Id to string, and then check if its valid
+        public async Task<IActionResult> GetCreateProductTypeFields(int productTypeId)
         {
             IEnumerable<ProductTypePropertyViewModel> productTypeProperties = await productService
                 .GetAllProductTypePropertiesByProductTypeIdAsync(productTypeId);
@@ -96,7 +97,7 @@ namespace PrimeGearApp.Web.Controllers
             return PartialView("_CreateProductTypePropertyFields", model);
         }
         [HttpGet]
-        public async Task<IActionResult> GetEditProductTypeFields(int productTypeId, int productId) // TODO: Change Id to string, and then check if its valid
+        public async Task<IActionResult> GetEditProductTypeFields(int productTypeId, int productId)
         {
             EditProductViewModel editViewModel = await this.productService.GetEditProductByIdAsync(productId);
 
@@ -109,16 +110,33 @@ namespace PrimeGearApp.Web.Controllers
             IEnumerable<ProductTypeViewModel> productTypes = await
                 this.productService.GetAllProductTypesAsync();
 
-            EditProductViewModel viewModel = await this.productService.GetEditProductByIdAsync(id);
-
-            //viewModel.ProductTypes = productTypes;
-
             if (!ModelState.IsValid)
             {
                 return RedirectToAction(nameof(Index));
             }
 
+            EditProductViewModel viewModel = await this.productService.GetEditProductByIdAsync(id);
+
             return View(viewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditProductViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                RedirectToAction(nameof(Index));
+            }
+
+            bool isUpdated = await this.productService
+                .UpdateEditedProductAsync(viewModel);
+
+            if (!isUpdated)
+            {
+                ModelState.AddModelError(string.Empty, "Unexpected error occured while updating the product.");
+                return View(viewModel);
+            }
+
+            return RedirectToAction(nameof(Details), new { productId = viewModel.ProductId });
         }
 
     }

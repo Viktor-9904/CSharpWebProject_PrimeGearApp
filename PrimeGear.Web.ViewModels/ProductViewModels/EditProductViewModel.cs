@@ -44,7 +44,9 @@ namespace PrimeGearApp.Web.ViewModels.ProductViewModels
         [Range(ProductMinWeigth, ProductMaxWeigth, ErrorMessage = WeigthNotInRange)]
         public double Weigth { get; set; }
 
-        public IFormFile? ProductImagePath { get; set; }
+        public string? ProductImagePath { get; set; }
+
+        public IFormFile? Image { get; set; }
 
         [Required(ErrorMessage = ProductTypeSelectionRequired)]
         public int SelectedProductTypeId { get; set; } // For dropdown selection
@@ -57,11 +59,8 @@ namespace PrimeGearApp.Web.ViewModels.ProductViewModels
         public IEnumerable<EditPropertyField> ProductTypeProperties { get; set; }
             = new List<EditPropertyField>();
 
-        [Required]
-        public int ProductTypeId { get; set; }
-
-        [Required]
-        public string ProductTypeName { get; set; } = null!;
+        //[Required]
+        //public string ProductTypeName { get; set; } = null!;
 
         [Required]
         public Dictionary<int, string> ProductProperties { get; set; } // error messeges on view page dont display without this. temp patch 
