@@ -85,25 +85,25 @@ app.Run();
 
 static void IdentityConfiguration(WebApplicationBuilder builder, IdentityOptions cfg)
 {
-    cfg.Password.RequireDigit = builder.Configuration.GetValue<bool>("Idenity:Password:RequireDigits");
+    cfg.Password.RequireDigit = builder.Configuration.GetValue<bool>("Identity:Password:RequireDigits");
 
-    cfg.Password.RequireLowercase = builder.Configuration.GetValue<bool>("Idenity:Password:RequireLowerCase");
+    cfg.Password.RequireLowercase = builder.Configuration.GetValue<bool>("Identity:Password:RequireLowerCase");
 
-    cfg.Password.RequireUppercase = builder.Configuration.GetValue<bool>("Idenity:Password:RequireUpperCase");
+    cfg.Password.RequireUppercase = builder.Configuration.GetValue<bool>("Identity:Password:RequireUpperCase");
 
-    cfg.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Idenity:Password:RequireNonAlphanumerical");
+    cfg.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumerical");
 
-    cfg.Password.RequiredLength = builder.Configuration.GetValue<int>("Idenity:Password:RequiredLength");
+    cfg.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
 
-    cfg.Password.RequiredUniqueChars = builder.Configuration.GetValue<int>("Idenity:Password:RequiredUniqueCharacters");
-
-
-    cfg.SignIn.RequireConfirmedAccount = builder.Configuration.GetValue<bool>("Idenity:SignIn:RequireConfirmedAccound");
-
-    cfg.SignIn.RequireConfirmedEmail = builder.Configuration.GetValue<bool>("Idenity:SignIn:RequireConfirmedEmail");
-
-    cfg.SignIn.RequireConfirmedPhoneNumber = builder.Configuration.GetValue<bool>("Idenity:SignIn:RequireConfirmedPhoneNumber");
+    cfg.Password.RequiredUniqueChars = builder.Configuration.GetValue<int>("Identity:Password:RequiredUniqueCharacters");
 
 
-    cfg.User.RequireUniqueEmail = builder.Configuration.GetValue<bool>("Idenity:User:RequireUniqueEmail");
+    cfg.SignIn.RequireConfirmedAccount = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccound");
+
+    cfg.SignIn.RequireConfirmedEmail = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedEmail");
+
+    cfg.SignIn.RequireConfirmedPhoneNumber = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedPhoneNumber");
+
+
+    cfg.User.RequireUniqueEmail = builder.Configuration.GetValue<bool>("Identity:User:RequireUniqueEmail");
 }

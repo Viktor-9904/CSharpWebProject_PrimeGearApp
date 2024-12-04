@@ -57,5 +57,10 @@ namespace PrimeGearApp.Common
             public const int PropertyValueTypeNameMinLength = 3;
             public const int PropertyValueTypeNameMaxLength = 100;
         }
+        public static class ManagerConstants
+        {
+            public const int ManagerWorkPhoneMinLenght = 5;
+            public const int ManagerWorkPhoneMaxLenght = 15;
+        }
     }
 }
