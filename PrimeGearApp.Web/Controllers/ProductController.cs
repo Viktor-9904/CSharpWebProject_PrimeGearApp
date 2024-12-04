@@ -150,6 +150,5 @@ namespace PrimeGearApp.Web.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
     }
 }
