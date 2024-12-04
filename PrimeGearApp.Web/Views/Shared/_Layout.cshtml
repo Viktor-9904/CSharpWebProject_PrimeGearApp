@@ -1,4 +1,6 @@
 ﻿@using static PrimeGearApp.Common.ApplicationConstants;
+@using PrimeGearApp.Services.Data.Interfaces;
+@inject IManagerService managerService; 
 @{
     int currentYear = DateTime.UtcNow.Year;
     string footerNote = (AppReleaseDateYear == currentYear) ?

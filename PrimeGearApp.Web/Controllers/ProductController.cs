@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +47,7 @@ namespace PrimeGearApp.Web.Controllers
             return View(viewModel);
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Create() //TODO: Add option to add a Custom(non-existing) productType 
         {
             IEnumerable<ProductTypeViewModel> productTypes = await
@@ -59,6 +61,7 @@ namespace PrimeGearApp.Web.Controllers
             return View(viewModel);
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(CreateProductViewModel viewModel)
         {
             IEnumerable<ProductTypeViewModel> productTypes = await
@@ -79,6 +82,7 @@ namespace PrimeGearApp.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetCreateProductTypeFields(int productTypeId)
         {
             IEnumerable<ProductTypePropertyViewModel> productTypeProperties = await productService
@@ -97,6 +101,7 @@ namespace PrimeGearApp.Web.Controllers
             return PartialView("_CreateProductTypePropertyFields", model);
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetEditProductTypeFields(int productTypeId, int productId)
         {
             EditProductViewModel editViewModel = await this.productService.GetEditProductByIdAsync(productId);
@@ -105,6 +110,7 @@ namespace PrimeGearApp.Web.Controllers
             return PartialView("_EditProductTypePropertyFields", editViewModel);
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
             IEnumerable<ProductTypeViewModel> productTypes = await
@@ -120,6 +126,7 @@ namespace PrimeGearApp.Web.Controllers
             return View(viewModel);
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(EditProductViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -139,6 +146,7 @@ namespace PrimeGearApp.Web.Controllers
             return RedirectToAction(nameof(Details), new { productId = viewModel.ProductId });
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> SoftDeleteConfirmed(int productId)
         {
             bool result = await this.productService

@@ -1,4 +1,8 @@
 ﻿@using PrimeGearApp.Web.ViewModels.ProductViewModels;
+@using PrimeGearApp.Services.Data.Interfaces;
+@using PrimeGearApp.Web.Infrastructure.Extensions;
+
+@inject IManagerService managerService;
 @model IEnumerable<ProductIndexViewModel>
 
 @{
@@ -6,7 +10,10 @@
 }
 
 <h2>All Products</h2>
-<a asp-action="Create" class="btn btn-success mb-4">Add a new Product</a>
+@if (await this.managerService.IsUserManagerAsync(this.User.GetUserId()!))
+{
+    <a asp-action="Create" class="btn btn-success mb-4">Add a new Product</a>
+}
 
 <div class="row">
     @foreach (var product in Model)

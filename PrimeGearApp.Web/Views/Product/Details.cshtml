@@ -1,4 +1,8 @@
 ﻿@using PrimeGearApp.Web.ViewModels.ProductViewModels;
+@using PrimeGearApp.Services.Data.Interfaces;
+@using PrimeGearApp.Web.Infrastructure.Extensions;
+
+@inject IManagerService managerService;
 @model ProductDetailViewModel
 
 @{
@@ -11,11 +15,13 @@
     <div class="card-header d-flex align-items-center justify-content-between">
         <h3 class="mb-0">@Model.Name (@Model.Brand)</h3>
 
-        <div class="d-flex align-items-end justify-content-between">
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="product-card-link text-decoration-none btn btn-primary me-2"> Edit </a>
-            <a href="#" onclick="confirmDelete(@Model.Id)" class="product-card-link text-decoration-none btn btn-danger"> Delete </a>
-        </div>
-
+        @if (await this.managerService.IsUserManagerAsync(this.User.GetUserId()!))
+        {
+            <div class="d-flex align-items-end justify-content-between">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="product-card-link text-decoration-none btn btn-primary me-2"> Edit </a>
+                <a href="#" onclick="confirmDelete(@Model.Id)" class="product-card-link text-decoration-none btn btn-danger"> Delete </a>
+            </div>
+        }
 
 
     </div>
