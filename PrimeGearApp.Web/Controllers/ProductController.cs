@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Services.Data.Interfaces;
+using PrimeGearApp.Web.Infrastructure.Extensions;
 using PrimeGearApp.Web.ViewModels;
 using PrimeGearApp.Web.ViewModels.ProductViewModels;
 
@@ -14,10 +15,12 @@ namespace PrimeGearApp.Web.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService productService;
+        private readonly IManagerService serviceManager;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IManagerService managerService)
         {
             this.productService = productService;
+            this.serviceManager = managerService;
         }
 
         [HttpGet]
@@ -50,6 +53,15 @@ namespace PrimeGearApp.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Create() //TODO: Add option to add a Custom(non-existing) productType 
         {
+            string? userId = this.User.GetUserId();
+            bool isUserManager = await this.serviceManager
+                .IsUserManagerAsync(userId);
+
+            if (!isUserManager)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             IEnumerable<ProductTypeViewModel> productTypes = await
                 this.productService.GetAllProductTypesAsync();
 
@@ -64,6 +76,15 @@ namespace PrimeGearApp.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Create(CreateProductViewModel viewModel)
         {
+            string? userId = this.User.GetUserId();
+            bool isUserManager = await this.serviceManager
+                .IsUserManagerAsync(userId);
+
+            if (!isUserManager)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             IEnumerable<ProductTypeViewModel> productTypes = await
                 this.productService.GetAllProductTypesAsync();
 
@@ -85,6 +106,15 @@ namespace PrimeGearApp.Web.Controllers
         [Authorize]
         public async Task<IActionResult> GetCreateProductTypeFields(int productTypeId)
         {
+            string? userId = this.User.GetUserId();
+            bool isUserManager = await this.serviceManager
+                .IsUserManagerAsync(userId);
+
+            if (!isUserManager)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             IEnumerable<ProductTypePropertyViewModel> productTypeProperties = await productService
                 .GetAllProductTypePropertiesByProductTypeIdAsync(productTypeId);
 
@@ -104,6 +134,15 @@ namespace PrimeGearApp.Web.Controllers
         [Authorize]
         public async Task<IActionResult> GetEditProductTypeFields(int productTypeId, int productId)
         {
+            string? userId = this.User.GetUserId();
+            bool isUserManager = await this.serviceManager
+                .IsUserManagerAsync(userId);
+
+            if (!isUserManager)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             EditProductViewModel editViewModel = await this.productService.GetEditProductByIdAsync(productId);
 
             // Return the partial view with the dynamic fields
@@ -113,6 +152,15 @@ namespace PrimeGearApp.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
+            string? userId = this.User.GetUserId();
+            bool isUserManager = await this.serviceManager
+                .IsUserManagerAsync(userId);
+
+            if (!isUserManager)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             IEnumerable<ProductTypeViewModel> productTypes = await
                 this.productService.GetAllProductTypesAsync();
 
@@ -129,6 +177,15 @@ namespace PrimeGearApp.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(EditProductViewModel viewModel)
         {
+            string? userId = this.User.GetUserId();
+            bool isUserManager = await this.serviceManager
+                .IsUserManagerAsync(userId);
+
+            if (!isUserManager)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             if (!ModelState.IsValid)
             {
                 RedirectToAction(nameof(Index));
@@ -149,6 +206,15 @@ namespace PrimeGearApp.Web.Controllers
         [Authorize]
         public async Task<IActionResult> SoftDeleteConfirmed(int productId)
         {
+            string? userId = this.User.GetUserId();
+            bool isUserManager = await this.serviceManager
+                .IsUserManagerAsync(userId);
+
+            if (!isUserManager)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             bool result = await this.productService
                 .SoftDeleteProductByIdAsync(productId);
 

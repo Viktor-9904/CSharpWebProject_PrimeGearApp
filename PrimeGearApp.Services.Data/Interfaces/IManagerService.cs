@@ -2,6 +2,6 @@
 {
     public interface IManagerService
     {
-        Task<bool> IsUserManagerAsync(string userId);
+        Task<bool> IsUserManagerAsync(string? userId);
     }
 }

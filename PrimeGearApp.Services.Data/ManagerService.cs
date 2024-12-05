@@ -12,7 +12,7 @@ namespace PrimeGearApp.Services.Data
         {
             this.managerRepository = managerRepository;
         }
-        public async Task<bool> IsUserManagerAsync(string userId)
+        public async Task<bool> IsUserManagerAsync(string? userId)
         {
             if (String.IsNullOrWhiteSpace(userId))
             {
