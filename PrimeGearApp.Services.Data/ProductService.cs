@@ -244,7 +244,11 @@ namespace PrimeGearApp.Services.Data
             .GetAllAttached()
             .FirstOrDefaultAsync(p => p.Id == id);
 
-            //Get all ProductTypeProperties with the same ProductTypeId
+            if (product == null)
+            {
+                return null;
+            }
+
             IEnumerable<ProductTypeProperty> currentProductTypeProperties = await this.productTypePropertyRepository
                 .GetAllAttached()
                 .Where(ptp => ptp.ProductTypeId == product.ProductTypeId)
@@ -252,7 +256,7 @@ namespace PrimeGearApp.Services.Data
 
             IEnumerable<ProductDetail> productDetails = await this.productDetailRepository
                 .GetAllAttached()
-                .Where(pd => pd.ProductId == id)
+                .Where(pd => pd.ProductId == product.Id)
                 .ToArrayAsync();
 
             ProductType? productType = await this.productTypeRepository
@@ -277,7 +281,7 @@ namespace PrimeGearApp.Services.Data
                 DropDownList = await LoadAllProductTypesDropDownList(),
             };
 
-            List<EditPropertyField> PropertyFields = new List<EditPropertyField>();
+            HashSet<EditPropertyField> PropertyFields = new HashSet<EditPropertyField>();
 
             foreach (ProductTypeProperty property in currentProductTypeProperties) //Load each property field
             {
@@ -288,7 +292,7 @@ namespace PrimeGearApp.Services.Data
                     ProductTypePropertyUnitOfMeasurementName = property.ProductTypePropertyUnitOfMeasurement,
                     ValueTypeId = property.ValueTypeId,
                     Value = productDetails
-                        .FirstOrDefault(pd => pd.ProductTypePropertyId == property.Id)
+                        .FirstOrDefault(pd => pd.ProductTypePropertyId == property.Id)!
                         .ProductTypePropertyValue
                 };
                 PropertyFields.Add(currentField);

@@ -34,10 +34,6 @@ namespace PrimeGearApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(string? productId)
         {
-            if (string.IsNullOrEmpty(productId))
-            {
-                return RedirectToAction(nameof(Index));
-            }
             bool isIdValid = int.TryParse(productId, out int id);
             if (!isIdValid)
             {
@@ -113,7 +109,7 @@ namespace PrimeGearApp.Web.Controllers
         }
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetCreateProductTypeFields(int productTypeId)
+        public async Task<IActionResult> GetCreateProductTypeFields(string? productTypeId)
         {
             string? userId = this.User.GetUserId();
             bool isUserManager = await this.serviceManager
@@ -124,8 +120,14 @@ namespace PrimeGearApp.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            bool isIdValid = int.TryParse(productTypeId, out int productTypeIntId);
+            if (!isIdValid)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             IEnumerable<ProductTypePropertyViewModel> productTypeProperties = await productService
-                .GetAllProductTypePropertiesByProductTypeIdAsync(productTypeId);
+                .GetAllProductTypePropertiesByProductTypeIdAsync(productTypeIntId);
 
             if (productTypeProperties == null)
             {
@@ -146,9 +148,8 @@ namespace PrimeGearApp.Web.Controllers
         }
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetEditProductTypeFields(int productTypeId, int productId)
+        public async Task<IActionResult> GetEditProductTypeFields(string? productId)
         {
-
             string? userId = this.User.GetUserId();
             bool isUserManager = await this.serviceManager
                 .IsUserManagerAsync(userId);
@@ -158,7 +159,13 @@ namespace PrimeGearApp.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            EditProductViewModel editViewModel = await this.productService.GetEditProductByIdAsync(productId);
+            bool isIdValid = int.TryParse(productId, out int productIntId);
+            if (!isIdValid)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            EditProductViewModel editViewModel = await this.productService.GetEditProductByIdAsync(productIntId);
 
             if (editViewModel == null)
             {
@@ -170,18 +177,20 @@ namespace PrimeGearApp.Web.Controllers
         }
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(string? id)
         {
             string? userId = this.User.GetUserId();
             bool isUserManager = await this.serviceManager
                 .IsUserManagerAsync(userId);
 
-            if (!ModelState.IsValid || !isUserManager)
+            bool isIdValid = int.TryParse(id, out int intId);
+
+            if (!ModelState.IsValid || !isUserManager || !isIdValid)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            EditProductViewModel viewModel = await this.productService.GetEditProductByIdAsync(id);
+            EditProductViewModel viewModel = await this.productService.GetEditProductByIdAsync(intId);
 
             if (viewModel == null)
             {
@@ -216,19 +225,21 @@ namespace PrimeGearApp.Web.Controllers
         }
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> SoftDeleteConfirmed(int productId)
+        public async Task<IActionResult> SoftDeleteConfirmed(string productId)
         {
             string? userId = this.User.GetUserId();
             bool isUserManager = await this.serviceManager
                 .IsUserManagerAsync(userId);
 
-            if (!isUserManager)
+            bool isIdValid = int.TryParse(productId, out int productIntId);
+
+            if (!isUserManager || !isIdValid)
             {
                 return RedirectToAction(nameof(Index));
             }
 
             bool isDeleted = await this.productService
-                .SoftDeleteProductByIdAsync(productId);
+                .SoftDeleteProductByIdAsync(productIntId);
 
             if (!isDeleted)
             {
