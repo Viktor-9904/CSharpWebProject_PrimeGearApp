@@ -47,6 +47,11 @@ namespace PrimeGearApp.Web.Controllers
             ProductDetailViewModel viewModel =
                 await this.productService.GetProductDetailByIdAsync(id);
 
+            if (viewModel == null)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
             return View(viewModel);
         }
         [HttpGet]
@@ -88,6 +93,10 @@ namespace PrimeGearApp.Web.Controllers
             IEnumerable<ProductTypeViewModel> productTypes = await
                 this.productService.GetAllProductTypesAsync();
 
+            if (productTypes == null)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
 
             if (!ModelState.IsValid) //TODO: fix displaying the viewmodel after invalid input
             {
@@ -118,7 +127,12 @@ namespace PrimeGearApp.Web.Controllers
             IEnumerable<ProductTypePropertyViewModel> productTypeProperties = await productService
                 .GetAllProductTypePropertiesByProductTypeIdAsync(productTypeId);
 
-            var model = new CreateProductViewModel
+            if (productTypeProperties == null)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            var model = new CreateProductViewModel // TODO: Remove dictionary
             {
                 ProductTypeProperties = productTypeProperties,
                 ProductProperties = productTypeProperties.ToDictionary(
@@ -134,6 +148,7 @@ namespace PrimeGearApp.Web.Controllers
         [Authorize]
         public async Task<IActionResult> GetEditProductTypeFields(int productTypeId, int productId)
         {
+
             string? userId = this.User.GetUserId();
             bool isUserManager = await this.serviceManager
                 .IsUserManagerAsync(userId);
@@ -144,6 +159,11 @@ namespace PrimeGearApp.Web.Controllers
             }
 
             EditProductViewModel editViewModel = await this.productService.GetEditProductByIdAsync(productId);
+
+            if (editViewModel == null)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
 
             // Return the partial view with the dynamic fields
             return PartialView("_EditProductTypePropertyFields", editViewModel);
@@ -156,20 +176,17 @@ namespace PrimeGearApp.Web.Controllers
             bool isUserManager = await this.serviceManager
                 .IsUserManagerAsync(userId);
 
-            if (!isUserManager)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
-            IEnumerable<ProductTypeViewModel> productTypes = await
-                this.productService.GetAllProductTypesAsync();
-
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || !isUserManager)
             {
                 return RedirectToAction(nameof(Index));
             }
 
             EditProductViewModel viewModel = await this.productService.GetEditProductByIdAsync(id);
+
+            if (viewModel == null)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
 
             return View(viewModel);
         }
@@ -181,14 +198,9 @@ namespace PrimeGearApp.Web.Controllers
             bool isUserManager = await this.serviceManager
                 .IsUserManagerAsync(userId);
 
-            if (!isUserManager)
+            if (!ModelState.IsValid || !isUserManager)
             {
                 return RedirectToAction(nameof(Index));
-            }
-
-            if (!ModelState.IsValid)
-            {
-                RedirectToAction(nameof(Index));
             }
 
             bool isUpdated = await this.productService
@@ -215,10 +227,10 @@ namespace PrimeGearApp.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            bool result = await this.productService
+            bool isDeleted = await this.productService
                 .SoftDeleteProductByIdAsync(productId);
 
-            if (!result)
+            if (!isDeleted)
             {
                 return RedirectToAction(nameof(Details), new { productId });
             }
