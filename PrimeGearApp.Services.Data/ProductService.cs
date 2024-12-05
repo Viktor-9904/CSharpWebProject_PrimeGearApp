@@ -104,6 +104,11 @@ namespace PrimeGearApp.Services.Data
                 .GetAllAttached()
                 .FirstOrDefaultAsync(p => p.Id == id);
 
+            if (product == null)
+            {
+                return null;
+            }
+
             IEnumerable<ProductDetail> productDetails = await this.productDetailRepository
                 .GetAllAttached()
                 .Include(pd => pd.ProductTypeProperty)
