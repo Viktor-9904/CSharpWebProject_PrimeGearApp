@@ -21,6 +21,7 @@ namespace PrimeGearApp.Common
 
             public const string ProductReleaseDateFormat = "dd-MM-yyyy";
 
+            public const string ProducPriceColumnType = "decimal(18,2)";
             public const decimal ProductMinPrice = 0.01m;
             public const decimal ProductMaxPrice = 999999999999999999m;
 
@@ -61,6 +62,11 @@ namespace PrimeGearApp.Common
         {
             public const int ManagerWorkPhoneMinLenght = 5;
             public const int ManagerWorkPhoneMaxLenght = 15;
+        }
+        public static class ShoppingCartItem
+        {
+            public const int ShoppingCartItemQuantityMin = 1;
+            public const int ShoppingCartItemQuantityMax = 10000;
         }
     }
 }

@@ -8,5 +8,8 @@
         {
             this.Id = Guid.NewGuid();
         }
+
+        public ShoppingCart ShoppingCart { get; set; } = null!;
+
     }
 }

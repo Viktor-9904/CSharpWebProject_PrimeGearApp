@@ -22,7 +22,6 @@ namespace PrimeGearApp.Data.Models
 
         public string? ProductImagePath { get; set; }
 
-        [Range((double)ProductMinPrice, (double)ProductMaxPrice)]
         public decimal Price { get; set; }
 
         [Range(ProductMinWeigth, ProductMaxWeigth)]
@@ -38,5 +37,8 @@ namespace PrimeGearApp.Data.Models
 
         public ICollection<ProductDetail> ProductDetails { get; set; }
             = new List<ProductDetail>();
+
+        public List<ShoppingCartItem> ShoppingCartItems { get; set; }
+            = new List<ShoppingCartItem>();
     }
 }

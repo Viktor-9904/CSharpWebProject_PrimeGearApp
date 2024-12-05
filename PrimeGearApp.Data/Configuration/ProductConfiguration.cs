@@ -42,9 +42,8 @@ namespace PrimeGearApp.Data.Configuration
             builder
                 .Property(p => p.Price)
                 .IsRequired()
-                .HasColumnType("decimal(18,2)")
+                .HasColumnType(ProducPriceColumnType)
                 .HasComment("Product Price");
-            // Price Range as data annotation
 
             builder
                 .Property(p => p.Weigth)

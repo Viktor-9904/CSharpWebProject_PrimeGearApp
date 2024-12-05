@@ -3,8 +3,9 @@
     public class ShoppingCart
     {
         public int Id { get; set; }
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
         public ApplicationUser User { get; set; } = null!;
-        public decimal TotalAmount { get; set; } 
+        public List<ShoppingCartItem> CartItems { get; set; }
+            = new List<ShoppingCartItem>();
     }
 }

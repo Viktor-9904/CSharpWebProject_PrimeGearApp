@@ -40,5 +40,9 @@
 
             public const string ProductTypeSelectionRequired = "Product Type is required!";
         }
+        public static class ShoppingCartItemErrorMessages
+        {
+            public const string ShoppingCartItemQuantityOutOfRange = "Quantity is out of range!";
+        }
     }
 }
