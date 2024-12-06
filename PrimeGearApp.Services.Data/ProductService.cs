@@ -283,7 +283,7 @@ namespace PrimeGearApp.Services.Data
                 Weigth = product.Weigth,
                 ProductImagePath = product.ProductImagePath,
                 SelectedProductTypeId = product.ProductTypeId,
-                DropDownList = await LoadAllProductTypesDropDownList(),
+                DropDownList = await LoadAllProductTypesDropDownListAsync(),
             };
 
             HashSet<EditPropertyField> PropertyFields = new HashSet<EditPropertyField>();
@@ -306,7 +306,7 @@ namespace PrimeGearApp.Services.Data
             return editViewModel;
         }
 
-        public async Task<IEnumerable<ProductTypeDropDownListViewModel>> LoadAllProductTypesDropDownList()
+        public async Task<IEnumerable<ProductTypeDropDownListViewModel>> LoadAllProductTypesDropDownListAsync()
         {
             IEnumerable<ProductType> productTypes = await this.productTypeRepository
                  .GetAllAsync();

@@ -218,6 +218,8 @@ namespace PrimeGearApp.Web.Controllers
             if (!isUpdated)  //TODO: fix displaying the viewmodel after invalid input
             {
                 ModelState.AddModelError(string.Empty, "Unexpected error occured while updating the product.");
+
+                viewModel.DropDownList = await this.productService.LoadAllProductTypesDropDownListAsync();
                 return View(viewModel);
             }
 
