@@ -1,4 +1,6 @@
 ﻿@using PrimeGearApp.Web.ViewModels.ProductViewModels
+@using Newtonsoft.Json;
+
 @model EditProductViewModel
 
 @{
@@ -10,6 +12,11 @@
 <div class="container">
 
     <form asp-action="Edit" enctype="multipart/form-data" method="post">
+
+        @{
+            var serializedProperties = JsonConvert.SerializeObject(Model.ProductTypeProperties);
+        }
+        <input type="hidden" id="ProductTypePropertiesJson" name="ProductTypePropertiesJson" value="@serializedProperties" />
 
         <div class ="form-group">
             <input asp-for="ProductId" type="hidden" id="ProductId" value="@Model.ProductId" />

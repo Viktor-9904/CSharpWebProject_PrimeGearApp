@@ -41,12 +41,24 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
                         </li>
                     </ul>
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <a class="navbar-brand" asp-area="" asp-controller="Orders" asp-action="Index"> <img src="/images/common/ordersIcon.png" alt="My Orders" class="img-fluid" style="width: 30px; height: 30px;" /></a>
-                        <a class="navbar-brand" asp-area="" asp-controller="Cart" asp-action="Index"> <img src="/images/common/ShoppingCartIcon.png" alt="My Cart" class="img-fluid" style="width: 25px; height: 25px;" /></a>
-                    }
-                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav ms-auto">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Orders" asp-action="Index">
+                                    <img src="/images/common/ordersIcon.png" alt="My Orders" class="img-fluid" style="width: 30px; height: 30px;" />
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Cart" asp-action="Index">
+                                    <img src="/images/common/ShoppingCartIcon.png" alt="My Cart" class="img-fluid" style="width: 25px; height: 25px;" />
+                                </a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <partial name="_LoginPartial" />
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>

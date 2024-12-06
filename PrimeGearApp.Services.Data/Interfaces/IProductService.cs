@@ -11,7 +11,7 @@ namespace PrimeGearApp.Services.Data.Interfaces
         Task<IEnumerable<ProductTypePropertyViewModel>> GetAllProductTypePropertiesByProductTypeIdAsync(int id);
         Task<bool> AddProductAsync(CreateProductViewModel viewModel);
         Task<EditProductViewModel> GetEditProductByIdAsync(int id);
-        Task<bool> UpdateEditedProductAsync(EditProductViewModel viewModel);
+        Task<bool> UpdateEditedProductAsync(EditProductViewModel viewModel, string ProductTypePropertiesJson);
         Task<IEnumerable<ProductTypeDropDownListViewModel>> LoadAllProductTypesDropDownList();
         Task<bool> SoftDeleteProductByIdAsync(int id);
     }

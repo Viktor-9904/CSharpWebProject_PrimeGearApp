@@ -201,7 +201,7 @@ namespace PrimeGearApp.Web.Controllers
         }
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(EditProductViewModel viewModel)
+        public async Task<IActionResult> Edit(EditProductViewModel viewModel, string ProductTypePropertiesJson)
         {
             string? userId = this.User.GetUserId();
             bool isUserManager = await this.serviceManager
@@ -213,9 +213,9 @@ namespace PrimeGearApp.Web.Controllers
             }
 
             bool isUpdated = await this.productService
-                .UpdateEditedProductAsync(viewModel);
+                .UpdateEditedProductAsync(viewModel, ProductTypePropertiesJson);
 
-            if (!isUpdated)
+            if (!isUpdated)  //TODO: fix displaying the viewmodel after invalid input
             {
                 ModelState.AddModelError(string.Empty, "Unexpected error occured while updating the product.");
                 return View(viewModel);

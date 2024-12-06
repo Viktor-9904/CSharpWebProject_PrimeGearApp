@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Web.Helpers;
+
+using Newtonsoft.Json;
+
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Data.Repository.Interfaces;
 using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.ViewModels.ProductViewModels;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Web.Mvc;
 using static PrimeGearApp.Common.EntityValidationConstants.ProductConstants;
+using static PrimeGearApp.Common.SeeingConstants;
 
 namespace PrimeGearApp.Services.Data
 {
@@ -243,7 +243,7 @@ namespace PrimeGearApp.Services.Data
             return true;
         }
 
-        public async Task<EditProductViewModel> GetEditProductByIdAsync(int id) // TODO: check for null product
+        public async Task<EditProductViewModel> GetEditProductByIdAsync(int id)
         {
             Product? product = await this.productRepository
             .GetAllAttached()
@@ -292,7 +292,7 @@ namespace PrimeGearApp.Services.Data
             {
                 EditPropertyField currentField = new EditPropertyField()
                 {
-                    PropertyId = property.Id,
+                    ProductTypePropertyId = property.Id,
                     ProductTypePropertyName = property.ProductTypePropertyName,
                     ProductTypePropertyUnitOfMeasurementName = property.ProductTypePropertyUnitOfMeasurement,
                     ValueTypeId = property.ValueTypeId,
@@ -326,14 +326,16 @@ namespace PrimeGearApp.Services.Data
             return dropDownList;
         }
 
-        public async Task<bool> UpdateEditedProductAsync(EditProductViewModel viewModel)
+        public async Task<bool> UpdateEditedProductAsync(EditProductViewModel viewModel, string ProductTypePropertiesJson)
         {
-            if (viewModel == null)
+            if (viewModel == null || string.IsNullOrEmpty(ProductTypePropertiesJson))
             {
                 return false;
             }
 
-            Product productToEdit = new Product()
+            IEnumerable<EditPropertyField> productPropertiesOriginalData = JsonConvert.DeserializeObject<IEnumerable<EditPropertyField>>(ProductTypePropertiesJson)!;
+
+            Product productToEdit = new Product() // Load Product
             {
                 Id = viewModel.ProductId,
                 Name = viewModel.Name,
@@ -347,12 +349,83 @@ namespace PrimeGearApp.Services.Data
                 WarrantyDurationInMonths = viewModel.WarrantyDurationInMonths,
                 AvaibleQuantity = viewModel.AvaibleQuantity
             };
+            IEnumerable<PropertyValueType> allPropertyValueTypes = await this.propertyValueTypeRepository
+                .GetAllAsync();
+            if (allPropertyValueTypes == null)
+            {
+                return false;
+            }
+
+            foreach (var currentPropertyField in viewModel.ProductProperties)
+            {
+                var currentPropertyOriginalData = productPropertiesOriginalData
+                .FirstOrDefault(pf => pf.ProductTypePropertyId == currentPropertyField.Key)!;
+
+                if (currentPropertyField.Key != currentPropertyOriginalData.ProductTypePropertyId)
+                {
+                    return false;
+                }
+
+                string? propertyValueName = this.propertyValueTypeRepository
+                    .GetAllAttached()
+                    .FirstOrDefault(vt => vt.Id == currentPropertyOriginalData.ValueTypeId)!.Name;
+
+                if (propertyValueName == null)
+                {
+                    return false;
+                }
+
+                bool isCurrentPropertyValid = false;
+                switch (propertyValueName)                //check if the value of the current field is valid
+                {
+                    case "IntegerValue":
+                        isCurrentPropertyValid = int.TryParse(currentPropertyField.Value, out int intValue);
+                        break;
+                    case "DecimalValue":
+                        isCurrentPropertyValid = decimal.TryParse(currentPropertyField.Value, out decimal decimalValue);
+                        break;
+                    case "BooleanValue":
+                        isCurrentPropertyValid = bool.TryParse(currentPropertyField.Value, out bool boolValue);
+                        break;
+                    case "TextValue":
+                        isCurrentPropertyValid = !currentPropertyField.Value.IsNullOrEmpty();
+                        break;
+                    default:
+                        return false;
+                }
+
+                if (!isCurrentPropertyValid)
+                {
+                    return false;
+                }
+                string editedDetailValue = currentPropertyField.Value;
+
+                ProductDetail? currentProductDetail = await this.productDetailRepository
+                    .GetAllAttached()
+                    .FirstOrDefaultAsync(pd => pd.ProductTypePropertyId == currentPropertyField.Key && pd.ProductId == productToEdit.Id);
+
+                if (currentProductDetail == null)
+                {
+                    return false;
+                }
+
+                currentProductDetail.ProductTypePropertyValue = currentPropertyField.Value; //Override the old value
+
+                bool wasProductDetailUpdated = await this.productDetailRepository
+                    .UpdateAsync(currentProductDetail);
+
+                if (!wasProductDetailUpdated)
+                {
+                    return false;
+                }
+            }
 
             bool wasProductEdited = await this.productRepository
                 .UpdateAsync(productToEdit);
             if (wasProductEdited)
             {
                 await productRepository.SaveChangesAsync();
+                await productDetailRepository.SaveChangesAsync();
             }
 
             return wasProductEdited;

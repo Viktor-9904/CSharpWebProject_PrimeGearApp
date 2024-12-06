@@ -5,12 +5,7 @@ namespace PrimeGearApp.Web.ViewModels.ProductViewModels
     public class EditPropertyField
     {
         [Required]
-        public int ProductTypeId { get; set; }
-
-        public string ProductTypeName { get; set; } = null!;
-
-        [Required]
-        public int PropertyId { get; set; }
+        public int ProductTypePropertyId { get; set; }
 
         [Required]
         public string ProductTypePropertyName { get; set; } = null!;

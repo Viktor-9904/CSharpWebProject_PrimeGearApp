@@ -5,11 +5,11 @@
 @foreach (var property in Model.ProductTypeProperties)
 {
     <div class="form-group">
-        <label for="ProductProperty_@property.PropertyId">@property.ProductTypePropertyName</label>
+        <label for="ProductProperty_@property.ProductTypePropertyId">@property.ProductTypePropertyName</label>
 
         @if (property.ValueTypeId == 4)
         {
-            <select name="ProductProperties[@property.PropertyId]" class="form-control" required>
+            <select name="ProductProperties[@property.ProductTypePropertyId]" class="form-control" required>
                 @if (bool.TryParse(property.Value, out bool boolValue))
                 {
                     @if (boolValue)
@@ -29,15 +29,15 @@
         }
         else if (property.ValueTypeId == 2 || property.ValueTypeId == 3)
         {
-            <input name="ProductProperties[@property.PropertyId]" class="form-control" required min="0" value="@property.Value"
+            <input name="ProductProperties[@property.ProductTypePropertyId]" class="form-control" required min="0" value="@property.Value"
                    type="number" />
         }
         else
         {
-            <input name="ProductProperties[@property.PropertyId]" class="form-control" required value="@property.Value"
+            <input name="ProductProperties[@property.ProductTypePropertyId]" class="form-control" required value="@property.Value"
                    type="text" />
         }
 
-        <span asp-validation-for="ProductProperties[@property.PropertyId]" class="text-danger"></span>
+        <span asp-validation-for="ProductProperties[@property.ProductTypePropertyId]" class="text-danger"></span>
     </div>
 }
