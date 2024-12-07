@@ -1,5 +1,4 @@
-﻿using PrimeGearApp.Data.Models;
-using PrimeGearApp.Web.ViewModels.ProductViewModels;
+﻿using PrimeGearApp.Web.ViewModels.ProductViewModels;
 
 namespace PrimeGearApp.Services.Data.Interfaces
 {

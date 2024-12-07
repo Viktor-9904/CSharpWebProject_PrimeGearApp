@@ -58,13 +58,15 @@
                     <li class="list-group-item"><strong>Release Date:</strong> @Model.ReleaseDate</li>
                 </ul>
                 <div class="d-flex align-items-end justify-content-end mt-3">
-                    <a asp-action="AddToCart"
-                       asp-route-id="@Model.Id"
-                       class="product-card-link text-decoration-none btn btn-success me-2">
-                        <img src="~/images/Common/ShoppingCartIcon.png" alt="Cart Icon" class="me-2" style="height: 20px;">
-                        Add to cart
-                    </a>
+                    <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-inline">
+                        <input type="hidden" name="productId" value="@Model.Id" />
+                        <button type="submit" class="product-card-link text-decoration-none btn btn-success me-2">
+                            <img src="~/images/Common/ShoppingCartIcon.png" alt="Cart Icon" class="me-2" style="height: 20px;">
+                            Add to cart
+                        </button>
+                    </form>
                 </div>
+
 
             </div>
         </div>

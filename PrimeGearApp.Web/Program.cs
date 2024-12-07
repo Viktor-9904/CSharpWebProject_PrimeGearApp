@@ -40,9 +40,12 @@ builder.Services.AddScoped<IRepository<ProductDetail, int>, BaseRepositery<Produ
 builder.Services.AddScoped<IRepository<ProductTypeProperty, int>, BaseRepositery<ProductTypeProperty, int>>();
 builder.Services.AddScoped<IRepository<PropertyValueType, int>, BaseRepositery<PropertyValueType, int>>();
 builder.Services.AddScoped<IRepository<Manager, Guid>, BaseRepositery<Manager, Guid>>();
+builder.Services.AddScoped<IRepository<ShoppingCart, int>, BaseRepositery<ShoppingCart, int>>();
+builder.Services.AddScoped<IRepository<ShoppingCartItem, int>, BaseRepositery<ShoppingCartItem, int>>();
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IManagerService, ManagerService>();
+builder.Services.AddScoped<IUserCartSerivce, UserCartService>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter(); //?
 

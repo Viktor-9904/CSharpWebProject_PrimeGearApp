@@ -15,7 +15,7 @@ namespace PrimeGearApp.Data.Configuration
             builder
                 .HasOne(sc => sc.User)
                 .WithOne(au => au.ShoppingCart)
-                .HasForeignKey<ShoppingCart>(sc=> sc.UserID);
+                .HasForeignKey<ShoppingCart>(sc=> sc.UserId);
 
             builder
                 .HasMany(sc=> sc.CartItems)
