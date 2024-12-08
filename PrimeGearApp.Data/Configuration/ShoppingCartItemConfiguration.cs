@@ -24,18 +24,6 @@ namespace PrimeGearApp.Data.Configuration
                 .HasComment("Desired quantity");
             // Range as data annotation
 
-            builder
-                .Property(sci => sci.IsSelected)
-                .IsRequired()
-                .HasComment("Is the current cart item selected")
-                .HasDefaultValue(false);
-
-            builder
-                .Property(sci => sci.ProductPrice)
-                .IsRequired()
-                .HasColumnType(ProducPriceColumnType)
-                .HasComment("Product Price");
-
         }
     }
 }

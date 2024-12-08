@@ -15,7 +15,5 @@ namespace PrimeGearApp.Data.Models
 
         [Range(ShoppingCartItemQuantityMin, ShoppingCartItemQuantityMax, ErrorMessage = ShoppingCartItemQuantityOutOfRange)]
         public int Quantity { get; set; }
-        public bool IsSelected { get; set; }
-        public decimal ProductPrice { get; set; }
     }
 }
