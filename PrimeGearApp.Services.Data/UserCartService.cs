@@ -56,6 +56,12 @@ namespace PrimeGearApp.Services.Data
                 {
                     Id = item.Id,
                     Name = product.Name,
+                    ImagePath = product.ProductImagePath,
+                    ProductPrice = product.Price,
+                    WarrantyInMonths = product.WarrantyDurationInMonths,
+                    Description = product.Description,
+                    SelectedQuantity = 1, // TODO: add quantity, when adding product.
+                    ProductMaxQuantity = product.AvaibleQuantity,
                 };
                 shoppingCartItemViewModels.Add(cartItem);
             }
