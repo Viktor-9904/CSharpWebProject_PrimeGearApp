@@ -5,5 +5,6 @@ namespace PrimeGearApp.Services.Data.Interfaces
     public interface IUserCartSerivce
     {
         Task<IEnumerable<ShoppingCartItemViewModel>> GetUserShoppingCartItems(string userId);
+        Task<bool> AddProductToShoppingCartByIdAsync(int id, string? userId);
     }
 }

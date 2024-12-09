@@ -28,6 +28,10 @@ namespace PrimeGearApp.Web.Data
         public virtual DbSet<ProductType> ProductTypes { get; set; } = null!;
         public virtual DbSet<ProductTypeProperty> ProductTypeProperties { get; set; } = null!;
         public virtual DbSet<ProductDetail> ProductDetails { get; set; } = null!;
+        public virtual DbSet<PropertyValueType> PropertyValueTypes { get; set; } = null!;
+        public virtual DbSet<Manager> Managers{ get; set; } = null!;
+        public virtual DbSet<ShoppingCart> ShoppingCarts{ get; set; } = null!;
+        public virtual DbSet<ShoppingCartItem> ShoppingCartItems { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

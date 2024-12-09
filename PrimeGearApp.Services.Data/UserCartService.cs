@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Data.Repository.Interfaces;
 using PrimeGearApp.Services.Data.Interfaces;
@@ -12,7 +13,7 @@ namespace PrimeGearApp.Services.Data
         public IRepository<ShoppingCartItem, int> shoppingCartItemRepository;
         public IRepository<Product, int> productRepository;
 
-        public UserCartService(IRepository<ShoppingCart, int> shoppingCartRepository, IRepository<ShoppingCartItem, int> shoppingCartItemRepository, IRepository<Product,int> productRepository)
+        public UserCartService(IRepository<ShoppingCart, int> shoppingCartRepository, IRepository<ShoppingCartItem, int> shoppingCartItemRepository, IRepository<Product, int> productRepository)
         {
             this.shoppingCartRepository = shoppingCartRepository;
             this.shoppingCartItemRepository = shoppingCartItemRepository;
@@ -30,14 +31,15 @@ namespace PrimeGearApp.Services.Data
             ShoppingCart userShoppingCart = await this.shoppingCartRepository
                 .FirstOrDefaultAsync(sc => sc.UserId == guidId);
 
-            if (userShoppingCart == null!)
+            if (userShoppingCart == null)   // Add shopping cart to user, if he doesnt have one
             {
-                ShoppingCart shoppingCart = new ShoppingCart()
+                userShoppingCart = new ShoppingCart()
                 {
                     UserId = guidId
                 };
-                await shoppingCartRepository.AddAsync(shoppingCart);
-                await shoppingCartItemRepository.SaveChangesAsync();
+
+                await shoppingCartRepository.AddAsync(userShoppingCart);
+                await shoppingCartRepository.SaveChangesAsync();
             }
 
             IEnumerable<ShoppingCartItem> userShoppingCartItems = await this.shoppingCartItemRepository
@@ -68,5 +70,44 @@ namespace PrimeGearApp.Services.Data
 
             return shoppingCartItemViewModels;
         }
+        public async Task<bool> AddProductToShoppingCartByIdAsync(int id, string? userId)
+        {
+            Product? product = await this.productRepository
+                .GetAllAttached()
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            bool isUserIdGuid = Guid.TryParse(userId, out Guid guidId);
+
+            if (!isUserIdGuid || product == null)
+            {
+                return false;
+            }
+
+            ShoppingCart userShoppingCart = await this.shoppingCartRepository
+                .FirstOrDefaultAsync(sc => sc.UserId == guidId);
+
+
+            if (userShoppingCart == null)   // Add shopping cart to user, if he doesnt have one
+            {
+                userShoppingCart = new ShoppingCart()
+                {
+                    UserId = guidId
+                };
+                await shoppingCartRepository.AddAsync(userShoppingCart);
+                await shoppingCartRepository.SaveChangesAsync();
+            }
+
+            ShoppingCartItem cartItemToAdd = new ShoppingCartItem()
+            {
+                ProductId = product.Id,
+                Quantity = 1, // TODO: Add an input for quantity, when adding a product to cart, also validate for the max currently avaiable product
+                ShoppingCartId = userShoppingCart.Id,
+            };
+
+            await this.shoppingCartItemRepository.AddAsync(cartItemToAdd);
+            await this.shoppingCartItemRepository.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

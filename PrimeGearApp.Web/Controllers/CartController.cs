@@ -29,7 +29,18 @@ namespace PrimeGearApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToCart(int productId)
         {
-            return View("TestingView");
+            string? userId = this.User.GetUserId();
+
+            bool wasProductAddedToCart = await this.userCartSerivce
+                .AddProductToShoppingCartByIdAsync(productId, userId);
+
+            if (!wasProductAddedToCart)
+            {
+                return Json(new { success = false, message = "Failed to add the product to the cart." });
+            }
+
+            return Json(new { success = true, message = "Product added to the cart successfully." });
         }
+
     }
 }

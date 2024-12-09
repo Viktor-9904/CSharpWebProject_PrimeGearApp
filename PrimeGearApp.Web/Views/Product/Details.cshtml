@@ -17,25 +17,22 @@
 
         @if (await this.managerService.IsUserManagerAsync(this.User.GetUserId()!))
         {
-            <div class="d-flex align-items-end justify-content-between">
-                <a asp-action="Edit"
-                   asp-route-id="@Model.Id"
-                   class="product-card-link text-decoration-none btn btn-primary me-2">
-                    <img src="~/images/Common/editIcon.png" alt="Edit Icon" class="me-2" style="height: 20px;">
-                    Edit
-                </a>
+                <div class="d-flex align-items-end justify-content-between">
+                    <a asp-action="Edit"
+                       asp-route-id="@Model.Id"
+                       class="product-card-link text-decoration-none btn btn-primary me-2">
+                        <img src="~/images/Common/editIcon.png" alt="Edit Icon" class="me-2" style="height: 20px;">
+                        Edit
+                    </a>
 
-                <a href="#"
-                   onclick="confirmDelete(@Model.Id)"
-                   class="product-card-link text-decoration-none btn btn-danger">
-                    <img src="~/images/Common/trashIcon.png" alt="Edit Icon" class="me-2" style="height: 20px;">
-
-                    Delete
-                </a>
-            </div>
+                    <a href="#"
+                       onclick="confirmDelete(@Model.Id)"
+                       class="product-card-link text-decoration-none btn btn-danger">
+                        <img src="~/images/Common/trashIcon.png" alt="Delete Icon" class="me-2" style="height: 20px;">
+                        Delete
+                    </a>
+                </div>
         }
-
-
     </div>
 
     <div class="card-body">
@@ -43,11 +40,11 @@
             <div class="col-md-4">
                 @if (!string.IsNullOrEmpty(Model.ProductImagePath))
                 {
-                    <img src="@Model.ProductImagePath" class="img-fluid" alt="@Model.Name" style="max-height: 300px; object-fit: cover;">
+                        <img src="@Model.ProductImagePath" class="img-fluid" alt="@Model.Name" style="max-height: 300px; object-fit: cover;">
                 }
                 else
                 {
-                    <img src="/images/common/noImage.jpg" class="card-img-top" alt="Placeholder Image" style="height: 200px; object-fit: cover;">
+                        <img src="/images/common/noImage.jpg" class="card-img-top" alt="Placeholder Image" style="height: 200px; object-fit: cover;">
                 }
             </div>
             <div class="col-md-8">
@@ -58,16 +55,16 @@
                     <li class="list-group-item"><strong>Release Date:</strong> @Model.ReleaseDate</li>
                 </ul>
                 <div class="d-flex align-items-end justify-content-end mt-3">
-                    <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-inline">
-                        <input type="hidden" name="productId" value="@Model.Id" />
-                        <button type="submit" class="product-card-link text-decoration-none btn btn-success me-2">
-                            <img src="~/images/Common/ShoppingCartIcon.png" alt="Cart Icon" class="me-2" style="height: 20px;">
-                            Add to cart
-                        </button>
+                    <!-- Hidden Form for Adding to Cart -->
+                    <form id="addToCartForm" asp-controller="Cart" asp-action="AddToCart" method="post" style="display:none;">
+                        <input type="hidden" id="productId" name="productId" />
                     </form>
+
+                    <button type="button" onclick="addToCart(@Model.Id)" class="btn btn-success">
+                        <img src="~/images/Common/ShoppingCartIcon.png" alt="Cart Icon" class="me-2" style="height: 20px;">
+                        Add to cart
+                    </button>
                 </div>
-
-
             </div>
         </div>
         <br />
@@ -80,64 +77,105 @@
         <h4>Product Specifications</h4>
         @if (Model.ProductProperties != null && Model.ProductProperties.Any())
         {
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Property</th>
-                        <th>Value</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     @foreach (var property in Model.ProductProperties)
                     {
-                        <tr>
-                            <td>@property.Key</td>
-                            <td>@property.Value</td>
-                        </tr>
+                                <tr>
+                                    <td>@property.Key</td>
+                                    <td>@property.Value</td>
+                                </tr>
                     }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
         }
         else
         {
-            <p>No specifications available.</p>
+                <p>No specifications available.</p>
         }
     </div>
 </div>
 
-<!-- Modal for deletion confirmation -->
-
-<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<!-- Enhanced Modal for Feedback -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmationModalLabel">Confirm Deletion</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title d-flex align-items-center" id="feedbackModalLabel">
+                    <span id="feedbackIcon" class="me-2"></span>
+                    <span>Notification</span>
+                </h5>
+                <button type="button" class="btn-close btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                Are you sure you want to delete the product <strong>@Model.Name</strong>?
+            <div class="modal-body text-center">
+                <p id="feedbackMessage" class="fs-5"></p>
             </div>
-            <div class="modal-footer">
-                <form id="deleteForm" asp-action="SoftDeleteConfirmed" method="post">
-                    <input type="hidden" name="ProductId" id="ProductId" value="@Model.Id" />
-                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                </form>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="/Cart" class="btn btn-success" id="goToCartButton" style="display:none;">
+                    <i class="bi bi-cart-check me-1"></i> Go to Cart
+                </a>
             </div>
         </div>
     </div>
 </div>
 
 
-
 <script>
-    function confirmDelete(productId) {
-        // Set the ProductId value in the hidden input field of the form
-        document.getElementById('ProductId').value = productId;
+    async function addToCart(productId) {
+        // Set the value of the hidden input field with the product ID
+        document.getElementById('productId').value = productId;
 
-        // Show the confirmation modal
-        $('#confirmationModal').modal('show');
+        // Create a new FormData object to send the form data
+        const formData = new FormData(document.getElementById('addToCartForm'));
+
+        try {
+            // Send the form data using fetch
+            const response = await fetch('/Cart/AddToCart', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            // Update modal message based on the result
+            const feedbackMessage = document.getElementById('feedbackMessage');
+            const goToCartButton = document.getElementById('goToCartButton');
+
+            if (result.success) {
+                feedbackMessage.textContent = result.message;
+                feedbackMessage.className = "text-success"; // Success style
+                goToCartButton.style.display = "inline-block"; // Show "Go to Cart" button
+            } else {
+                feedbackMessage.textContent = result.message;
+                feedbackMessage.className = "text-danger"; // Error style
+                goToCartButton.style.display = "none"; // Hide "Go to Cart" button
+            }
+
+            // Show the modal
+            const feedbackModal = new bootstrap.Modal(document.getElementById('feedbackModal'));
+            feedbackModal.show();
+        } catch (error) {
+            console.error('Error adding product to cart:', error);
+
+            // Show error message in modal
+            const feedbackMessage = document.getElementById('feedbackMessage');
+            feedbackMessage.textContent = "An error occurred while adding the product to the cart.";
+            feedbackMessage.className = "text-danger";
+
+            // Hide "Go to Cart" button
+            const goToCartButton = document.getElementById('goToCartButton');
+            goToCartButton.style.display = "none";
+
+            // Show the modal
+            const feedbackModal = new bootstrap.Modal(document.getElementById('feedbackModal'));
+            feedbackModal.show();
+        }
     }
 </script>
