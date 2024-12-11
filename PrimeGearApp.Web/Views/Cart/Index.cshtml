@@ -1,5 +1,5 @@
 ﻿@using PrimeGearApp.Web.ViewModels.ShoppingCartViewModels;
-@model IEnumerable<ShoppingCartItemViewModel>
+@model UserShoppingCartViewModel
 
 @{
     ViewData["Title"] = "Shopping Cart";
@@ -7,7 +7,7 @@
 
 <h1 class="mt-4 text-center">Your Shopping Cart</h1>
 
-@if (!Model.Any())
+@if (!Model.CartItems.Any())
 {
     <p class="text-center mt-4">Your shopping cart is empty.</p>
 }
@@ -28,7 +28,7 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.CartItems)
                 {
                     <tr>
                         <td style="width: 10%;">
@@ -77,10 +77,11 @@ else
         </table>
 
         <div class="text-end mt-4">
-            <a asp-controller="Cart" asp-action="Checkout" class="btn btn-success btn-lg px-5">
+            <a asp-controller="Cart" asp-action="CheckOut" asp-route-cartId="@Model.Id" class="btn btn-success btn-lg px-5">
                 Proceed to Checkout
             </a>
         </div>
+
     </div>
 }
 

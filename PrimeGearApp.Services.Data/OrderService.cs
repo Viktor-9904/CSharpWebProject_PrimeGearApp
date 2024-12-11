@@ -9,14 +9,17 @@ namespace PrimeGearApp.Services.Data
 {
     public class OrderService : IOrderService
     {
-        private readonly IRepository<Order, Guid> ordersRepository;
+        private readonly IRepository<Order, Guid> orderRepository;
         private readonly IRepository<Product, int> productRepository;
+        private readonly IRepository<ShoppingCart, int> shoppingCartRepository;
 
-        public OrderService(IRepository<Order, Guid> ordersRepository, IRepository<Product, int> productRepository)
+        public OrderService(IRepository<Order, Guid> ordersRepository, IRepository<Product, int> productRepository, IRepository<ShoppingCart, int> shoppingCartRepository)
         {
-            this.ordersRepository = ordersRepository;
+            this.orderRepository = ordersRepository;
             this.productRepository = productRepository;
+            this.shoppingCartRepository = shoppingCartRepository;
         }
+
 
         public async Task<IEnumerable<OrderViewModel>> GetAllOrdersByUserIdAsync(string userId)
         {
@@ -26,7 +29,7 @@ namespace PrimeGearApp.Services.Data
                 return null;
             }
 
-            IEnumerable<Order> userOrders = await this.ordersRepository
+            IEnumerable<Order> userOrders = await this.orderRepository
                 .GetAllAttached()
                 .Where(o => o.UserId == guidUserId)
                 .OrderBy(o => o.PlacedOn)
@@ -57,6 +60,34 @@ namespace PrimeGearApp.Services.Data
                 }
             }
             return orderedItems;
+        }
+        public async Task<bool> AddOrder(CheckOutOrderViewModel order)
+        {
+            Guid.TryParse(order.UserId, out Guid guidUserId);
+
+            foreach (CheckOutOrdersCartItemViewModel item in order.ShoppingCartItems)
+            {
+                Order currentOrder = new Order()
+                {
+                    City = order.City,
+                    PurchasedQuantity = item.Quantity,
+                    OrderToAddress = order.Address,
+                    PlacedOn = DateTime.Now,
+                    ProductId = item.ProductId,
+                    TotalPrice = item.TotalPrice,
+                    UserId = guidUserId,
+                };
+                await this.orderRepository // temp patch
+                    .AddAsync(currentOrder);
+            }
+            await this.orderRepository.SaveChangesAsync();
+
+            await this.shoppingCartRepository
+                .DeleteAsync(order.CartId);
+            await this.shoppingCartRepository
+                .SaveChangesAsync();
+
+            return true;
         }
     }
 }

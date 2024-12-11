@@ -4,6 +4,7 @@ using PrimeGearApp.Data.Migrations;
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Data.Repository.Interfaces;
 using PrimeGearApp.Services.Data.Interfaces;
+using PrimeGearApp.Web.ViewModels.Orders;
 using PrimeGearApp.Web.ViewModels.ShoppingCartViewModels;
 
 namespace PrimeGearApp.Services.Data
@@ -14,20 +15,23 @@ namespace PrimeGearApp.Services.Data
         private readonly IRepository<ShoppingCartItem, int> shoppingCartItemRepository;
         private readonly IRepository<Product, int> productRepository;
         private readonly IRepository<ProductType, int> productTypeRepository;
+        private readonly IUserService applicaitonUserService;
 
         public UserCartService(
             IRepository<ShoppingCart, int> shoppingCartRepository,
             IRepository<ShoppingCartItem, int> shoppingCartItemRepository,
             IRepository<Product, int> productRepository,
-            IRepository<ProductType, int> productTypeRepository)
+            IRepository<ProductType, int> productTypeRepository,
+            IUserService applicaitonUserService)
         {
             this.shoppingCartRepository = shoppingCartRepository;
             this.shoppingCartItemRepository = shoppingCartItemRepository;
             this.productRepository = productRepository;
             this.productTypeRepository = productTypeRepository;
+            this.applicaitonUserService = applicaitonUserService;
         }
 
-        public async Task<IEnumerable<ShoppingCartItemViewModel>> GetUserShoppingCartItems(string userId)
+        public async Task<UserShoppingCartViewModel> GetUserShoppingCartItems(string userId)
         {
             bool isUserIdGuid = Guid.TryParse(userId, out Guid guidId);
             if (!isUserIdGuid)
@@ -80,7 +84,14 @@ namespace PrimeGearApp.Services.Data
                 shoppingCartItemViewModels.Add(cartItem);
             }
 
-            return shoppingCartItemViewModels;
+            UserShoppingCartViewModel shoppingCart = new UserShoppingCartViewModel()
+            {
+                Id = userShoppingCart.Id,
+                UserID = userId,
+                CartItems = shoppingCartItemViewModels
+            };
+
+            return shoppingCart;
         }
         public async Task<bool> AddProductToShoppingCartByIdAsync(int id, string? userId)
         {
@@ -183,6 +194,53 @@ namespace PrimeGearApp.Services.Data
                 await this.shoppingCartItemRepository
                     .SaveChangesAsync();
             }
+        }
+
+        public async Task<CheckOutOrderViewModel> LoadCheckOutOrderViewModel(int cartId)
+        {
+            ShoppingCart? cart = await this.shoppingCartRepository
+                .GetAllAttached()
+                .Include(sc => sc.CartItems)
+                .ThenInclude(ci => ci.Product)
+                .FirstOrDefaultAsync(sc => sc.Id == cartId);
+
+            if (cart == null)
+            {
+                return null;
+            }
+
+            ApplicationUser user = await this.applicaitonUserService
+                .GetUserById(cart.UserId);
+
+            CheckOutOrderViewModel viewModel = new CheckOutOrderViewModel()
+            {
+                CartId = cart.Id,
+                UserId = user.Id.ToString(),
+                UserName = user.UserName!,
+                PhoneNumber = user.PhoneNumber!,
+                Email = user.Email!
+            };
+
+            foreach (ShoppingCartItem product in cart.CartItems)
+            {
+                Product currentProduct = await this.productRepository
+                    .GetByIdAsync(product.ProductId);
+
+                if (currentProduct == null)
+                {
+                    continue;
+                }
+
+                CheckOutOrdersCartItemViewModel currentCartItemViewModel = new CheckOutOrdersCartItemViewModel()
+                {
+                    ProductName = currentProduct.Name,
+                    ProductId = product.ProductId,
+                    PricePerUnit = currentProduct.Price,
+                    Quantity = product.Quantity,
+                };
+                viewModel.ShoppingCartItems.Add(currentCartItemViewModel);
+            }
+            return viewModel;
         }
     }
 }

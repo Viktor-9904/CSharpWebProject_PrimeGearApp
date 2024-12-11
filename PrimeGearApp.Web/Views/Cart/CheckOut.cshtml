@@ -1,0 +1,97 @@
+﻿@using PrimeGearApp.Web.ViewModels.Orders
+@model CheckOutOrderViewModel
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h1 class="mt-4 text-center">Checkout</h1>
+
+<div class="container mt-4">
+    <h3>Shipping Information</h3>
+    <form asp-controller="Order" asp-action="ConfirmOrder" method="post">
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="CartId" />
+
+        <div class="container">
+            <div class="row mb-3">
+                <label asp-for="UserName" class="form-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="PhoneNumber" class="form-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="City" class="form-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="Address" class="form-label"></label>
+                <textarea asp-for="Address" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>            
+        </div>
+
+        <h3>Order Summary</h3>
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col" class="text-end">Price Per Unit</th>
+                    <th scope="col" class="text-end">Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.ShoppingCartItems.Count; i++)
+                {
+                    var item = Model.ShoppingCartItems[i];
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.Quantity</td>
+                        <td class="text-end">@item.PricePerUnit.ToString("C")</td>
+                        <td class="text-end">@item.TotalPrice.ToString("C")</td>
+                        <td>
+                            <input type="hidden" name="ShoppingCartItems[@i].ProductId" value="@item.ProductId" />
+                            <input type="hidden" name="ShoppingCartItems[@i].ProductName" value="@item.ProductName" />
+                            <input type="hidden" name="ShoppingCartItems[@i].Quantity" value="@item.Quantity" />
+                            <input type="hidden" name="ShoppingCartItems[@i].PricePerUnit" value="@item.PricePerUnit" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="text-end mt-4">
+            <h4>
+                Total Order Cost:
+                <span class="text-success">
+                    @Model.ShoppingCartItems.Sum(i => i.TotalPrice).ToString("C")
+                </span>
+            </h4>
+        </div>
+
+        <div class="text-end mt-4">
+            <button type="submit" class="btn btn-success btn-lg px-5">
+                Confirm Order
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

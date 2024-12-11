@@ -20,6 +20,7 @@ else
             <tr>
                 <th scope="col">Product Name</th>
                 <th scope="col">Order Date</th>
+                <th scope="col">Ordered Quantity</th>
                 <th scope="col">Total Price</th>
                 <th scope="col">City</th>
                 <th scope="col">Shipping Address</th>
@@ -31,6 +32,7 @@ else
                 <tr>
                     <td>@order.ProductName</td>
                     <td>@order.PlacedOn.ToString("MM/dd/yyyy")</td>
+                    <td>@order.OrderedQuantity</td>
                     <td>@order.TotalPrice.ToString("C")</td>
                     <td>@order.City</td>
                     <td>@order.OrderToAddress</td>

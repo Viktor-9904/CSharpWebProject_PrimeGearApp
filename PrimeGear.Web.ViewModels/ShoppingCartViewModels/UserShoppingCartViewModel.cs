@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace PrimeGearApp.Web.ViewModels.ShoppingCartViewModels
 {
-    public class AllShoppingCartItemsViewModel
+    public class UserShoppingCartViewModel
     {
         public int Id { get; set; }
-        public Guid UserID { get; set; }
+        public string UserID { get; set; }
         public ApplicationUser User { get; set; } = null!;
         public List<ShoppingCartItemViewModel> CartItems { get; set; }
             = new List<ShoppingCartItemViewModel>();

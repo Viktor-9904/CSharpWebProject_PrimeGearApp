@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol;
 using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.Infrastructure.Extensions;
+using PrimeGearApp.Web.ViewModels.Orders;
 using PrimeGearApp.Web.ViewModels.ShoppingCartViewModels;
 
 namespace PrimeGearApp.Web.Controllers
@@ -20,7 +23,7 @@ namespace PrimeGearApp.Web.Controllers
         {
             string? userId = this.User.GetUserId();
 
-            IEnumerable<ShoppingCartItemViewModel> shoppingCartItems = await this.userCartSerivce
+            UserShoppingCartViewModel shoppingCartItems = await this.userCartSerivce
                 .GetUserShoppingCartItems(userId!);
 
             return View(shoppingCartItems);
@@ -67,6 +70,19 @@ namespace PrimeGearApp.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> CheckOut(int cartId)
+        {
+            CheckOutOrderViewModel viewModel = await this.userCartSerivce
+                .LoadCheckOutOrderViewModel(cartId);
 
+            if (viewModel == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(viewModel);
+         }
     }
 }

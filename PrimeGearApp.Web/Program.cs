@@ -43,11 +43,13 @@ builder.Services.AddScoped<IRepository<Manager, Guid>, BaseRepositery<Manager, G
 builder.Services.AddScoped<IRepository<ShoppingCart, int>, BaseRepositery<ShoppingCart, int>>();
 builder.Services.AddScoped<IRepository<ShoppingCartItem, int>, BaseRepositery<ShoppingCartItem, int>>();
 builder.Services.AddScoped<IRepository<Order, Guid>, BaseRepositery<Order, Guid>>();
+builder.Services.AddScoped<IRepository<ApplicationUser, Guid>, BaseRepositery<ApplicationUser, Guid>>();
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IManagerService, ManagerService>();
 builder.Services.AddScoped<IUserCartSerivce, UserCartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter(); //?
 

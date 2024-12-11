@@ -9,6 +9,7 @@ namespace PrimeGearApp.Web.ViewModels.Orders
     public class OrderViewModel
     {
         public string Id { get; set; } = null!;
+        public int ProductId { get; set; }
         public string ProductName { get; set; } = null!;
         public int OrderedQuantity { get; set; }
         public DateTime PlacedOn { get; set; }

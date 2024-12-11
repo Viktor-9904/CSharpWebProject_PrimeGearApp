@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.Infrastructure.Extensions;
 using PrimeGearApp.Web.ViewModels.Orders;
 
 namespace PrimeGearApp.Web.Controllers
 {
-    public class OrdersController : Controller
+    public class OrderController : Controller
     {
         private readonly IOrderService orderService;
 
-        public OrdersController(IOrderService orderService)
+        public OrderController(IOrderService orderService)
         {
             this.orderService = orderService;
         }
@@ -25,6 +26,26 @@ namespace PrimeGearApp.Web.Controllers
                 .GetAllOrdersByUserIdAsync(userId!);
 
             return View(userOrders);
+        }
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> ConfirmOrder(CheckOutOrderViewModel viewModel)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("CheckOut", "Cart");
+            }
+
+            bool wasOrderAdded = await this.orderService
+                .AddOrder(viewModel);
+
+            if (!wasOrderAdded)
+            {
+                return RedirectToAction("CheckOut", "Cart");
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
