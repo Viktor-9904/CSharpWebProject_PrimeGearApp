@@ -12,12 +12,18 @@ namespace PrimeGearApp.Services.Data
         public IRepository<ShoppingCart, int> shoppingCartRepository;
         public IRepository<ShoppingCartItem, int> shoppingCartItemRepository;
         public IRepository<Product, int> productRepository;
+        public IRepository<ProductType, int> productTypeRepository;
 
-        public UserCartService(IRepository<ShoppingCart, int> shoppingCartRepository, IRepository<ShoppingCartItem, int> shoppingCartItemRepository, IRepository<Product, int> productRepository)
+        public UserCartService(
+            IRepository<ShoppingCart, int> shoppingCartRepository,
+            IRepository<ShoppingCartItem, int> shoppingCartItemRepository,
+            IRepository<Product, int> productRepository,
+            IRepository<ProductType, int> productTypeRepository)
         {
             this.shoppingCartRepository = shoppingCartRepository;
             this.shoppingCartItemRepository = shoppingCartItemRepository;
             this.productRepository = productRepository;
+            this.productTypeRepository = productTypeRepository;
         }
 
         public async Task<IEnumerable<ShoppingCartItemViewModel>> GetUserShoppingCartItems(string userId)
@@ -54,9 +60,14 @@ namespace PrimeGearApp.Services.Data
                 Product product = await this.productRepository
                     .GetByIdAsync(item.ProductId);
 
+                ProductType productTypeName = await this.productTypeRepository
+                    .GetByIdAsync(product.ProductTypeId);
+                
+
                 ShoppingCartItemViewModel cartItem = new ShoppingCartItemViewModel()
                 {
                     Id = item.Id,
+                    Type = productTypeName.Name,
                     Name = product.Name,
                     ImagePath = product.ProductImagePath,
                     ProductPrice = product.Price,
