@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using PrimeGearApp.Data.Migrations;
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Data.Repository.Interfaces;
 using PrimeGearApp.Services.Data.Interfaces;
@@ -62,7 +63,7 @@ namespace PrimeGearApp.Services.Data
 
                 ProductType productTypeName = await this.productTypeRepository
                     .GetByIdAsync(product.ProductTypeId);
-                
+
 
                 ShoppingCartItemViewModel cartItem = new ShoppingCartItemViewModel()
                 {
@@ -70,10 +71,10 @@ namespace PrimeGearApp.Services.Data
                     Type = productTypeName.Name,
                     Name = product.Name,
                     ImagePath = product.ProductImagePath,
-                    ProductPrice = product.Price,
+                    ProductPrice = product.Price * item.Quantity,
                     WarrantyInMonths = product.WarrantyDurationInMonths,
                     Description = product.Description,
-                    SelectedQuantity = 1, // TODO: add quantity, when adding product.
+                    SelectedQuantity = item.Quantity, // TODO: add quantity, when adding product.
                     ProductMaxQuantity = product.AvaibleQuantity,
                 };
                 shoppingCartItemViewModels.Add(cartItem);
@@ -107,7 +108,24 @@ namespace PrimeGearApp.Services.Data
                 await shoppingCartRepository.AddAsync(userShoppingCart);
                 await shoppingCartRepository.SaveChangesAsync();
             }
+            ShoppingCartItem alreadyExistingCartItem = await this.shoppingCartItemRepository
+                .FirstOrDefaultAsync(sci => sci.ProductId == product.Id);
 
+            if (alreadyExistingCartItem != null) // update product if it already exists
+            {
+                alreadyExistingCartItem.Quantity += 1; // TODO: Add input when adding a product 
+
+                bool wasProductUpdated = await this.shoppingCartItemRepository
+                    .UpdateAsync(alreadyExistingCartItem);
+
+                if (wasProductUpdated)
+                {
+                    await this.shoppingCartItemRepository
+                        .SaveChangesAsync();
+
+                    return true;
+                }
+            }
             ShoppingCartItem cartItemToAdd = new ShoppingCartItem()
             {
                 ProductId = product.Id,
@@ -118,6 +136,41 @@ namespace PrimeGearApp.Services.Data
             await this.shoppingCartItemRepository.AddAsync(cartItemToAdd);
             await this.shoppingCartItemRepository.SaveChangesAsync();
             return true;
+        }
+        public async Task<bool> UpdateCartItemQuantity(string cartId, int productUpdatedQuantity)
+        {
+            var isCartIdValid = int.TryParse(cartId, out int validCartId);
+            if (!isCartIdValid)
+            {
+                return false;
+            }
+            ShoppingCartItem shoppingCartItem = await this.shoppingCartItemRepository
+                .GetByIdAsync(validCartId);
+            if (shoppingCartItem == null)
+            {
+                return false;
+            }
+
+            Product product = await this.productRepository
+                .GetByIdAsync(shoppingCartItem.ProductId);
+
+            if (product == null)
+            {
+                return false;
+            }
+            if (productUpdatedQuantity <= 0 || productUpdatedQuantity > product.AvaibleQuantity)
+            {
+                return false;
+            }
+            shoppingCartItem.Quantity = productUpdatedQuantity;
+
+            bool result = await this.shoppingCartItemRepository
+                .UpdateAsync(shoppingCartItem);
+            if (result)
+            {
+                await this.shoppingCartItemRepository.SaveChangesAsync();
+            }
+            return result;
         }
 
     }

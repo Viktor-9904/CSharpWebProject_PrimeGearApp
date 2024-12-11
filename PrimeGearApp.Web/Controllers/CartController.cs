@@ -25,8 +25,8 @@ namespace PrimeGearApp.Web.Controllers
 
             return View(shoppingCartItems);
         }
-        [Authorize]
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddToCart(int productId)
         {
             string? userId = this.User.GetUserId();
@@ -40,6 +40,23 @@ namespace PrimeGearApp.Web.Controllers
             }
 
             return Json(new { success = true, message = "Product added to the cart successfully." });
+        }
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> UpdateQuantity(string id, int quantity)
+        {
+            bool result = await this.userCartSerivce.UpdateCartItemQuantity(id, quantity); // Update the item in the database
+
+            if (result)
+            {
+                TempData["Success"] = "Cart updated successfully.";
+            }
+            else
+            {
+                TempData["Error"] = "Failed to update the cart.";
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
     }

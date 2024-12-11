@@ -43,22 +43,23 @@ else
 
                         <td style="width: 10%;">@item.WarrantyInMonths months</td>
 
-                        <td style="width: 10%;">
+                        <td style="width: 20%;">
                             <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@item.Id" />
-
+                                <input type="hidden" id="quantity-@item.Id" name="quantity" value="@item.SelectedQuantity" />
                                 <div class="input-group input-group-sm">
-                                    <button type="button" class="btn btn-outline-secondary" id="decrement-@item.Id" onclick="updateQuantity('@item.Id', -1)">-</button>
-                                    <input type="number" name="quantity" id="quantity-@item.Id" value="@item.SelectedQuantity" class="form-control" min="1" max="@item.ProductMaxQuantity" required
-                                           data-price-per-unit="@item.ProductPrice" />
-                                    <button type="button" class="btn btn-outline-secondary" id="increment-@item.Id" onclick="updateQuantity('@item.Id', 1)">+</button>
+                                    <button type="submit" class="btn btn-outline-secondary" onclick="adjustQuantity('@item.Id', -1)">
+                                        -
+                                    </button>
+                                    <span class="form-control text-center">@item.SelectedQuantity</span>
+                                    <button type="submit" class="btn btn-outline-secondary" onclick="adjustQuantity('@item.Id', 1)">
+                                        +
+                                    </button>
                                 </div>
                             </form>
                         </td>
 
-                        <td style="width: 10%;" class="text-end fw-bold" id="price-@item.Id">
-                            @item.ProductPrice.ToString("C")
-                        </td>
+                        <td style="width: 10%;" class="text-end fw-bold">@item.ProductPrice.ToString("C")</td>
 
                         <td style="width: 10%;" class="text-center">
                             <form asp-controller="Cart" asp-action="RemoveFromCart" method="post" class="d-inline">
@@ -72,6 +73,7 @@ else
                 }
             </tbody>
 
+
         </table>
 
         <div class="text-end mt-4">
@@ -83,26 +85,19 @@ else
 }
 
 <script>
-    function updateQuantity(itemId, delta) {
-        var inputElement = document.getElementById('quantity-' + itemId);
-        var currentQuantity = parseInt(inputElement.value);
-
-        var minQuantity = parseInt(inputElement.min);
-        var maxQuantity = parseInt(inputElement.max);
+    function adjustQuantity(itemId, delta) {
+        var quantityInput = document.getElementById('quantity-' + itemId);
+        var currentQuantity = parseInt(quantityInput.value);
+        var minQuantity = 1; // Minimum allowed quantity
+        var maxQuantity = parseInt(quantityInput.getAttribute('max')) || Infinity; // Maximum if applicable
 
         var newQuantity = currentQuantity + delta;
 
         if (newQuantity >= minQuantity && newQuantity <= maxQuantity) {
-            inputElement.value = newQuantity;
-
-            // Recalculate and update the price
-            var pricePerUnit = parseFloat(inputElement.dataset.pricePerUnit); // Get price per unit
-            var newPrice = newQuantity * pricePerUnit;
-
-            // Update the corresponding price cell
-            var priceElement = document.getElementById('price-' + itemId);
-            priceElement.textContent = newPrice.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+            quantityInput.value = newQuantity; // Update the hidden input with the new quantity
+        } else {
+            // Prevent form submission if quantity is invalid
+            event.preventDefault();
         }
     }
-
 </script>
