@@ -40,5 +40,8 @@ namespace PrimeGearApp.Data.Models
 
         public List<ShoppingCartItem> ShoppingCartItems { get; set; }
             = new List<ShoppingCartItem>();
+
+        public List<Order> Orders { get; set; }
+            = new List<Order>();
     }
 }
