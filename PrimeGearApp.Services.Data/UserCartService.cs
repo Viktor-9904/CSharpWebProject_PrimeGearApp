@@ -173,5 +173,16 @@ namespace PrimeGearApp.Services.Data
             return result;
         }
 
+        public async Task RemoveCartItemById(int id)
+        {
+            bool wasCartItemRemoved = await this.shoppingCartItemRepository
+                .DeleteAsync(id);
+
+            if (wasCartItemRemoved)
+            {
+                await this.shoppingCartItemRepository
+                    .SaveChangesAsync();
+            }
+        }
     }
 }

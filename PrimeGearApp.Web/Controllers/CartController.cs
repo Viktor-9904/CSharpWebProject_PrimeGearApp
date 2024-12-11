@@ -58,6 +58,15 @@ namespace PrimeGearApp.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> RemoveFromCart(int id)
+        {
+            await this.userCartSerivce
+                .RemoveCartItemById(id);
+
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 }
