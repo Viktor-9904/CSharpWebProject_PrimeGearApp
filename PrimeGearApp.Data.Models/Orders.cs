@@ -15,6 +15,8 @@ namespace PrimeGearApp.Data.Models
 
         public Product Product { get; set; } = null!;
 
+        public int PurchasedQuantity { get; set; }
+
         public DateTime PlacedOn { get; set; }
             = DateTime.Now;
 

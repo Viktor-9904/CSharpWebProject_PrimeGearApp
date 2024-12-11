@@ -54,8 +54,8 @@
                     <li class="list-group-item"><strong>Warranty (Months):</strong> @Model.WarrantyInMonths</li>
                     <li class="list-group-item"><strong>Release Date:</strong> @Model.ReleaseDate</li>
                 </ul>
+                <br />
                 <div class="d-flex align-items-end justify-content-end mt-3">
-                    <!-- Hidden Form for Adding to Cart -->
                     <form id="addToCartForm" asp-controller="Cart" asp-action="AddToCart" method="post" style="display:none;">
                         <input type="hidden" id="productId" name="productId" />
                     </form>

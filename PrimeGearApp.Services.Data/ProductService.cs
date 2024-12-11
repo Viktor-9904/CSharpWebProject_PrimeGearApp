@@ -15,11 +15,11 @@ namespace PrimeGearApp.Services.Data
 {
     public class ProductService : IProductService
     {
-        public IRepository<Product, int> productRepository;
-        public IRepository<ProductDetail, int> productDetailRepository;
-        public IRepository<ProductType, int> productTypeRepository;
-        public IRepository<ProductTypeProperty, int> productTypePropertyRepository;
-        public IRepository<PropertyValueType, int> propertyValueTypeRepository;
+        private readonly IRepository<Product, int> productRepository;
+        private readonly IRepository<ProductDetail, int> productDetailRepository;
+        private readonly IRepository<ProductType, int> productTypeRepository;
+        private readonly IRepository<ProductTypeProperty, int> productTypePropertyRepository;
+        private readonly IRepository<PropertyValueType, int> propertyValueTypeRepository;
 
         public ProductService(
             IRepository<Product, int> productRepository,

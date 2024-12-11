@@ -1,1 +1,41 @@
-﻿<h1>this is orders</h1>
+﻿@using PrimeGearApp.Web.ViewModels.Orders;
+@model IEnumerable<OrderViewModel>
+
+@{
+    ViewData["Title"] = "All Orders";
+}
+
+<h2>All Orders</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info" role="alert">
+        You have not placed any orders yet.
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Product Name</th>
+                <th scope="col">Order Date</th>
+                <th scope="col">Total Price</th>
+                <th scope="col">City</th>
+                <th scope="col">Shipping Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.ProductName</td>
+                    <td>@order.PlacedOn.ToString("MM/dd/yyyy")</td>
+                    <td>@order.TotalPrice.ToString("C")</td>
+                    <td>@order.City</td>
+                    <td>@order.OrderToAddress</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

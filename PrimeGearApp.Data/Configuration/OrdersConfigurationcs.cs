@@ -4,7 +4,7 @@ using PrimeGearApp.Data.Models;
 
 namespace PrimeGearApp.Data.Configuration
 {
-    public class OrdersConfigurationcs : IEntityTypeConfiguration<Order>
+    public class OrdersConfigurationcs : IEntityTypeConfiguration<Order> //TODO: Remove hardcoded max length values.
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
@@ -20,6 +20,12 @@ namespace PrimeGearApp.Data.Configuration
                 .HasOne(o => o.Product)
                 .WithMany(p => p.Orders)
                 .HasForeignKey(o => o.ProductId);
+
+            builder
+                .Property(o => o.PurchasedQuantity)
+                .IsRequired()
+                .HasComment("Order product quantity")
+                .HasMaxLength(100);
 
             builder
                 .Property(o => o.City)

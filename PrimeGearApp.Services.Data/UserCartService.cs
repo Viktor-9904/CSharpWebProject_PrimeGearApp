@@ -10,10 +10,10 @@ namespace PrimeGearApp.Services.Data
 {
     public class UserCartService : IUserCartSerivce
     {
-        public IRepository<ShoppingCart, int> shoppingCartRepository;
-        public IRepository<ShoppingCartItem, int> shoppingCartItemRepository;
-        public IRepository<Product, int> productRepository;
-        public IRepository<ProductType, int> productTypeRepository;
+        private readonly IRepository<ShoppingCart, int> shoppingCartRepository;
+        private readonly IRepository<ShoppingCartItem, int> shoppingCartItemRepository;
+        private readonly IRepository<Product, int> productRepository;
+        private readonly IRepository<ProductType, int> productTypeRepository;
 
         public UserCartService(
             IRepository<ShoppingCart, int> shoppingCartRepository,

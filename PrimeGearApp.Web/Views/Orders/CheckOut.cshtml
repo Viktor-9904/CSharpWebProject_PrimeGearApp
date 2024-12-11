@@ -1,0 +1,70 @@
+﻿@model PrimeGearApp.Web.ViewModels.Orders.CheckOutOrderViewModel
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h1 class="mt-4 text-center">Order Checkout</h1>
+
+<div class="container mt-4">
+    <!-- Order Details -->
+    <h3>Order Details</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <strong>Order ID:</strong> @Model.Id
+                </li>
+                <li class="list-group-item">
+                    <strong>Customer Name:</strong> @Model.Name
+                </li>
+                <li class="list-group-item">
+                    <strong>City:</strong> @Model.City
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Shopping Cart Summary -->
+    <h3 class="mt-5">Shopping Cart Summary</h3>
+    @if (!Model.ShoppingCarts.Any())
+    {
+        <p class="text-center mt-4">Your shopping cart is empty.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">Item</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col" class="text-end">Price</th>
+                        <th scope="col" class="text-end">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ShoppingCarts)
+                    {
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td>@item.Quantity</td>
+                            <td class="text-end">@item.PricePerUnit.ToString("C")</td>
+                            <td class="text-end">@item.TotalPrice.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <!-- Place Order Button -->
+    <div class="text-end mt-4">
+        <form asp-controller="Orders" asp-action="SubmitOrder" method="post">
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <button type="submit" class="btn btn-success btn-lg px-5">
+                Place Order
+            </button>
+        </form>
+    </div>
+</div>
