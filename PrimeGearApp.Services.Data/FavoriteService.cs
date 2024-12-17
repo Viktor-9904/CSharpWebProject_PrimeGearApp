@@ -20,7 +20,6 @@ namespace PrimeGearApp.Services.Data
 
         public Task<bool> IsCurrentProductAddedToFavorite(int productId, string userId)
         {
-            
+            throw new NotImplementedException();
         }
-    }
 }
