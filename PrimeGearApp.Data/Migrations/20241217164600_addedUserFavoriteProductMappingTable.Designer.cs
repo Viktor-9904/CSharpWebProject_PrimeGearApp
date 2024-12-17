@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PrimeGearApp.Web.Data;
 
@@ -11,9 +12,11 @@ using PrimeGearApp.Web.Data;
 namespace PrimeGearApp.Data.Migrations
 {
     [DbContext(typeof(PrimeGearDbContext))]
-    partial class PrimeGearDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241217164600_addedUserFavoriteProductMappingTable")]
+    partial class addedUserFavoriteProductMappingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,7 +243,7 @@ namespace PrimeGearApp.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Managers", (string)null);
+                    b.ToTable("Managers");
                 });
 
             modelBuilder.Entity("PrimeGearApp.Data.Models.Order", b =>
@@ -288,7 +291,7 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order", (string)null);
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("PrimeGearApp.Data.Models.Product", b =>
@@ -351,7 +354,7 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasIndex("ProductTypeId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
 
                     b.HasData(
                         new
@@ -412,7 +415,7 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasIndex("ProductTypePropertyId");
 
-                    b.ToTable("ProductDetails", (string)null);
+                    b.ToTable("ProductDetails");
 
                     b.HasData(
                         new
@@ -671,7 +674,7 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductTypes", (string)null);
+                    b.ToTable("ProductTypes");
 
                     b.HasData(
                         new
@@ -792,7 +795,7 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasIndex("ValueTypeId");
 
-                    b.ToTable("ProductTypeProperties", (string)null);
+                    b.ToTable("ProductTypeProperties");
 
                     b.HasData(
                         new
@@ -932,7 +935,7 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PropertyValueTypes", (string)null);
+                    b.ToTable("PropertyValueTypes");
 
                     b.HasData(
                         new
@@ -973,7 +976,7 @@ namespace PrimeGearApp.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("ShoppingCarts", (string)null);
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("PrimeGearApp.Data.Models.ShoppingCartItem", b =>
@@ -1000,30 +1003,22 @@ namespace PrimeGearApp.Data.Migrations
 
                     b.HasIndex("ShoppingCartId");
 
-                    b.ToTable("ShoppingCartItems", (string)null);
+                    b.ToTable("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("PrimeGearApp.Data.Models.UserFavoriteProduct", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "ProductId");
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserFavoriteProducts", (string)null);
+                    b.ToTable("UserFavoriteProduct");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

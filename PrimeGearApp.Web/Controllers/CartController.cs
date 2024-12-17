@@ -18,6 +18,7 @@ namespace PrimeGearApp.Web.Controllers
         }
 
 
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> Index()
         {

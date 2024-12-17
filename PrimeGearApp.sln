@@ -27,12 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrimeGearApp.Web.Infrastruc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0B819ADA-E3F5-457F-A364-2787B7A209A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimeGearApp.Service.Tests", "PrimeGearApp.Service.Tests\PrimeGearApp.Service.Tests.csproj", "{027A0615-4ADA-4538-AAB4-3DDB0F112B9D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{84862ABE-6D3C-4ECE-B374-28C4427C092A}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrimeGearApp.Service.Tests", "PrimeGearApp.Service.Tests\PrimeGearApp.Service.Tests.csproj", "{027A0615-4ADA-4538-AAB4-3DDB0F112B9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -43,5 +43,7 @@ namespace PrimeGearApp.Data.Models
 
         public List<Order> Orders { get; set; }
             = new List<Order>();
+
+        public ICollection<UserFavoriteProduct> UserFavorites { get; set; } = new HashSet<UserFavoriteProduct>();
     }
 }

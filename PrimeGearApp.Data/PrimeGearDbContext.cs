@@ -8,6 +8,7 @@ using PrimeGearApp.Data.Models;
 using static PrimeGearApp.Common.SeeingConstants.ProductTypeSeeding;
 using static PrimeGearApp.Common.SeeingConstants.ProductTypeProperties.GPUProperties;
 using System.Net.NetworkInformation;
+using System.Data;
 
 namespace PrimeGearApp.Web.Data
 {
@@ -32,6 +33,7 @@ namespace PrimeGearApp.Web.Data
         public virtual DbSet<Manager> Managers{ get; set; } = null!;
         public virtual DbSet<ShoppingCart> ShoppingCarts{ get; set; } = null!;
         public virtual DbSet<ShoppingCartItem> ShoppingCartItems { get; set; } = null!;
+        public virtual DbSet<UserFavoriteProduct> UserFavoriteProducts { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -11,5 +11,6 @@
 
         public ShoppingCart ShoppingCart { get; set; } = null!;
 
+        public ICollection<UserFavoriteProduct> FavoriteProducts { get; set; }
     }
 }
