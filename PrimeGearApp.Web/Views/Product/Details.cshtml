@@ -58,7 +58,7 @@
                 <div class="d-flex flex-column align-items-end justify-content-end mt-3">
                     @if (Model.IsCurrentProductAddedToFavorites)
                     {
-                        <a asp-action="RemoveProductToFavorites"
+                        <a asp-action="RemoveProductFromFavorites"
                            asp-controller="Favorite"
                            asp-route-id="@Model.Id"
                            class="product-card-link text-decoration-none btn btn-pink mb-2">

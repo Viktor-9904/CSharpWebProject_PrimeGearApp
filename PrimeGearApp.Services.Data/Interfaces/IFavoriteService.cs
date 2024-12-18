@@ -9,6 +9,6 @@ namespace PrimeGearApp.Services.Data.Interfaces
     public interface IFavoriteService
     {
         Task<bool> AddProductToFavorites(string productId, string userId);
-        Task<bool> IsCurrentProductAddedToFavorite(string productId, string userId);
+        Task<bool> RemoveProductFromFavorites(string productId, string userId);
     }
 }

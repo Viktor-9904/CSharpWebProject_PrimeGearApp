@@ -60,10 +60,43 @@ namespace PrimeGearApp.Services.Data
 
             return true;
         }
-
-        public Task<bool> IsCurrentProductAddedToFavorite(string productId, string userId)
+        public async Task<bool> RemoveProductFromFavorites(string productId, string userId)
         {
-            throw new NotImplementedException();
+            bool isUserIdGuid = Guid.TryParse(userId, out Guid guidUserId);
+            bool isProductIdValid = int.TryParse(productId, out int productIntId);
+
+            if (!isUserIdGuid || !isProductIdValid)
+            {
+                return false;
+            }
+
+            ApplicationUser user = await this.applicationUserService
+                .GetByIdAsync(guidUserId);
+
+            Product product = await this.productService
+                .GetByIdAsync(productIntId);
+
+            if (user == null || product == null)
+            {
+                return false;
+            }
+
+            UserFavoriteProduct? userFavoriteProduct = await this.favoriteService
+                .GetAllAttached()
+                .FirstOrDefaultAsync(ufp => ufp.UserId == guidUserId && ufp.ProductId == productIntId);
+
+            if (userFavoriteProduct == null)
+            {
+                return false;
+            }
+
+            await this.favoriteService
+                .DeleteAsync(userFavoriteProduct.Id);
+
+            await this.favoriteService
+                .SaveChangesAsync();
+
+            return true;
         }
     }
 }
