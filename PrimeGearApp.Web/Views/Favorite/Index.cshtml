@@ -1,0 +1,44 @@
+﻿@using PrimeGearApp.Web.ViewModels.Favorites;
+@model IEnumerable<FavoriteProductViewModel>
+
+<h2>Favorite Products</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info" role="alert">
+        You have not added any products to your favorites yet.
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Brand</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(product.ProductImagePath))
+                        {
+                            <img src="@product.ProductImagePath" alt="@product.Name" width="100" />
+                        }
+                        else
+                        {
+                            <span>No Image</span>
+                        }
+                    </td>
+                    <td>@product.Name</td>
+                    <td>@product.Brand</td>
+                    <td>@product.ProductPrice</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

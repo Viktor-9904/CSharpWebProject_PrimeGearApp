@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.Infrastructure.Extensions;
+using PrimeGearApp.Web.ViewModels.Favorites;
+using System.ComponentModel.DataAnnotations;
 
 namespace PrimeGearApp.Web.Controllers
 {
@@ -18,9 +20,14 @@ namespace PrimeGearApp.Web.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            string? userId = this.User.GetUserId();
+
+            IEnumerable<FavoriteProductViewModel> allFavoritedItems = await this.favoriteService
+                .GetAllFavoritedProductsByUserIdAsync(userId);
+
+            return View(allFavoritedItems);
         }
         [HttpGet]
         [Authorize]
@@ -29,7 +36,7 @@ namespace PrimeGearApp.Web.Controllers
             string? userId = this.User.GetUserId();
 
             bool wasProductAddedToFavorites = await this.favoriteService
-                .AddProductToFavorites(id, userId);
+                .AddProductToFavoritesAsync(id, userId);
 
             if (wasProductAddedToFavorites)
             {
@@ -45,7 +52,7 @@ namespace PrimeGearApp.Web.Controllers
         {
             string? userId = this.User.GetUserId();
             bool wasProductRemoveFromFavorites = await this.favoriteService
-                .RemoveProductFromFavorites(id, userId);
+                .RemoveProductFromFavoritesAsync(id, userId);
 
             if (wasProductRemoveFromFavorites)
             {

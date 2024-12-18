@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Data.Repository.Interfaces;
 using PrimeGearApp.Services.Data.Interfaces;
+using PrimeGearApp.Web.ViewModels.Favorites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace PrimeGearApp.Services.Data
             this.applicationUserService = applicationService;
             this.productService = productService;
         }
-        public async Task<bool> AddProductToFavorites(string productId, string userId)
+        public async Task<bool> AddProductToFavoritesAsync(string productId, string userId)
         {
             bool isUserIdGuid = Guid.TryParse(userId, out Guid guidUserId);
             bool isProductIdValid = int.TryParse(productId, out int productIntId);
@@ -60,12 +61,14 @@ namespace PrimeGearApp.Services.Data
 
             return true;
         }
-        public async Task<bool> RemoveProductFromFavorites(string productId, string userId)
+
+
+        public async Task<bool> RemoveProductFromFavoritesAsync(string productId, string userId)
         {
-            bool isUserIdGuid = Guid.TryParse(userId, out Guid guidUserId);
+            bool isUserIdValid = Guid.TryParse(userId, out Guid guidUserId);
             bool isProductIdValid = int.TryParse(productId, out int productIntId);
 
-            if (!isUserIdGuid || !isProductIdValid)
+            if (!isUserIdValid || !isProductIdValid)
             {
                 return false;
             }
@@ -97,6 +100,32 @@ namespace PrimeGearApp.Services.Data
                 .SaveChangesAsync();
 
             return true;
+        }
+        public async Task<IEnumerable<FavoriteProductViewModel>> GetAllFavoritedProductsByUserIdAsync(string userId)
+        {
+            bool isUserIdValid = Guid.TryParse(userId, out Guid guidUserId);
+
+            if (!isUserIdValid)
+            {
+                return new List<FavoriteProductViewModel>();
+            }
+
+            List<FavoriteProductViewModel> favoritedProducts = await this.favoriteService
+            .GetAllAttached()
+            .Where(ufp => ufp.UserId == guidUserId)
+            .Include(p => p.Product)
+            .Select(ufp => new FavoriteProductViewModel
+            {
+                Id = ufp.Product.Id.ToString(),
+                Name = ufp.Product.Name,
+                Brand = ufp.Product.Brand,
+                ProductImagePath = ufp.Product.ProductImagePath,
+                ProductPrice = ufp.Product.Price.ToString("C"),
+            })
+            .ToListAsync();
+
+
+            return favoritedProducts;
         }
     }
 }
