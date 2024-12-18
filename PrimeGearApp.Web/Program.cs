@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.DependencyModel.Resolution;
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Data.Repository;
 using PrimeGearApp.Data.Repository.Interfaces;
@@ -44,12 +44,14 @@ builder.Services.AddScoped<IRepository<ShoppingCart, int>, BaseRepositery<Shoppi
 builder.Services.AddScoped<IRepository<ShoppingCartItem, int>, BaseRepositery<ShoppingCartItem, int>>();
 builder.Services.AddScoped<IRepository<Order, Guid>, BaseRepositery<Order, Guid>>();
 builder.Services.AddScoped<IRepository<ApplicationUser, Guid>, BaseRepositery<ApplicationUser, Guid>>();
+builder.Services.AddScoped<IRepository<UserFavoriteProduct, int>, BaseRepositery<UserFavoriteProduct, int>>();
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IManagerService, ManagerService>();
 builder.Services.AddScoped<IUserCartSerivce, UserCartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter(); //?
 

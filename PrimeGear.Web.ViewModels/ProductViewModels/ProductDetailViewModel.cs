@@ -11,6 +11,7 @@
         public string ProductPrice { get; set; } = null!;
         public string WarrantyInMonths { get; set; } = null!;
         public string AvaibleQuantity { get; set; } = null!;
+        public bool IsCurrentProductAddedToFavorites { get; set; }
 
         public Dictionary<string, string>? ProductProperties { get; set; }
             = new Dictionary<string, string>();

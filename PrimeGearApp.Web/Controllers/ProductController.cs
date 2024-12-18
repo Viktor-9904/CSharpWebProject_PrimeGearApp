@@ -34,14 +34,16 @@ namespace PrimeGearApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(string? productId)
         {
+            string? userId = this.User.GetUserId();
             bool isIdValid = int.TryParse(productId, out int id);
-            if (!isIdValid)
+
+            if (!isIdValid || string.IsNullOrWhiteSpace(userId))
             {
                 return RedirectToAction(nameof(Index));
             }
 
             ProductDetailViewModel viewModel =
-                await this.productService.GetProductDetailByIdAsync(id);
+                await this.productService.GetProductDetailByIdAsync(id, userId);
 
             if (viewModel == null)
             {

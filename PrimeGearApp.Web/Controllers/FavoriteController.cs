@@ -1,17 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Services.Data.Interfaces;
+using PrimeGearApp.Web.Infrastructure.Extensions;
 
 namespace PrimeGearApp.Web.Controllers
 {
     public class FavoriteController : Controller
     {
-        private readonly IProductService productService;
+        private readonly IFavoriteService favoriteService;
 
-        public FavoriteController(IProductService productService, IManagerService managerService)
+        public FavoriteController(IFavoriteService favoriteService)
         {
-            this.productService = productService;
+            this.favoriteService = favoriteService;
         }
 
         [HttpGet]
@@ -22,9 +24,25 @@ namespace PrimeGearApp.Web.Controllers
         }
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> AddToFavorites(string? id)
+        public async Task<IActionResult> AddProductToFavorites(string id)
         {
-            
+            string? userId = this.User.GetUserId();
+
+            bool wasProductAddedToFavorites = await this.favoriteService
+                .AddProductToFavorites(id, userId);
+
+            if (wasProductAddedToFavorites)
+            {
+                int.TryParse(id, out int productIntId);
+                return RedirectToAction("Details","Product", new { productId = productIntId });
+            }
+
+            return RedirectToAction("Index", "Product");
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> RemoveProductFromFavorites(string id)
+        {
             return View("TestingView");
         }
     }

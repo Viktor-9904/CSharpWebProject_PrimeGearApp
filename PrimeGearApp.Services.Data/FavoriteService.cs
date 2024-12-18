@@ -1,4 +1,5 @@
 ﻿using Azure.Core.Pipeline;
+using Microsoft.EntityFrameworkCore;
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Data.Repository.Interfaces;
 using PrimeGearApp.Services.Data.Interfaces;
@@ -12,14 +13,57 @@ namespace PrimeGearApp.Services.Data
 {
     public class FavoriteService : IFavoriteService
     {
-        private readonly IRepository<Manager, int> favoriteService;
-        public FavoriteService(IRepository<Manager, int> favoriteService)
+        private readonly IRepository<UserFavoriteProduct, int> favoriteService;
+        private readonly IRepository<ApplicationUser, Guid> applicationUserService;
+        private readonly IRepository<Product, int> productService;
+        public FavoriteService(
+            IRepository<UserFavoriteProduct, int> favoriteService,
+            IRepository<ApplicationUser, Guid> applicationService,
+            IRepository<Product, int> productService)
         {
             this.favoriteService = favoriteService;
+            this.applicationUserService = applicationService;
+            this.productService = productService;
+        }
+        public async Task<bool> AddProductToFavorites(string productId, string userId)
+        {
+            bool isUserIdGuid = Guid.TryParse(userId, out Guid guidUserId);
+            bool isProductIdValid = int.TryParse(productId, out int productIntId);
+
+            if (!isUserIdGuid || !isProductIdValid)
+            {
+                return false;
+            }
+
+            ApplicationUser user = await this.applicationUserService
+                .GetByIdAsync(guidUserId);
+
+            Product product = await this.productService
+                .GetByIdAsync(productIntId);
+
+            if (user == null || product == null)
+            {
+                return false;
+            }
+
+            UserFavoriteProduct userFavoriteProduct = new UserFavoriteProduct()
+            {
+                UserId = guidUserId,
+                ProductId = productIntId
+            };
+
+            await this.favoriteService
+                .AddAsync(userFavoriteProduct);
+
+            await this.favoriteService
+                .SaveChangesAsync();
+
+            return true;
         }
 
-        public Task<bool> IsCurrentProductAddedToFavorite(int productId, string userId)
+        public Task<bool> IsCurrentProductAddedToFavorite(string productId, string userId)
         {
             throw new NotImplementedException();
         }
+    }
 }

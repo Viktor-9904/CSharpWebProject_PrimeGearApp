@@ -10,6 +10,7 @@ using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.ViewModels.ProductViewModels;
 using static PrimeGearApp.Common.EntityValidationConstants.ProductConstants;
 using static PrimeGearApp.Common.SeeingConstants;
+using Microsoft.AspNetCore.Identity;
 
 namespace PrimeGearApp.Services.Data
 {
@@ -20,19 +21,22 @@ namespace PrimeGearApp.Services.Data
         private readonly IRepository<ProductType, int> productTypeRepository;
         private readonly IRepository<ProductTypeProperty, int> productTypePropertyRepository;
         private readonly IRepository<PropertyValueType, int> propertyValueTypeRepository;
+        private readonly IRepository<UserFavoriteProduct, int> userFavoriteProductRepository;
 
         public ProductService(
             IRepository<Product, int> productRepository,
             IRepository<ProductDetail, int> productDetailRepository,
             IRepository<ProductType, int> productTypeRepository,
             IRepository<ProductTypeProperty, int> productTypePropertyRepository,
-            IRepository<PropertyValueType, int> propertyValueTypeRepository)
+            IRepository<PropertyValueType, int> propertyValueTypeRepository,
+            IRepository<UserFavoriteProduct, int> userFavoriteProductRepository)
         {
             this.productRepository = productRepository;
             this.productDetailRepository = productDetailRepository;
             this.productTypeRepository = productTypeRepository;
             this.productTypePropertyRepository = productTypePropertyRepository;
             this.propertyValueTypeRepository = propertyValueTypeRepository;
+            this.userFavoriteProductRepository = userFavoriteProductRepository;
         }
 
 
@@ -98,13 +102,15 @@ namespace PrimeGearApp.Services.Data
             return productTypes;
         }
 
-        public async Task<ProductDetailViewModel> GetProductDetailByIdAsync(int id)
+        public async Task<ProductDetailViewModel> GetProductDetailByIdAsync(int id, string userId)
         {
             Product? product = await this.productRepository
                 .GetAllAttached()
                 .FirstOrDefaultAsync(p => p.Id == id);
 
-            if (product == null)
+            bool isUserIdValid = Guid.TryParse(userId, out Guid userGuidId);
+
+            if (product == null || !isUserIdValid)
             {
                 return null;
             }
@@ -127,6 +133,16 @@ namespace PrimeGearApp.Services.Data
                 WarrantyInMonths = product.WarrantyDurationInMonths.ToString(),
                 AvaibleQuantity = product.AvaibleQuantity.ToString()
             };
+
+            UserFavoriteProduct? userFavoriteProduct = await this.userFavoriteProductRepository
+                .GetAllAttached()
+                .FirstOrDefaultAsync(ufp => ufp.ProductId == product.Id && ufp.UserId == userGuidId);
+
+            if (userFavoriteProduct != null)
+            {
+                DetailsViewModel.IsCurrentProductAddedToFavorites = true;
+            }
+
             foreach (ProductDetail detail in productDetails)
             {
 
