@@ -1,4 +1,4 @@
-﻿using PrimeGearApp.Web.ViewModels.Orders;
+﻿using PrimeGearApp.Web.ViewModels.OrdersViewModels;
 
 namespace PrimeGearApp.Services.Data.Interfaces
 {

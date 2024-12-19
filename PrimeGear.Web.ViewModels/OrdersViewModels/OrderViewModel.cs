@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PrimeGearApp.Web.ViewModels.Orders
+namespace PrimeGearApp.Web.ViewModels.OrdersViewModels
 {
     public class OrderViewModel
     {

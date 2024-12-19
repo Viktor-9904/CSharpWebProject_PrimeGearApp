@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.Infrastructure.Extensions;
-using PrimeGearApp.Web.ViewModels.Favorites;
+using PrimeGearApp.Web.ViewModels.FavoritesViewModels;
 using System.ComponentModel.DataAnnotations;
 
 namespace PrimeGearApp.Web.Controllers

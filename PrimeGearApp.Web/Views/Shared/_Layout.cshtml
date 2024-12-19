@@ -1,7 +1,10 @@
-﻿@using static PrimeGearApp.Common.ApplicationConstants;
+﻿@using Microsoft.AspNetCore.Identity
+
 @using PrimeGearApp.Services.Data.Interfaces;
-@using Microsoft.AspNetCore.Identity
 @using PrimeGearApp.Data.Models;
+@using PrimeGearApp.Web.Infrastructure.Extensions;
+@using static PrimeGearApp.Common.ApplicationConstants;
+
 
 @inject IManagerService managerService;
 @inject SignInManager<ApplicationUser> SignInManager
@@ -40,6 +43,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
                         </li>
+                        @if (await this.managerService.IsUserManagerAsync(this.User.GetUserId()!))
+                        {
+                            <li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Manager" asp-action="Index">Manager</a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         @if (SignInManager.IsSignedIn(User))

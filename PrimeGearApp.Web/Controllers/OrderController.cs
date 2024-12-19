@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.Infrastructure.Extensions;
-using PrimeGearApp.Web.ViewModels.Orders;
+using PrimeGearApp.Web.ViewModels.OrdersViewModels;
 
 namespace PrimeGearApp.Web.Controllers
 {

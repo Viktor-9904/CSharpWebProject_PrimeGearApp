@@ -1,4 +1,4 @@
-﻿using PrimeGearApp.Web.ViewModels.Favorites;
+﻿using PrimeGearApp.Web.ViewModels.FavoritesViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Data.Repository.Interfaces;
 using PrimeGearApp.Services.Data.Interfaces;
-using PrimeGearApp.Web.ViewModels.Orders;
+using PrimeGearApp.Web.ViewModels.OrdersViewModels;
 
 namespace PrimeGearApp.Services.Data
 {

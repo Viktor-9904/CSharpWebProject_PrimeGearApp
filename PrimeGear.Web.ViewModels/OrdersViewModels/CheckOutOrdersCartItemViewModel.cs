@@ -1,4 +1,4 @@
-﻿namespace PrimeGearApp.Web.ViewModels.Orders
+﻿namespace PrimeGearApp.Web.ViewModels.OrdersViewModels
 {
     public class CheckOutOrdersCartItemViewModel
     {

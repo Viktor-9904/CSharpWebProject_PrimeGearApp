@@ -1,0 +1,94 @@
+﻿@using System.Security.Claims;
+@using PrimeGearApp.Web.ViewModels.ManagerViewModels
+@model IEnumerable<UserViewModel>
+
+@{
+    ViewData["Title"] = "Users and Managers";
+    string loggedInUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+}
+
+<h1>Users and Managers</h1>
+<br />
+
+<h2>Users</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 20%;">#</th>
+            <th style="width: 20%;">Name</th>
+            <th style="width: 20%;">Email</th>
+            <th style="width: 20%;">Phone Number</th>
+            <th style="width: 20%;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Where(u => !u.IsManager).Any())
+        {
+            int index = 1;
+            foreach (var user in Model.Where(u => !u.IsManager))
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td>@(string.IsNullOrWhiteSpace(user.PhoneNumber) ? "Unknown" : user.PhoneNumber)</td>
+                    <td>
+                        <form method="post" asp-action="MakeUserManager" asp-route-userId="@user.Id" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-success">Make Manager</button>
+                        </form>
+                    </td>
+                </tr>
+                index++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">No users found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Managers</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 20%;">#</th>
+            <th style="width: 20%;">Name</th>
+            <th style="width: 20%;">Email</th>
+            <th style="width: 20%;">Phone Number</th>
+            <th style="width: 20%;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Where(u => u.IsManager).Any())
+        {
+            int index = 1;
+            foreach (var user in Model.Where(u => u.IsManager))
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td>@(string.IsNullOrWhiteSpace(user.PhoneNumber) ? "Unknown" : user.PhoneNumber)</td>
+                    <td>
+                        @if (user.Id.ToLower() != loggedInUserId!.ToLower())
+                        {
+                            <form method="post" asp-action="RemoveManager" asp-route-userId="@user.Id" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-danger">Remove Manager</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+                index++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">No managers found.</td>
+            </tr>
+        }
+    </tbody>
+</table>

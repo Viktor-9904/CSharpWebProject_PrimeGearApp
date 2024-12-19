@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PrimeGearApp.Web.ViewModels.Favorites
+namespace PrimeGearApp.Web.ViewModels.FavoritesViewModels
 {
     public class FavoriteProductViewModel
     {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using PrimeGearApp.Services.Data.Interfaces;
 using PrimeGearApp.Web.Infrastructure.Extensions;
-using PrimeGearApp.Web.ViewModels.Orders;
+using PrimeGearApp.Web.ViewModels.OrdersViewModels;
 using PrimeGearApp.Web.ViewModels.ShoppingCartViewModels;
 
 namespace PrimeGearApp.Web.Controllers

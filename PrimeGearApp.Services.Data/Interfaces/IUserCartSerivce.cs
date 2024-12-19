@@ -1,4 +1,4 @@
-﻿using PrimeGearApp.Web.ViewModels.Orders;
+﻿using PrimeGearApp.Web.ViewModels.OrdersViewModels;
 using PrimeGearApp.Web.ViewModels.ShoppingCartViewModels;
 
 namespace PrimeGearApp.Services.Data.Interfaces

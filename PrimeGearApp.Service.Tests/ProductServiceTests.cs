@@ -20,6 +20,7 @@ namespace PrimeGearApp.Services.Tests
         private Mock<IRepository<ProductType, int>> productTypeRepository;
         private Mock<IRepository<ProductTypeProperty, int>> productTypePropertyRepository;
         private Mock<IRepository<PropertyValueType, int>> propertyValueTypeRepository;
+        private Mock<IRepository<UserFavoriteProduct, int>> userFavoriteProductRepository;
         private ProductService productService;
 
         [SetUp]
@@ -30,12 +31,15 @@ namespace PrimeGearApp.Services.Tests
             this.productTypeRepository = new Mock<IRepository<ProductType, int>>();
             this.productTypePropertyRepository = new Mock<IRepository<ProductTypeProperty, int>>();
             this.propertyValueTypeRepository = new Mock<IRepository<PropertyValueType, int>>();
+            this.userFavoriteProductRepository = new Mock<IRepository<UserFavoriteProduct, int>>();
+
             this.productService = new ProductService(
                 productRepository.Object,
                 productDetailRepository.Object,
                 productTypeRepository.Object,
                 productTypePropertyRepository.Object,
-                propertyValueTypeRepository.Object);
+                propertyValueTypeRepository.Object,
+                userFavoriteProductRepository.Object);
         }
 
         [Test]
@@ -78,7 +82,7 @@ namespace PrimeGearApp.Services.Tests
                 .Returns(productDetails.AsQueryable());
 
             // Act
-            var result = await this.productService.GetProductDetailByIdAsync(1);
+            var result = await this.productService.GetProductDetailByIdAsync(1, string.Empty);
 
             // Assert
             Assert.IsNotNull(result);

@@ -15,7 +15,6 @@ namespace PrimeGearApp.Data.Configuration
 
             builder
                 .Property(m => m.WorkPhoneNumber)
-                .IsRequired()
                 .HasComment("Manager's work phone number")
                 .HasMaxLength(ManagerWorkPhoneMaxLenght);
 

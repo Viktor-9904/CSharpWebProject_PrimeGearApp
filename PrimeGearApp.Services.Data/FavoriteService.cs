@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PrimeGearApp.Data.Models;
 using PrimeGearApp.Data.Repository.Interfaces;
 using PrimeGearApp.Services.Data.Interfaces;
-using PrimeGearApp.Web.ViewModels.Favorites;
+using PrimeGearApp.Web.ViewModels.FavoritesViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

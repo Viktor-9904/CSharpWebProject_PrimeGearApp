@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PrimeGearApp.Web.ViewModels.Orders
+namespace PrimeGearApp.Web.ViewModels.OrdersViewModels
 {
     public class UserDetailsViewModel
     {
