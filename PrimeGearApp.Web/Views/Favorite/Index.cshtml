@@ -11,32 +11,40 @@
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-striped table-bordered align-middle">
+        <thead class="table-primary">
             <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Brand</th>
-                <th>Price</th>
+                <th scope="col" style="width: 10%" class="text-center">Image</th>
+                <th scope="col" style="width: 30%" class="text-center">Name</th>
+                <th scope="col" style="width: 20%" class="text-center">Brand</th>
+                <th scope="col" style="width: 20%" class="text-center">Price</th>
+                <th scope="col" style="width: 1%" class="text-center"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var product in Model)
             {
                 <tr>
-                    <td>
+                    <td class="text-center">
                         @if (!string.IsNullOrEmpty(product.ProductImagePath))
                         {
-                            <img src="@product.ProductImagePath" alt="@product.Name" width="100" />
+                            <img src="@product.ProductImagePath" alt="@product.Name" class="img-fluid" style="max-width: 100px;" />
                         }
                         else
                         {
-                            <span>No Image</span>
+                            <img src="~/images/Common/noImage.jpg" alt="@product.Name" class="img-fluid" style="max-width: 100px;" />
                         }
                     </td>
-                    <td>@product.Name</td>
-                    <td>@product.Brand</td>
-                    <td>@product.ProductPrice</td>
+                    <td class="text-center">@product.Name</td>
+                    <td class="text-center">@product.Brand</td>
+                    <td class="text-center"> @product.ProductPrice</td>
+                    <td class="text-center">
+                        <a asp-action="RemoveProductFromFavorites"
+                           asp-controller="Favorite"
+                           asp-route-id="@product.Id">
+                            <img src="~/images/Common/trashIcon.png" alt="Remove Icon" class="me-1" style="height: 20px;">
+                        </a>
+                    </td>
                 </tr>
             }
         </tbody>
