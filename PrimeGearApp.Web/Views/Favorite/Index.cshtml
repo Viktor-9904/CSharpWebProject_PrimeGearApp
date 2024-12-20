@@ -39,7 +39,7 @@ else
                     <td class="text-center">@product.Brand</td>
                     <td class="text-center"> @product.ProductPrice</td>
                     <td class="text-center">
-                        <a asp-action="RemoveProductFromFavorites"
+                        <a asp-action="RemoveProductFromFavoritesIndex"
                            asp-controller="Favorite"
                            asp-route-id="@product.Id">
                             <img src="~/images/Common/trashIcon.png" alt="Remove Icon" class="me-1" style="height: 20px;">

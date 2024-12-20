@@ -62,5 +62,21 @@ namespace PrimeGearApp.Web.Controllers
 
             return RedirectToAction("Index", "Product");
         }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> RemoveProductFromFavoritesIndex(string id)
+        {
+            string? userId = this.User.GetUserId();
+            bool wasProductRemoveFromFavorites = await this.favoriteService
+                .RemoveProductFromFavoritesAsync(id, userId);
+
+            if (wasProductRemoveFromFavorites)
+            {
+                int.TryParse(id, out int productIntId);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
