@@ -52,6 +52,7 @@ builder.Services.AddScoped<IUserCartSerivce, UserCartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+builder.Services.AddScoped<IHomeService, HomeSerivce>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter(); //?
 
