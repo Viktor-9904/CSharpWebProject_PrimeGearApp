@@ -35,9 +35,9 @@ namespace PrimeGearApp.Web.Controllers
         public async Task<IActionResult> Details(string? productId)
         {
             string? userId = this.User.GetUserId();
-            bool isIdValid = int.TryParse(productId, out int id);
+            bool isProductIdValid = int.TryParse(productId, out int id);
 
-            if (!isIdValid || string.IsNullOrWhiteSpace(userId))
+            if (!isProductIdValid)
             {
                 return RedirectToAction(nameof(Index));
             }

@@ -5,7 +5,7 @@ namespace PrimeGearApp.Services.Data.Interfaces
     public interface IProductService
     {
         Task<IEnumerable<ProductIndexViewModel>> GetAllProductsAsync();
-        Task<ProductDetailViewModel> GetProductDetailByIdAsync(int id, string userId);
+        Task<ProductDetailViewModel> GetProductDetailByIdAsync(int id, string? userId);
         Task<IEnumerable<ProductTypeViewModel>> GetAllProductTypesAsync();
         Task<IEnumerable<ProductTypePropertyViewModel>> GetAllProductTypePropertiesByProductTypeIdAsync(int id);
         Task<bool> AddProductAsync(CreateProductViewModel viewModel);

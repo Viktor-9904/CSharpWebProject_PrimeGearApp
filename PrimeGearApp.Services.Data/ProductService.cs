@@ -102,7 +102,7 @@ namespace PrimeGearApp.Services.Data
             return productTypes;
         }
 
-        public async Task<ProductDetailViewModel> GetProductDetailByIdAsync(int id, string userId)
+        public async Task<ProductDetailViewModel> GetProductDetailByIdAsync(int id, string? userId)
         {
             Product? product = await this.productRepository
                 .GetAllAttached()
@@ -110,7 +110,7 @@ namespace PrimeGearApp.Services.Data
 
             bool isUserIdValid = Guid.TryParse(userId, out Guid userGuidId);
 
-            if (product == null || !isUserIdValid)
+            if (product == null)
             {
                 return null;
             }
@@ -134,14 +134,17 @@ namespace PrimeGearApp.Services.Data
                 AvaibleQuantity = product.AvaibleQuantity.ToString()
             };
 
-            UserFavoriteProduct? userFavoriteProduct = await this.userFavoriteProductRepository
+            if (isUserIdValid)
+            {
+                UserFavoriteProduct? userFavoriteProduct = await this.userFavoriteProductRepository
                 .GetAllAttached()
                 .FirstOrDefaultAsync(ufp => ufp.ProductId == product.Id && ufp.UserId == userGuidId);
 
-            if (userFavoriteProduct != null)
-            {
-                DetailsViewModel.IsCurrentProductAddedToFavorites = true;
-            }
+                if (userFavoriteProduct != null)
+                {
+                    DetailsViewModel.IsCurrentProductAddedToFavorites = true;
+                }
+            }            
 
             foreach (ProductDetail detail in productDetails)
             {
